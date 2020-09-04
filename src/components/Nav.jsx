@@ -1,5 +1,5 @@
 import { signin, signout, useSession } from 'next-auth/client';
-import styles from './nav.module.css';
+import styles from './Nav.module.scss';
 
 function onClickSignIn(ev) {
   ev.preventDefault();
