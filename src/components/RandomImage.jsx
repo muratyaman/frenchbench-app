@@ -1,4 +1,4 @@
-function RandomImage({ keywords = '' }) {
+export function RandomImage({ keywords = '' }) {
   const imgProps = {
     src: 'https://source.unsplash.com/random/400x300?' + keywords,
     alt: 'random image',
@@ -8,5 +8,3 @@ function RandomImage({ keywords = '' }) {
     <img {...imgProps} />
   );
 }
-
-export default RandomImage;

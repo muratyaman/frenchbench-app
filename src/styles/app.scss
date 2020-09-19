@@ -1,10 +1,10 @@
 // import react-md variable overrides
-@import './variables';
+@import 'variables';
 
 // generate all react-md styles with the custom theme
 @import 'react-md/dist/styles';
 
-@import './styles';
+@import 'styles';
 
 @media (prefers-color-scheme: dark) {
   :root {

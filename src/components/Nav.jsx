@@ -11,7 +11,7 @@ function onClickSignOut(ev) {
   signout();
 }
 
-function Nav(props) {
+export function Nav(props) {
   const [session, loading] = useSession();
   let content = null;
   if (session) { // signed in
@@ -46,5 +46,3 @@ function Nav(props) {
     </nav>
   );
 }
-
-export default Nav;

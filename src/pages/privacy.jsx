@@ -1,17 +1,17 @@
-import Nav from '../components/nav';
-import Footer from '../components/footer';
-import { content } from '../content';
-import PostSummary from '../components/PostSummary';
+import { Footer, Nav, PostSummary } from '../components';
+import { content } from '../commonLib';
 
-const Privacy = () => (
-  <>
-    <Nav />
-    <main>
-      <h1>FrenchBench</h1>
-      <PostSummary {...content.privacy} />
-    </main>
-    <Footer />
-  </>
-);
+function Privacy(props) {
+  return (
+    <>
+      <Nav />
+      <main>
+        <h1>FrenchBench</h1>
+        <PostSummary {...content.privacy} />
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 export default Privacy;

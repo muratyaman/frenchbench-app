@@ -1,17 +1,17 @@
-import Nav from '../components/nav';
-import Footer from '../components/footer';
-import { content } from '../content';
-import PostSummary from '../components/PostSummary';
+import { Footer, Nav, PostSummary } from '../components';
+import { content } from '../commonLib';
 
-const Terms = () => (
-  <>
-    <Nav />
-    <main>
-      <h1>FrenchBench</h1>
-      <PostSummary {...content.terms} />
-    </main>
-    <Footer />
-  </>
-);
+function Terms(props) {
+  return (
+    <>
+      <Nav />
+      <main>
+        <h1>FrenchBench</h1>
+        <PostSummary {...content.terms} />
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 export default Terms;

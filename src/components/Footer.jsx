@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import FbLogo from './FbLogo';
+import { FbLogo } from './FbLogo';
 import styles from './Footer.module.scss';
 
-function Footer(props) {
+export function Footer(props) {
   return (
     <div className={styles.footer}>
       <hr />
@@ -23,5 +23,3 @@ function Footer(props) {
     </div>
   );
 }
-
-export default Footer;

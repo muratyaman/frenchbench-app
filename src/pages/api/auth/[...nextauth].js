@@ -69,13 +69,13 @@ const options = {
 
   // You can define custom pages to override the built-in pages
   // The routes shown here are the default URLs that will be used.
-  pages: {
+  // pages: {
     // signin: '/api/auth/signin',  // Displays signin buttons
     // signout: '/api/auth/signout', // Displays form with sign out button
     // error: '/api/auth/error', // Error code passed in query string as ?error=
     // verifyRequest: '/api/auth/verify-request', // Used for check email page
     // newUser: null // If set, new users will be directed here on first sign in
-  },
+  // },
 
   // Additional options
   secret: penv.NEXTAUTH_MY_SECRET, // Recommended (but auto-generated if not specified)

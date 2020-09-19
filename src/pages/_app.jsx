@@ -2,9 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import { Provider } from 'next-auth/client';
 import { Configuration } from 'react-md';
-import '../app.scss';
+import '../styles/app.scss';
 
-const App = ({ Component, pageProps }) => {
+function App({ Component, pageProps }) {
   const { session } = pageProps
   return (
     <Provider options={{ site: process.env.SITE }} session={session}>
@@ -18,6 +18,6 @@ const App = ({ Component, pageProps }) => {
       </Configuration>
     </Provider>
   )
-};
+}
 
 export default App;

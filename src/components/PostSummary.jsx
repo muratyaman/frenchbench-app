@@ -1,8 +1,8 @@
 import { Card, CardContent, CardTitle, CardHeader } from '@react-md/card';
 import { Text } from '@react-md/typography';
-import RandomImage from './RandomImage';
+import { RandomImage } from './RandomImage';
 
-function PostSummary({ title, summary, keywords }) {
+export function PostSummary({ title, summary, keywords }) {
   return (
     <>
       <Card>
@@ -17,7 +17,5 @@ function PostSummary({ title, summary, keywords }) {
         </CardContent>
       </Card>
     </>
-  )
+  );
 }
-
-export default PostSummary;
