@@ -24,5 +24,19 @@ module.exports = (phase, { defaultConfig }) => {
     poweredByHeader,
     generateEtags,
     distDir,
+    async rewrites() {
+      return [
+        // we need to define a no-op rewrite to trigger checking
+        // all pages/static files before we attempt proxying
+        {
+          source: '/:path*',
+          destination: '/:path*',
+        },
+        {
+          source: '/api2/:path*',
+          destination: `http://127.0.0.1:15000/api2/:path*`,
+        },
+      ]
+    },
   }
 }

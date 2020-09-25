@@ -1,36 +1,29 @@
-import { signin, signout, useSession } from 'next-auth/client';
 import styles from './Nav.module.scss';
 
 function onClickSignIn(ev) {
   ev.preventDefault();
-  signin();
+  //signin();
 }
 
 function onClickSignOut(ev) {
   ev.preventDefault();
-  signout();
+  //signout();
 }
 
 export function Nav(props) {
-  const [session, loading] = useSession();
+  //const [session, loading] = useSession();
   let content = null;
-  if (session) { // signed in
+  if (false) { // signed in
     content = (
       <>
         <span className={styles.avatar} style={{ backgroundImage: `url(${session.user.image})` }} />
         <span className={styles.signedIn}>Signed in as <strong>{session.user.email}</strong></span>
-        <a href='/api/auth/signout' onClick={onClickSignOut}>
-          <button className={styles.signoutButton} type='button'>Sign out</button>
-        </a>
       </>
     );
   } else { // not signed in
     content = (
       <>
         <span className={styles.notSignedIn}>Not signed in</span>
-        <a href='/api/auth/signin' onClick={onClickSignIn}>
-          <button className={styles.signinButton} type='button'>Sign in</button>
-        </a>
       </>
     );
   }
