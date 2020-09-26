@@ -33,8 +33,8 @@ module.exports = (phase, { defaultConfig }) => {
           destination: '/:path*',
         },
         {
-          source: '/api2/:path*',
-          destination: `http://127.0.0.1:15000/api2/:path*`,
+          source: '/api/:path*',
+          destination: (process.env.API_BASE_URL || 'http://127.0.0.1:12000/api') + `/:path*`,
         },
       ]
     },

@@ -1,6 +1,16 @@
+export const newServerConfig = () => {
+  const penv = process && process.env ? process.env : {};
+  return {
+    api: {
+      baseURL: (penv.API_BASE_URL || 'http://127.0.0.1:12000/api'),
+      timeout: 30 * 1000,
+    },
+  };
+};
+
 export const content = {
   home: {
-    title: 'Welcome to FrenchBench community',
+    title: 'FrenchBench community',
     summary: `keep learning.
 keep sharing your time/knowledge/conversation/things.
 keep helping others/beings/planet.`,
@@ -16,4 +26,15 @@ keep helping others/beings/planet.`,
     summary: 'Pellentesque iaculis diam sit amet ornare molestie. Quisque nec nulla sed massa pretium tristique eu eget massa. Nulla et sem placerat, tempus turpis fermentum, efficitur nisl. Cras eu ligula orci. Suspendisse metus est, commodo congue neque quis, placerat sodales lorem. Cras pharetra id risus vitae vulputate. Sed vehicula mattis odio, a lacinia tortor tempus sit amet. Nulla quis tincidunt ligula. Aliquam posuere bibendum dui laoreet pharetra. Donec ut tellus ipsum.',
     keywords: 'privacy',
   },
+  about: {
+    title: 'About Us',
+    summary: 'info about FrenchBench here',
+    keywords: 'information',
+  },
+  contact: {
+    title: 'Contact Us',
+    summary: 'contact info here',
+    keywords: 'information',
+  },
 };
+

@@ -1,0 +1,12 @@
+/* good old fashion CSS: it just works !!! */
+.fb-card-community .ui.card,
+.fb-card-community .ui.cards > .ui.card,
+.fb-card-help-needed .ui.card,
+.fb-card-help-needed .ui.cards > .ui.card,
+.fb-card-help-provided .ui.card,
+.fb-card-help-provided .ui.cards > .ui.card,
+.fb-post-summary .ui.card,
+.fb-post-summary .ui.cards > .ui.card
+{
+  width: 100%;
+}

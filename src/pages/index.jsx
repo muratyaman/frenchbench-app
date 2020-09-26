@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Footer, Nav, PostSummary } from '../components';
-import { content } from '../commonLib';
+import React, { useEffect, useState } from 'react';
+import { FbCallToAccount, FbCardCommunity, Loading, PublicLayout } from '../components';
 
 function useMounted() {
   const [mounted, setMounted] = useState(false);
@@ -8,33 +7,27 @@ function useMounted() {
   return mounted;
 }
 
-function Home(props) {
+// public home page
+function PublicIndex(props) {
   const isMounted = useMounted();
   return (
-    <>
-      <Nav />
-      <main>
-        <h1>FrenchBench</h1>
+    <PublicLayout title='Home page'>
+      <h1>Welcome</h1>
 
-        <section>
-          <h1>This section is server-side rendered.</h1>
-        </section>
+      <FbCardCommunity />
 
-        {isMounted ? (
-          <section>
-            <h2>
-              This section is <em>only</em> client-side rendered.
-            </h2>
-          </section>
-        ) : (
-          <span>Loading...</span>
-        )}
+      <FbCallToAccount />
 
-        <PostSummary {...content.home} />
-      </main>
-      <Footer />
-    </>
+      <hr />
+      <p>rendered on server-side</p>
+
+      {isMounted ? (
+        <section>rendered on client-side</section>
+      ) : (
+        <Loading />
+      )}
+    </PublicLayout>
   );
 }
 
-export default Home;
+export default PublicIndex;

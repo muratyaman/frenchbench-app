@@ -1,10 +1,10 @@
 import React from 'react';
 import { PostSummary, PublicLayout } from '../components';
 
-function Privacy({ post }) {
+function About({ post }) {
   return (
-    <PublicLayout title='Privacy Policy'>
-      <div className='fb-privacy'>
+    <PublicLayout title='About Us'>
+      <div className='fb-about'>
         <PostSummary {...post} />
       </div>
     </PublicLayout>
@@ -19,9 +19,8 @@ function Privacy({ post }) {
  */
 export async function getServerSideProps(ctx) {
   const { content } = require('../utils/serverSide');
-  const post = content.privacy;
+  const post = content.about;
   return { props: { post }};
 }
 
-
-export default Privacy;
+export default About;

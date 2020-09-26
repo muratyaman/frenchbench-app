@@ -1,39 +1,23 @@
-import { Card, Icon } from 'semantic-ui-react'
+import React from 'react';
+import { Card } from 'semantic-ui-react'
 import { RandomImage } from './RandomImage';
 
-export function PostSummary({ title, summary, keywords }) {
+export function PostSummary({ title, summary, keywords, created_at = null }) {
+  const summaryWithBr = summary.split('\n').map((line, idx) => (<p key={`${line}-${idx}`}>{line}</p>))
   return (
-    <>
+    <div className='fb-post-summary'>
       <Card>
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p align='center'>
-            <RandomImage keywords={keywords} />
-          </p>
-          <Text>{summary}</Text>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <Image src='/images/avatar/large/matthew.png' wrapped ui={false} />
+        <RandomImage keywords={keywords} />
         <Card.Content>
-          <Card.Header>Matthew</Card.Header>
+          <Card.Header>{title}</Card.Header>
           <Card.Meta>
-            <span className='date'>Joined in 2015</span>
+            <span className='date'>{created_at}</span>
           </Card.Meta>
           <Card.Description>
-            Matthew is a musician living in Nashville.
+            {summaryWithBr}
           </Card.Description>
         </Card.Content>
-        <Card.Content extra>
-          <a>
-            <Icon name='user' />
-            22 Friends
-          </a>
-        </Card.Content>
       </Card>
-    </>
+    </div>
   );
 }
