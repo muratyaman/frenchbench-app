@@ -6,7 +6,7 @@
     "lint": "eslint ./src",
     "build:next": "next build",
     "build": "npm run clean && npm run build:next",
-    "start": "next start",
+    "start": "next start -p 11000",
     "start:dev": "next"
   },
   "dependencies": {
