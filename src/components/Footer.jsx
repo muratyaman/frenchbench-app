@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import { FbLogo } from './FbLogo';
 import styles from './Footer.module.scss';

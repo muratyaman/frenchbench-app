@@ -1,3 +1,4 @@
+import React from 'react';
 import { Image } from 'semantic-ui-react';
 
 export const randomImgSrc = (keywords = '') => {
@@ -9,7 +10,8 @@ export function RandomImage({ keywords = '' }) {
     src: randomImgSrc(keywords),
     //alt: 'random image',
     //width: '400',
-    ui: false
+    ui: false,
+    label: { as: 'span', corner: 'left', icon: 'heart', color: 'purple' },
   };
   //  <img {...imgProps} />
   return (

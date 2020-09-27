@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card } from 'semantic-ui-react';
 import TextLoop from 'react-text-loop';
 import { RandomImage } from './RandomImage';
