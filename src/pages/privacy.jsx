@@ -4,9 +4,7 @@ import { PostSummary, PublicLayout } from '../components';
 function Privacy({ post }) {
   return (
     <PublicLayout title='Privacy Policy'>
-      <div className='fb-privacy'>
-        <PostSummary {...post} />
-      </div>
+      <PostSummary {...post} />
     </PublicLayout>
   );
 }

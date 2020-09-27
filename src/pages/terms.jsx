@@ -4,9 +4,7 @@ import { PostSummary, PublicLayout } from '../components';
 function Terms({ post }) {
   return (
     <PublicLayout title='Terms Of Service'>
-      <div className='fb-terms'>
-        <PostSummary {...post} />
-      </div>
+      <PostSummary {...post} />
     </PublicLayout>
   );
 }

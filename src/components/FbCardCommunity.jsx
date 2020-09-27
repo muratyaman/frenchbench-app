@@ -8,12 +8,12 @@ export function FbCardCommunity(props) {
       <Card>
         <RandomImage keywords='community' />
         <Card.Content>
-          <Card.Header>FrenchBench Community</Card.Header>
+          <Card.Header>FrenchBench Communities</Card.Header>
           <Card.Description>
-            <div>⭐️&#9733; keep learning.</div>
-            <div>⭐️&#9733; keep sharing.</div>
+            <div>⭐️ relevant and local.</div>
+            <div>⭐️ keep learning and sharing.</div>
             <div>
-              <span>⭐️&#9733; keep helping with your&nbsp;</span>
+              <span>⭐️ keep helping with your&nbsp;</span>
               <TextLoop>
                 <span>time</span>
                 <span>knowledge</span>
@@ -23,7 +23,7 @@ export function FbCardCommunity(props) {
               <span>&nbsp;.</span>
             </div>
             <div>
-              <span>⭐️&#9733; find or receive help in your neighbourhood.</span>
+              <span>⭐️ find or receive help in your neighbourhood.</span>
             </div>
           </Card.Description>
         </Card.Content>

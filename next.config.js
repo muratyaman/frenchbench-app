@@ -24,19 +24,19 @@ module.exports = (phase, { defaultConfig }) => {
     poweredByHeader,
     generateEtags,
     distDir,
-    async rewrites() {
-      return [
-        // we need to define a no-op rewrite to trigger checking
-        // all pages/static files before we attempt proxying
-        {
-          source: '/:path*',
-          destination: '/:path*',
-        },
-        {
-          source: '/api/:path*',
-          destination: (process.env.API_BASE_URL || 'http://127.0.0.1:12000/api') + `/:path*`,
-        },
-      ]
-    },
+    // async rewrites() {
+    //   return [
+    //     // we need to define a no-op rewrite to trigger checking
+    //     // all pages/static files before we attempt proxying
+    //     {
+    //       source: '/:path*',
+    //       destination: '/:path*',
+    //     },
+    //     {
+    //       source: '/api/:path*',
+    //       destination: (process.env.API_BASE_URL || 'http://127.0.0.1:12000/api') + `/:path*`,
+    //     },
+    //   ]
+    // },
   }
 }

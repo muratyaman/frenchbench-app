@@ -1,4 +1,7 @@
-export const newServerConfig = () => {
+import cookie from 'cookie';
+import axios from 'axios';
+
+export const newConfigOnServer = () => {
   const penv = process && process.env ? process.env : {};
   return {
     api: {
@@ -38,3 +41,64 @@ keep helping others/beings/planet.`,
   },
 };
 
+export const FB_SECRET_COOKIE = 'fbSecret';
+
+export const serializeFbCookie = (userSecret) => {
+  return cookie.serialize(FB_SECRET_COOKIE, userSecret, {
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 72576000,
+    httpOnly: true,
+    path: '/',
+  });
+}
+
+export const parseFbCookie = (cookieStr) => {
+  const cookies = cookie.parse(cookieStr);
+  return cookies[FB_SECRET_COOKIE] || null;
+};
+
+export const newApiOnServer = (config = {}, authToken = null) => {
+  const headers = authToken ? { authorization: `Bearer ${authToken}` } : {};
+  const _api = axios.create({
+    ...config,
+    ...headers,
+  });
+
+  const echo   = async (data) => data;
+  const signup = async (data) => _api.post('/v1/auth/signup', data);
+  const signin = async (data) => _api.post('/v1/auth/signin', data);
+  const me     = async ()     => _api.get('/v1/auth/me'); // relies on auth token
+
+  const searchUsers  = async (params)       => _api.get('/v1/users', { params });
+  const retrieveUser = async ({ username }) => _api.get('/v1/users/' + username);
+
+  const retrieveUserPosts = async ({ username })           => _api.get('/v1/users/' + username + '/posts');
+  const retrieveUserPost  = async ({ username, post_ref }) => _api.get('/v1/users/' + username + '/posts/' + post_ref);
+
+  const searchPosts  = async (params)       => _api.get('/v1/posts', { params });
+  const createPost   = async (data)         => _api.post('/v1/posts', data);
+  const retrievePost = async ({ id })       => _api.get('/v1/posts/' + id);
+  const updatePost   = async ({ id, data }) => _api.put('/v1/posts/' + id, data);
+  const deletePost   = async ({ id })       => _api.delete('/v1/posts/' + id);
+
+  return {
+    echo,
+    signup,
+    signin,
+    me,
+
+    searchUsers,
+    retrieveUser,
+
+    retrieveUserPosts,
+    retrieveUserPost,
+    
+    searchPosts,
+    createPost,
+    retrievePost,
+    updatePost,
+    deletePost,
+  };
+
+};

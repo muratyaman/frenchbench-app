@@ -4,9 +4,7 @@ import { PostSummary, PublicLayout } from '../components';
 function Contact({ post }) {
   return (
     <PublicLayout title='Contact Us'>
-      <div className='fb-contact'>
-        <PostSummary {...post} />
-      </div>
+      <PostSummary {...post} />
     </PublicLayout>
   );
 }

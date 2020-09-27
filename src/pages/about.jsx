@@ -4,9 +4,7 @@ import { PostSummary, PublicLayout } from '../components';
 function About({ post }) {
   return (
     <PublicLayout title='About Us'>
-      <div className='fb-about'>
-        <PostSummary {...post} />
-      </div>
+      <PostSummary {...post} />
     </PublicLayout>
   );
 }
