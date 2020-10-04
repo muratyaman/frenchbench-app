@@ -4,11 +4,13 @@ import jwtManager from 'jsonwebtoken';
 import { Pool } from 'pg';
 import { v4 as newUuid } from 'uuid';
 
-export const IS_PROD = process.env.NODE_ENV === 'production';
+export const ts   = () => (new Date()).toISOString();
+export const log  = (...args) => console.log.call(...args);
+export const penv = () => process.env;
 
-export let { JWT_SECRET, GEO_LAT_DELTA, GEO_LON_DELTA } = process.env;
-
-export const FB_SECRET_COOKIE = 'fbSecret';
+export let { NODE_ENV, JWT_SECRET, GEO_LAT_DELTA, GEO_LON_DELTA } = penv();
+export const IS_PROD = NODE_ENV === 'production';
+export const FB_SECRET_COOKIE = 'fbsecret';
 
 // table names in the database
 export const TBL_USER         = 'users';
@@ -26,41 +28,60 @@ export const tablesFields = {
 };
 
 export default async function pgHandler(req, res) {
+  req.ts = new Date();
+  req.id = newUuid();
+  log('new request', ts(), 'start', req.ts, 'id', req.id);
+  let output = null, user = null;
   const pool = new Pool(); // we rely on default env keys and values for PostgreSQL
   try {
-    let user = null;
     const db = extendDb(pool);
     const now = await db.now(); // make sure we can connect
-    console.info(now);
+    log('db now', ts(), req.id, now);
 
     const api = newApi({ db });
 
-    try {
-      const { authorization = '' } = req.headers;
-      const [tokenType, token] = authorization.split(' ');
-      if (tokenType.toLowerCase() === 'bearer') {
+    try { // do we have a user session?
+      let token = null, tokenType = null;
+      const { cookie = null, authorization = null } = req.headers;
+      if (cookie) { // do we have a session cookie?
+        tokenType = 'bearer';
+        token = parseFbCookie(cookie);
+      } else if (authorization) { // do we have an authorization header?
+        const authParts = authorization.split(' '); // e.g. 'Bearer a-long-json-web-token'
+        tokenType = authParts[0];
+        token = authParts[1];
+      }
+      if (token && tokenType && tokenType.toLowerCase() === 'bearer') {
         const decoded = jwtManager.verify(token, JWT_SECRET);
-        console.info('token', decoded);
-        // e.g. { id: 'uuid', username: 'haci', iat: 1601748833, exp: 1601835233 }
+        log('token', ts(), req.id, decoded); // e.g. { id: 'uuid', username: 'haci', iat: 1601748833, exp: 1601835233 }
         user = decoded;
       }
     } catch (jwtError) {
-      console.error('token error', jwtError);
+      log('token error', ts(), req.id, jwtError);
     }
 
-    const { action, id = null, input = {} } = req.body;
-    if (!(action in api)) throw Error('invalid api action');
+    const { action = '', id = null, input = {} } = req.body;
 
-    if (api._isProtected({ action, user, id, input }) && !user) throw new ErrUnauthorized();
+    if (action && (action !== '_isAllowed') && (action in api)) {
+      api._isAllowed({ action, user, id, input });
+    } else {
+      throw Error('invalid api action');
+    }
 
-    const output = await api[action]({ user, id, input });
-    res.json(output);
+    output = await api[action]({ user, id, input }); // run api action
+
+    if (output && output.data && output.data.token) { // special case
+      const cookieStr = serializeFbCookie(output.data.token);
+      res.setHeader('Set-Cookie', cookieStr); // keep auth token as cookie on frontend
+    }
   } catch (err) {
-    console.error('error', err);
-    res.json({ error: err.message });
+    log('error', ts(), req.id, err);
+    output = { error: err.message };
   } finally {
     await pool.end();
   }
+  // try to send status 200, always! HTTP is merely a way of talking to backend; no need for a RESTful service.
+  res.json(output);
 }
 
 export function extendDb(db) {
@@ -72,14 +93,14 @@ export function extendDb(db) {
   const query = async (text, values = [], name = null) => {
     let result = null, error = null;
     try {
-      if (name) {
-        result = await db.query({ name, text, values });
+      if (name) { // reusable prepared query
+        result = await db.query({ text, values, name });
       } else {
         result = await db.query(text, values);
       }
     } catch (err) {
-      console.error('query text', text);
-      console.error('query error', err);
+      log('db query', ts(), text);
+      log('db error', ts(), err);
       error = err;
     }
     return { result, error };
@@ -109,7 +130,7 @@ export function extendDb(db) {
     return query(text, params);
   };
 
-  const updateOne = async (tableName, condition, row, limit = 1) => {
+  const update = async (tableName, condition, row, limit = 0) => {
     const assignments = [], where = [], params = [];
     Object.entries(row).forEach(([field, value]) => {
       params.push(value);
@@ -144,7 +165,7 @@ export function extendDb(db) {
     query,
     findOne,
     insertOne,
-    updateOne,
+    update,
     deleteOne,
     now,
   };
@@ -221,16 +242,16 @@ export function newApi({ db }) {
     return { data, error };
   }
 
-  async function me({ user = {}}) {
+  // we can use user_retrieve
+  async function user_retrieve_current({ user = {} }) {
     const { id = null } = user;
     const { row, error } = await db.findOne(TBL_USER, 'id', id);
     const data = hideSensitiveUserProps(row);
     return { data, error };
   }
 
-  async function retrieveUser({ params }) {
+  async function user_retrieve({ user, id }) {
     let data = null, error = null;
-    const { id = '' } = params;
     // TODO: analytics of 'views' per record per visitor per day
     const { row, error: findUserError } = await db.findOne(TBL_USER, 'id', id);
     if (findUserError) throw findUserError;
@@ -238,39 +259,60 @@ export function newApi({ db }) {
     return { data, error };
   }
 
-  async function findUsers({ user, query }) {
+  async function user_search({ user, input = {} }) {
     let data = [], error = null;
-    let { lat1 = 0, lon1 = 0, lat2 = 0, lon2 = 0 } = query;
+    let { lat1 = 0, lon1 = 0, lat2 = 0, lon2 = 0 } = input;
     // TODO: restrict area that can be searched e.g. by geolocation of current user
     lat1 = lat1 ? lat1 : user.lat - GEO_LAT_DELTA;
     lat2 = lat2 ? lat2 : user.lat + GEO_LAT_DELTA;
     lon1 = lon1 ? lon1 : user.lon - GEO_LON_DELTA;
     lon2 = lon2 ? lon2 : user.lon + GEO_LON_DELTA;
-    const { result, error: findUsersError } = await db.query(
+    const { result, error: user_search_err } = await db.query(
       'SELECT * FROM ' + TBL_USER
       + ' WHERE (lat BETWEEN $1 AND $2)'
       + '   AND (lon BETWEEN $3 AND $4)',
       [lat1, lat2, lon1, lon2],
       'users-in-area',
     );
-    if (findUsersError) throw findUsersError;
+    if (user_search_err) throw user_search_err;
     data = result.rows.map(hideSensitiveUserProps);
     return { data, error };
   }
 
-  async function updateContact({ user, id, input }) {
+  async function usercontact_update({ user, id, input }) {
+    // permission is checked by _isProtected()
     // let { first_name, last_name, email, phone, headline, neighbourhood } = input;
-    let change = { ...input, updated_at: new Date() }; // TODO: limit inputs
-    let { result, error } = await db.updateOne(TBL_USER, { id }, change);
-    return { data: result, error };
+    let change = { ...input, updated_at: new Date() }; // TODO: limit inputs?
+    const condition = { id }; // TODO: for now, only user himself can update
+    let { result, error } = await db.update(TBL_USER, condition, change);
+    return { data: result && result.rowCount, error };
   }
 
-  async function updateGeo({ params, body }) {
-    const { id } = params;
-    let { lat, lon, raw_geo } = body;
+  async function usercontact_update_self({ user, input }) {
+    // permission is checked by _isProtected()
+    // let { first_name, last_name, email, phone, headline, neighbourhood } = input;
+    let change = { ...input, updated_at: new Date() }; // TODO: limit inputs?
+    const condition = { id: user.id }; // TODO: for now, only user himself can update
+    let { result, error } = await db.update(TBL_USER, condition, change);
+    return { data: result && result.rowCount, error };
+  }
+
+  async function usergeo_update({ user, id, input }) {
+    // permission is checked by _isProtected()
+    let { lat, lon, raw_geo } = input;
     let change = { lat, lon, raw_geo, updated_at: new Date() };
-    let { result, error } = await db.updateOne(TBL_USER, { id }, change);
-    return { data: result, error };
+    const condition = { id }; // TODO: for now, only user himself can update
+    let { result, error } = await db.update(TBL_USER, condition, change);
+    return { data: result && result.rowCount, error };
+  }
+
+  async function usergeo_update_self({ user, input }) {
+    // permission is checked by _isProtected()
+    let { lat, lon, raw_geo } = input;
+    let change = { lat, lon, raw_geo, updated_at: new Date() };
+    const condition = { id: user.id }; // TODO: for now, only user himself can update
+    let { result, error } = await db.update(TBL_USER, condition, change);
+    return { data: result && result.rowCount, error };
   }
 
   function makePostRef(post_ref = '') {
@@ -279,10 +321,10 @@ export function newApi({ db }) {
     return ref;
   }
 
-  async function createPost({ user, body }) {
+  async function post_create({ user, input }) {
     if (!user) throw new ErrForbidden();
 
-    let { post_ref = '', title = '', content = '', tags = '' } = body;
+    let { post_ref = '', title = '', content = '', tags = '' } = input;
     const dt = new Date();
     const id = newUuid();
     if (!title) title = 'my post at ' + dt.toISOString();
@@ -304,41 +346,39 @@ export function newApi({ db }) {
     return { data: 0 < result.rowCount ? id : null, error };
   }
 
-  async function retrievePost({ params }) {
-    const { id = '' } = params;
+  async function post_retrieve({ user, id, input }) {
     // TODO: validate uuid
+    // TODO: analytics of 'views' per record per visitor per day
     const { row: data, error } = await db.findOne(TBL_POST, 'id', id);
     return { data, error };
   }
 
-  async function updatePost({ user, params, body }) {
-    let data = null, error = null;
+  async function post_update({ user, id, input }) {
+    let error = null;
 
-    const { id = '' } = params;
-    let { post_ref, title, content, tags } = body;
+    let { post_ref, title, content, tags } = input;
     const dt = new Date();
 
-    const { row: postFound, error: findPostError } = await db.findOne(TBL_POST, 'id', id);
-    if (findPostError) throw findPostError;
+    const { row: postFound, error: findPostErr } = await db.findOne(TBL_POST, 'id', id);
+    if (findPostErr) throw findPostErr;
     if (!postFound) throw new ErrNotFound('post not found');
-    if (postFound.user_id !== user.id) throw new ErrForbidden();
+    if (postFound.user_id !== user.id) throw new ErrForbidden(); // TODO: we can use created_at
 
     if (!title) title = 'my post at ' + dt.toISOString();
     if (!post_ref) post_ref = title;
     post_ref = makePostRef(post_ref);
     let change = { post_ref, title, content, tags, updated_at: dt, updated_by: user.id, };
-    let { result, error: updatePostError } = await db.updateOne(TBL_POST, { id }, change);
+    let { result, error: updatePostError } = await db.update(TBL_POST, { id }, change);
     if (updatePostError) throw updatePostError;
 
-    data = result;
-    return { data, error };
+    return { data: result && result.rowCount, error };
   }
 
-  async function findPosts({ query }) {
+  async function post_search({ user, input }) {
     let data = [], error = null;
-    let { q = '', offset = 0, limit = 10 } = query;
+    let { q = '', offset = 0, limit = 10 } = input;
     if (100 < limit) limit = 100;
-    const text = 'SELECT p.id, p.post_ref, p.title, p.tags, u.username FROM ' + TBL_POST + ' p'
+    const text = 'SELECT p.*, u.username FROM ' + TBL_POST + ' p'
       + ' INNER JOIN ' + TBL_USER + ' u ON p.user_id = u.id'
       + ' WHERE (p.title LIKE $1)'
       + '    OR (p.content LIKE $1)'
@@ -348,40 +388,38 @@ export function newApi({ db }) {
       + ' LIMIT $3';
     const { result, error: findError } = await db.query(text, [`%${q}%`, offset, limit], 'posts-text-search');
     if (findError) throw findError;
-    data = result && result.rows ? result.rows.map(row => {
-      row['uri'] = '/api/v1/users/' + row.username + '/posts/' + row.post_ref;
-      return row;
-    }) : [];
+    data = result && result.rows ? result.rows : [];
     return { data, error };
   }
 
-  async function findPostsByUser({ params, query }) {
+  async function post_search_by_username({ input = {} }) {
     let data = [], error = null;
-    let { username = '' } = params;
-    username = username.toLowerCase();
-    const { row: postOwner, error: userError } = await db.findOne(TBL_USER, 'username', username);
-    if (userError) throw userError;
-    if (!postOwner) throw new ErrNotFound('user not found');
+    let { user_id = null, username = null, q = '', offset = 0, limit = 10 } = input;
 
-    let { offset = 0, limit = 10 } = query;
+    if (!user_id && username) {
+      const { row: postOwner, error: userError } = await db.findOne(TBL_USER, 'username', username);
+      if (userError) throw userError;
+      if (!postOwner) throw new ErrNotFound('user not found');
+      user_id = postOwner.id;
+    }
+    if (!user_id) throw ErrBadRequest('user_id or username is required');
+
     if (100 < limit) limit = 100;
     const text = 'SELECT p.id, p.post_ref, p.title, p.tags FROM ' + TBL_POST + ' p'
       + ' WHERE p.user_id = $1'
       + ' ORDER BY p.created_at DESC'
       + ' OFFSET $2'
       + ' LIMIT $3';
-    const { result, error: findError } = await db.query(text, [postOwner.id, offset, limit], 'posts-by-user');
+    const { result, error: findError } = await db.query(text, [user_id, offset, limit], 'posts-by-user');
     if (findError) throw findError;
-    data = result && result.rows ? result.rows.map(row => {
-      row['uri'] = '/api/v1/users/' + postOwner.username + '/posts/' + row.post_ref;
-      return row;
-    }) : [];
+    data = result && result.rows ? result.rows : [];
     return { data, error };
   }
 
-  async function retrievePostByUserAndRef({ params }) {
+  // use retrieve_post(), it is faster
+  async function post_retrieve_by_username_and_post_ref({ user, input = {} }) {
     let data = null, error = null;
-    let { username = '', post_ref = '' } = params;
+    let { username = '', post_ref = '' } = input;
     username = username.toLowerCase();
     post_ref = post_ref.toLowerCase();
     const { row: postOwner, error: userError } = await db.findOne(TBL_USER, 'username', username);
@@ -401,41 +439,63 @@ export function newApi({ db }) {
     return { data, error };
   }
 
-  function _isProtected({ action = '', user, id, input }) {
-    let result = false;
-    switch (action) {
-      case 'me':
-      case 'signout':
-      case 'updateGeo':
-      case 'updateContact':
-      case 'createPost':
-      case 'updatePost':
-        result = true; break;
+  const actionsProtected = [
+    'signout',
+    'user_retrieve_current',
+    'usercontact_update',
+    'usercontact_update_self',
+    'usergeo_update',
+    'usergeo_update_self',
+    'post_create', 'post_update',
+  ];
+  const actionsForUser = [
+    'usergeo_update',
+    'usercontact_update',
+  ];
+  const actionsForSelf = [
+    'usergeo_update_self',
+    'usercontact_update_self',
+  ];
+  const actionsForOwners = ['post_update'];
+
+  function _isAllowed({ action = '', user, id, input, rowFound }) {
+    let protect = false;
+    if (actionsProtected.includes(action)) {
+      protect = true;
+      if (!user) throw new ErrUnauthorized(); // early decision
     }
-    if (action === 'updateContact') { // extra check
+    if (protect && actionsForUser.includes(action)) { // extra check
       if (user.id !== id) throw new ErrForbidden();
     }
-    return result;
+    if (protect && actionsForSelf.includes(action)) { // extra check
+      if (!user) throw new ErrForbidden();
+    }
+    if (protect && actionsForOwners.includes(action) && rowFound) { // extra check
+      if (user.id !== rowFound.created_by) throw new ErrForbidden();
+    }
+    return !protect;
   }
 
   return {
-    _isProtected,
+    _isAllowed,
 
     signup,
     signin,
-    me,
+    user_retrieve_current,
 
-    findUsers,
-    retrieveUser,
-    updateContact,
-    updateGeo,
+    user_search,
+    user_retrieve,
+    usergeo_update,
+    usergeo_update_self,
+    usercontact_update,
+    usercontact_update_self,
 
-    createPost,
-    findPosts,
-    findPostsByUser,
-    retrievePost,
-    retrievePostByUserAndRef,
-    updatePost,
+    post_create,
+    post_search,
+    post_search_by_username,
+    post_retrieve,
+    post_retrieve_by_username_and_post_ref,
+    post_update,
   };
 }
 
@@ -514,7 +574,7 @@ export class ErrBadRequest extends Error {
   constructor(message = 'Bad Request') {
     super(message);
     this.name = this.constructor.name;
-    this.statusCode = 400;
+    //this.statusCode = 400;
   }
 }
 
@@ -522,7 +582,7 @@ export class ErrUnauthorized extends Error {
   constructor(message = 'Unauthorized') {
     super(message);
     this.name = this.constructor.name;
-    this.statusCode = 401;
+    //this.statusCode = 401;
   }
 }
 
@@ -530,7 +590,7 @@ export class ErrForbidden extends Error {
   constructor(message = 'Forbidden') {
     super(message);
     this.name = this.constructor.name;
-    this.statusCode = 403;
+    //this.statusCode = 403;
   }
 }
 
