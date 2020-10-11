@@ -1,7 +1,8 @@
 function RecentPosts(props) {
   return (
     <div>
-      recent posts
+      <p>recent posts</p>
+      <pre>{JSON.stringify(props)}</pre>
     </div>
   )
 }

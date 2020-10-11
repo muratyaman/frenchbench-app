@@ -9,15 +9,15 @@ export function FbFooter(props) {
         <Grid.Column width={4}>
           <Header inverted as='h4' content='Legal stuff' />
           <List link inverted>
-            <List.Item><Link href='/terms'>Terms of Service</Link></List.Item>
-            <List.Item><Link href='/privacy'>Privacy Policy</Link></List.Item>
+            <List.Item><Link href='/s/article/terms'>Terms of Service</Link></List.Item>
+            <List.Item><Link href='/s/article/privacy'>Privacy Policy</Link></List.Item>
           </List>
         </Grid.Column>
         <Grid.Column width={4}>
           <Header inverted as='h4' content='More Information' />
           <List link inverted>
-            <List.Item><Link href='/about'>About Us</Link></List.Item>
-            <List.Item><Link href='/contact'>Contact Us</Link></List.Item>
+            <List.Item><Link href='/s/article/about'>About Us</Link></List.Item>
+            <List.Item><Link href='/s/article/contact'>Contact Us</Link></List.Item>
           </List>
         </Grid.Column>
         <Grid.Column width={4}>

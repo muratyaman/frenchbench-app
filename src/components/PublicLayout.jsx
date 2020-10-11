@@ -5,7 +5,7 @@ import { Container, Dropdown, Icon, Image, Menu, Segment } from 'semantic-ui-rea
 import { FbFooter } from './FbFooter';
 
 // fixed menu at top. rendered on both client-side and server-side
-export function PublicLayout({ title = '', children }) {
+export function PublicLayout({ title = '', containerClassName = 'fb-page', children }) {
   return (
     <>
       <Head>
@@ -20,12 +20,12 @@ export function PublicLayout({ title = '', children }) {
             <Link href='/'>FrenchBench</Link>
           </Menu.Item>
           <Menu.Item header>
-            <Link href='/i-need-help'>
+            <Link href='/s/i-need-help'>
               <span aria-label='I need help'>Need <Icon name='heart outline' color='yellow' /></span>
             </Link>
           </Menu.Item>
           <Menu.Item header>
-            <Link href='/i-can-help'>
+            <Link href='/s/i-can-help'>
               <span aria-label='I can help'>Can <Icon name='heart' color='purple' /></span>
             </Link>
           </Menu.Item>
@@ -41,7 +41,7 @@ export function PublicLayout({ title = '', children }) {
         </Container>
       </Menu>
 
-      <Container text style={{ marginTop: '3.5em' }}>
+      <Container text style={{ marginTop: '3.5em' }} className={containerClassName}>
         {children}
       </Container>
 

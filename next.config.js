@@ -6,37 +6,41 @@ module.exports = (phase, { defaultConfig }) => {
 
   const poweredByHeader = false;
   const generateEtags = false;
+  const compress = false;
   const distDir = 'dist';
+
+  const serverRuntimeConfig = { // will only be available on the server side
+    host:       process.env.NEXT_PUBLIC_HOST || 'NO-HOST',
+    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || '/api',
+  };
+
+  const publicRuntimeConfig = { // will be available on both server and client
+    // staticFolder: '/static',
+    host:       process.env.NEXT_PUBLIC_HOST || '',
+    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || '/api',
+  };
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
     return {
-      /* development only config options here */
+      // development only config options here
       poweredByHeader,
       generateEtags,
+      compress,
       distDir,
+      serverRuntimeConfig,
+      publicRuntimeConfig,
     }
   }
 
   return {
-    /* config options for all phases except development here */
+    // config options for all phases except development here
     // TODO: use the CDN in production and localhost for development.
     // assetPrefix: isProd ? 'https://cdn.mydomain.com' : '',
     poweredByHeader,
     generateEtags,
+    compress,
     distDir,
-    // async rewrites() {
-    //   return [
-    //     // we need to define a no-op rewrite to trigger checking
-    //     // all pages/static files before we attempt proxying
-    //     {
-    //       source: '/:path*',
-    //       destination: '/:path*',
-    //     },
-    //     {
-    //       source: '/api/:path*',
-    //       destination: (process.env.API_BASE_URL || 'http://127.0.0.1:12000/api') + `/:path*`,
-    //     },
-    //   ]
-    // },
+    serverRuntimeConfig,
+    publicRuntimeConfig,
   }
 }

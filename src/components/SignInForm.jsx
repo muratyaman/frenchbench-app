@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Form, Message } from 'semantic-ui-react';
 
-export function SignInForm({ onSubmit, onChange, errorMessage = null, ...otherProps }) {
+export function SignInForm({ onSubmit, onChange, errorMessage = null, successMessage = null, ...otherProps }) {
   return (
-    <Form onSubmit={onSubmit} {...otherProps} warning={!!errorMessage}>
+    <Form onSubmit={onSubmit} {...otherProps} warning={!!errorMessage} success={!!successMessage}>
       <Form.Input
         icon='user'
         iconPosition='left'
@@ -21,15 +21,8 @@ export function SignInForm({ onSubmit, onChange, errorMessage = null, ...otherPr
         onChange={(e, { name, value }) => onChange(name, value)}
       />
       <Button content='Sign In' primary type='submit' />
-
-      {!errorMessage ? null: (
-        <Message
-          warning
-          header='Error'
-          list={[ errorMessage ]}
-        />
-      )}
-
+      {errorMessage && ( <Message warning header='Error' list={[ errorMessage ]} />)}
+      {successMessage && ( <Message warning header='Success' list={[ successMessage ]} />)}
     </Form>
   )
 }

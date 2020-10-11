@@ -1,5 +1,5 @@
 import React from 'react';
-import { FbCallToAccount, FbCardHelpNeeded, PublicLayout } from '../components';
+import { FbCallToAccount, FbCardHelpNeeded, PublicLayout } from '../../components';
 
 function ICanHelp(props) {
   return (

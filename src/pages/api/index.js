@@ -1,15 +1,16 @@
 import bcrypt from 'bcrypt';
 import cookie from 'cookie';
 import jwtManager from 'jsonwebtoken';
+import md5 from 'md5';
 import { Pool } from 'pg';
 import { v4 as newUuid } from 'uuid';
 
 export const ts   = () => (new Date()).toISOString();
-export const log  = (...args) => console.log.call(...args);
+export const log  = (...args) => console.log.call(null, ts(), ...args);
 export const penv = () => process.env;
 
 export let { NODE_ENV, JWT_SECRET, GEO_LAT_DELTA, GEO_LON_DELTA } = penv();
-export const IS_PROD = NODE_ENV === 'production';
+export const IS_PRODUCTION_MODE = NODE_ENV === 'production';
 export const FB_SECRET_COOKIE = 'fbsecret';
 
 // table names in the database
@@ -27,16 +28,21 @@ export const tablesFields = {
   [TBL_POST]:         ['id', 'user_id', 'post_ref', 'title', 'content', 'tags', 'created_at', 'updated_at', 'created_by', 'updated_by'],
 };
 
+// all API requests are handled by this function
 export default async function pgHandler(req, res) {
-  req.ts = new Date();
+  const t1 = new Date();
+  // req.ts = t1;
   req.id = newUuid();
-  log('new request', ts(), 'start', req.ts, 'id', req.id);
+  log(req.id, 'request START');
   let output = null, user = null;
   const pool = new Pool(); // we rely on default env keys and values for PostgreSQL
   try {
     const db = extendDb(pool);
-    const now = await db.now(); // make sure we can connect
-    log('db now', ts(), req.id, now);
+    
+    if (!IS_PRODUCTION_MODE) {
+      const now = await db.now(); // make sure we can connect
+      log(req.id, 'db now', now);
+    }
 
     const api = newApi({ db });
 
@@ -53,11 +59,11 @@ export default async function pgHandler(req, res) {
       }
       if (token && tokenType && tokenType.toLowerCase() === 'bearer') {
         const decoded = jwtManager.verify(token, JWT_SECRET);
-        log('token', ts(), req.id, decoded); // e.g. { id: 'uuid', username: 'haci', iat: 1601748833, exp: 1601835233 }
+        log(req.id, 'token', decoded); // e.g. { id: 'uuid', username: 'haci', iat: 1601748833, exp: 1601835233 }
         user = decoded;
       }
     } catch (jwtError) {
-      log('token error', ts(), req.id, jwtError);
+      log(req.id, 'token error', jwtError);
     }
 
     const { action = '', id = null, input = {} } = req.body;
@@ -75,64 +81,100 @@ export default async function pgHandler(req, res) {
       res.setHeader('Set-Cookie', cookieStr); // keep auth token as cookie on frontend
     }
   } catch (err) {
-    log('error', ts(), req.id, err);
+    log(req.id, 'error', err);
     output = { error: err.message };
   } finally {
     await pool.end();
   }
+  const t2 = new Date();
+  const delta = t2.getTime() - t1.getTime();
+  log(req.id, 'request END', delta, 'ms');
   // try to send status 200, always! HTTP is merely a way of talking to backend; no need for a RESTful service.
+  res.setHeader('x-fb-time-ms', delta);
   res.json(output);
 }
 
 export function extendDb(db) {
 
-  const placeHolder = (idx) => {
+  function placeHolder(idx) {
     return '$' + idx;
-  };
+  }
 
-  const query = async (text, values = [], name = null) => {
+  async function query(text, values = [], name = null) {
     let result = null, error = null;
+    const id = newUuid();
+    log('db query', id, name, text);
+    log('db params', id, values);
     try {
       if (name) { // reusable prepared query
         result = await db.query({ text, values, name });
       } else {
         result = await db.query(text, values);
       }
+      log('db result', id, result);
     } catch (err) {
-      log('db query', ts(), text);
-      log('db error', ts(), err);
+      log('db error', id, err);
       error = err;
     }
     return { result, error };
-  };
+  }
 
-  const findOne = async (table, field, value) => {
-    const { result, error } = await query(
-      `SELECT * FROM ${table} WHERE ${field} = ` + placeHolder(1),
-      [value],
-      table + '-find-one-by-' + field,
-    );
-    const row = result && result.rows && result.rows.length ? result.rows[0] : null;
+  async function find(tableName, condition = {}, limit = 0) {
+    const where = [], params = [];
+    Object.entries(condition).forEach(([field, value]) => {
+      params.push(value);
+      where.push(field + ' = ' + placeHolder(params.length));
+    });
+    const whereStr = where ? 'WHERE ' + where.join(' AND ') : '';
+    
+    let limitStr = '';
+    const limitInt = Number.parseInt(limit);
+    if (limitInt) {
+      params.push(limitInt);
+      const limitPh = placeHolder(params.length);
+      limitStr = limitInt ? `LIMIT ${limitPh}` : '';
+    }
+
+    const text = `SELECT * FROM ${tableName} ${whereStr} ${limitStr}`;
+    const name = tableName + '-f-' + md5(text);
+    const { result, error } = await query(text, params, name);
+    const row = limitInt === 1 && result && result.rows && result.rows.length ? result.rows[0] : null;
     return { result, error, row };
-  };
+  }
 
-  const insertOne = async (tableName, row) => {
+  /**
+   * Insert a record in a table
+   * @param {string} tableName 
+   * @param {object} row
+   * @see https://www.postgresql.org/docs/current/sql-insert.html
+   */
+  async function insert(tableName, row = {}) {
     const fields = [], params = [], placeHolders = [];
     Object.entries(row).forEach(([field, value]) => {
       fields.push(field);
       params.push(value);
       placeHolders.push(placeHolder(params.length));
     });
-    // param placeholders: $1, $2, etc.
     const text = 'INSERT INTO ' + tableName + ' (' + fields.join(', ') + ') '
       + 'VALUES (' + placeHolders.join(', ') + ') '
       + 'RETURNING *';
-    return query(text, params);
-  };
+    const name = tableName + '-i-' + md5(text);
+    return query(text, params, name);
+  }
 
-  const update = async (tableName, condition, row, limit = 0) => {
+  // TODO: insertMany() efficiently
+
+  /**
+   * Update one ore more records in a table
+   * NOTE: try to limit update operation by condition e.g. unique { id } as there is no LIMIT clause
+   * @param {string} tableName 
+   * @param {object} condition
+   * @param {object} change
+   * @see https://www.postgresql.org/docs/current/sql-update.html
+   */
+  async function update(tableName, condition = {}, change = {}) {
     const assignments = [], where = [], params = [];
-    Object.entries(row).forEach(([field, value]) => {
+    Object.entries(change).forEach(([field, value]) => {
       params.push(value);
       assignments.push(field + ' = ' + placeHolder(params.length));
     });
@@ -142,41 +184,59 @@ export function extendDb(db) {
     });
     const assignmentsStr = assignments.join(', ');
     const whereStr = where ? ' WHERE ' + where.join(' AND ') : '';
-    const limitStr = limit ? `LIMIT ${limit}` : '';
-    const text = `UPDATE ${tableName} SET ${assignmentsStr} ${whereStr} ${limitStr}`;
-    return query(text, params);
-  };
+    const text = `UPDATE ${tableName} SET ${assignmentsStr} ${whereStr}`;
+    const name = tableName + '-u-' + md5(text);
+    return query(text, params, name);
+  }
 
-  const deleteOne = async (tableName, condition, limit = 1) => {
+  /**
+   * Delete one ore more records in a table
+   * NOTE: try to limit delete operation by condition e.g. unique { id } as there is no LIMIT clause
+   * NOTE: delete is keyword
+   * @param {string} tableName 
+   * @param {object} condition
+   * @see https://www.postgresql.org/docs/current/sql-delete.html
+   */
+  async function del(tableName, condition = {}) {
     const where = [], params = [];
     Object.entries(condition).forEach(([field, value]) => {
       params.push(value);
       where.push(field + ' = ' + placeHolder(params.length));
     });
     const whereStr = where ? 'WHERE ' + where.join(' AND ') : '';
-    const limitStr = limit ? `LIMIT ${limit}` : '';
-    const text = `DELETE FROM ${tableName} ${whereStr} ${limitStr}`;
-    return query(text, params);
-  };
+    const text = `DELETE FROM ${tableName} ${whereStr}`;
+    const name = tableName + '-d-' + md5(text);
+    return query(text, params, name);
+  }
 
-  const now = async() => db.query('SELECT NOW() AS ts');
+  async function now() {
+    return db.query('SELECT NOW() AS ts');
+  }
 
   return {
     query,
-    findOne,
-    insertOne,
+    find,
+    insert,
     update,
-    deleteOne,
+    del,
     now,
   };
 }
 
 export function newApi({ db }) {
 
-  async function signup(req, res) {
+  async function echo({ input }) {
+    return Promise.resolve({ data: input, error: null });
+  }
+
+  async function health() {
+    return Promise.resolve({ data: ts(), error: null });
+  }
+
+  async function signup({ input }) {
     let data = null, error = null;
     try {
-      let { username = '', password = '', password_confirm = '' } = req.body;
+      let { username = '', password = '', password_confirm = '' } = input;
       const usernamePruned = pruneUsername(username);
       if (usernamePruned !== username) {
         throw new ErrBadRequest('invalid username');
@@ -188,7 +248,7 @@ export function newApi({ db }) {
         throw new ErrBadRequest('enter a strong password');
       }
 
-      const { row: userFound, error: userLookupError } = await db.findOne(TBL_USER, 'username', username);
+      const { row: userFound, error: userLookupError } = await db.find(TBL_USER, { username }, 1);
       if (userFound) throw new ErrBadRequest('enter another username');
       if (userLookupError) { // this is unexpected
         // throw new ErrBadRequest('enter another username');
@@ -206,13 +266,20 @@ export function newApi({ db }) {
         username,
         password_hash,
       };
-      const { result, error: insertError } = await db.insertOne(TBL_USER, userRow);
+      const { result, error: insertError } = await db.insert(TBL_USER, userRow);
       if (insertError) { // this is unexpected
         // throw insertError;
         throw new Error('there was an error, please try again later');
       }
 
-      data = result && result.rowCount ? id : null;
+      // auto-login
+      if (result && result.rowCount) {
+        const signInOutput = await signin({ input: { username, password }});
+        data = signInOutput.data;
+        error = signInOutput.error;
+      } else {
+        // not good
+      }
     } catch (err) {
       error = err.message;
     }
@@ -220,13 +287,13 @@ export function newApi({ db }) {
   }
 
   async function signin({ input }) {
-    let data, token, error = 'Invalid credentials';
+    let data = null, token = null, error = 'Invalid credentials';
 
     let { username = '', password = '' } = input;
     username.trim().toLowerCase();
     if (!(username && username !== '' && password && password !== '')) throw new Error(error);
 
-    const { row: found, error: userLookupError } = await db.findOne(TBL_USER, 'username', username);
+    const { row: found, error: userLookupError } = await db.find(TBL_USER, { username }, 1);
     if (userLookupError) throw userLookupError;
     if (!found) throw new ErrNotFound(error);
 
@@ -245,15 +312,29 @@ export function newApi({ db }) {
   // we can use user_retrieve
   async function user_retrieve_current({ user = {} }) {
     const { id = null } = user;
-    const { row, error } = await db.findOne(TBL_USER, 'id', id);
+    const { row, error } = await db.find(TBL_USER, { id }, 1);
     const data = hideSensitiveUserProps(row);
     return { data, error };
   }
 
-  async function user_retrieve({ user, id }) {
+  async function user_retrieve({ user, id = null }) {
     let data = null, error = null;
     // TODO: analytics of 'views' per record per visitor per day
-    const { row, error: findUserError } = await db.findOne(TBL_USER, 'id', id);
+    const condition = { id };
+    if (!id) throw new ErrBadRequest('id is required');
+    const { row, error: findUserError } = await db.find(TBL_USER, condition, 1);
+    if (findUserError) throw findUserError;
+    data = hideSensitiveUserProps(row);
+    return { data, error };
+  }
+
+  async function user_retrieve_by_username({ user, input = {} }) {
+    let data = null, error = null;
+    // TODO: analytics of 'views' per record per visitor per day
+    const { username = null } = input;
+    if (!username) throw new ErrBadRequest('username is required');
+    const condition = { username };
+    const { row, error: findUserError } = await db.find(TBL_USER, condition, 1);
     if (findUserError) throw findUserError;
     data = hideSensitiveUserProps(row);
     return { data, error };
@@ -284,7 +365,7 @@ export function newApi({ db }) {
     // let { first_name, last_name, email, phone, headline, neighbourhood } = input;
     let change = { ...input, updated_at: new Date() }; // TODO: limit inputs?
     const condition = { id }; // TODO: for now, only user himself can update
-    let { result, error } = await db.update(TBL_USER, condition, change);
+    let { result, error } = await db.update(TBL_USER, condition, change, 1);
     return { data: result && result.rowCount, error };
   }
 
@@ -293,7 +374,7 @@ export function newApi({ db }) {
     // let { first_name, last_name, email, phone, headline, neighbourhood } = input;
     let change = { ...input, updated_at: new Date() }; // TODO: limit inputs?
     const condition = { id: user.id }; // TODO: for now, only user himself can update
-    let { result, error } = await db.update(TBL_USER, condition, change);
+    let { result, error } = await db.update(TBL_USER, condition, change, 1);
     return { data: result && result.rowCount, error };
   }
 
@@ -302,7 +383,7 @@ export function newApi({ db }) {
     let { lat, lon, raw_geo } = input;
     let change = { lat, lon, raw_geo, updated_at: new Date() };
     const condition = { id }; // TODO: for now, only user himself can update
-    let { result, error } = await db.update(TBL_USER, condition, change);
+    let { result, error } = await db.update(TBL_USER, condition, change, 1);
     return { data: result && result.rowCount, error };
   }
 
@@ -311,7 +392,7 @@ export function newApi({ db }) {
     let { lat, lon, raw_geo } = input;
     let change = { lat, lon, raw_geo, updated_at: new Date() };
     const condition = { id: user.id }; // TODO: for now, only user himself can update
-    let { result, error } = await db.update(TBL_USER, condition, change);
+    let { result, error } = await db.update(TBL_USER, condition, change, 1);
     return { data: result && result.rowCount, error };
   }
 
@@ -342,14 +423,14 @@ export function newApi({ db }) {
       content,
       tags,
     };
-    const { result, error } = await db.insertOne(TBL_POST, row);
+    const { result, error } = await db.insert(TBL_POST, row);
     return { data: 0 < result.rowCount ? id : null, error };
   }
 
   async function post_retrieve({ user, id, input }) {
     // TODO: validate uuid
     // TODO: analytics of 'views' per record per visitor per day
-    const { row: data, error } = await db.findOne(TBL_POST, 'id', id);
+    const { row: data, error } = await db.find(TBL_POST, { id }, 1);
     return { data, error };
   }
 
@@ -359,7 +440,7 @@ export function newApi({ db }) {
     let { post_ref, title, content, tags } = input;
     const dt = new Date();
 
-    const { row: postFound, error: findPostErr } = await db.findOne(TBL_POST, 'id', id);
+    const { row: postFound, error: findPostErr } = await db.find(TBL_POST, { id }, 1);
     if (findPostErr) throw findPostErr;
     if (!postFound) throw new ErrNotFound('post not found');
     if (postFound.user_id !== user.id) throw new ErrForbidden(); // TODO: we can use created_at
@@ -368,10 +449,17 @@ export function newApi({ db }) {
     if (!post_ref) post_ref = title;
     post_ref = makePostRef(post_ref);
     let change = { post_ref, title, content, tags, updated_at: dt, updated_by: user.id, };
-    let { result, error: updatePostError } = await db.update(TBL_POST, { id }, change);
+    let { result, error: updatePostError } = await db.update(TBL_POST, { id }, change, 1);
     if (updatePostError) throw updatePostError;
 
     return { data: result && result.rowCount, error };
+  }
+
+  async function post_delete({ user, id, input }) {
+    // TODO: validate uuid
+    // TODO: delete related records
+    const { result, error } = await db.del(TBL_POST, { id }, 1);
+    return { data: 0 < result.rowCount, error };
   }
 
   async function post_search({ user, input }) {
@@ -397,7 +485,7 @@ export function newApi({ db }) {
     let { user_id = null, username = null, q = '', offset = 0, limit = 10 } = input;
 
     if (!user_id && username) {
-      const { row: postOwner, error: userError } = await db.findOne(TBL_USER, 'username', username);
+      const { row: postOwner, error: userError } = await db.find(TBL_USER, { username }, 1);
       if (userError) throw userError;
       if (!postOwner) throw new ErrNotFound('user not found');
       user_id = postOwner.id;
@@ -422,7 +510,7 @@ export function newApi({ db }) {
     let { username = '', post_ref = '' } = input;
     username = username.toLowerCase();
     post_ref = post_ref.toLowerCase();
-    const { row: postOwner, error: userError } = await db.findOne(TBL_USER, 'username', username);
+    const { row: postOwner, error: userError } = await db.find(TBL_USER, { username }, 1);
     if (userError) throw userError;
     if (!postOwner) throw new ErrNotFound('user not found');
 
@@ -479,12 +567,17 @@ export function newApi({ db }) {
   return {
     _isAllowed,
 
+    echo,
+    health,
+
     signup,
     signin,
     user_retrieve_current,
+    me: user_retrieve_current, // alias
 
     user_search,
     user_retrieve,
+    user_retrieve_by_username,
     usergeo_update,
     usergeo_update_self,
     usercontact_update,
@@ -496,6 +589,7 @@ export function newApi({ db }) {
     post_retrieve,
     post_retrieve_by_username_and_post_ref,
     post_update,
+    post_delete,
   };
 }
 
@@ -507,21 +601,6 @@ export function newApi({ db }) {
 export function pruneUsername(username) {
   const pattern = /[^a-zA-Z0-9.\-_]+/i;
   return String(username).replace(pattern, '');
-}
-
-export const specialChars = '.,-_<>?!@$;:()&%+-*/\\';
-
-/**
- * Check whether input has one special character or not
- * @param {string} testString
- * @returns {boolean}
- */
-export function hasOneSpecialChar(testString) {
-  const chars = specialChars.split(''); // convert to char array
-  const escapedChars = chars.map(c => ('\\'+c)); // add escape before each char
-  const pattern = escapedChars.join('|'); // join by pipe so the test will look for one of the sub-patterns
-  const re = new RegExp(pattern);
-  return re.exec(testString) !== null;
 }
 
 /**
@@ -540,7 +619,7 @@ export function isStrongPassword(password) {
     && s.match(/[a-z]/)
     && s.match(/[A-Z]/)
     && s.match(/[0-9]/)
-    && hasOneSpecialChar(s);
+    && s.match(/[.|,|-|_|<|>|?|!|@|$|;|:|(|)|&|%|+|-|*|/|\\]/);
 }
 
 /**
@@ -605,7 +684,7 @@ export class ErrNotFound extends Error {
 export function serializeFbCookie(userSecret) {
   return cookie.serialize(FB_SECRET_COOKIE, userSecret, {
     sameSite: 'lax',
-    secure: IS_PROD,
+    secure: IS_PRODUCTION_MODE,
     maxAge: 72576000,
     httpOnly: true,
     path: '/',

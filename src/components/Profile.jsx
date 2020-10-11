@@ -1,13 +1,7 @@
 import React from 'react';
-import { Loading } from './Loading';
-import { useUser } from '../utils/clientSide';
 
-export function Profile({ id = null }) {
-  const { user, isLoading, isError } = useUser(id)
-
-  if (isLoading) return <Loading />
-  if (isError) return <p>error fetching user data</p>
-
+export function Profile({ user = null }) {
+  if (!user) return <p>no user info</p>;
   return (
     <p>
       <span>Welcome back, {user.username}</span><br />

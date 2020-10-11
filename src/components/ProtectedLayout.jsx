@@ -4,33 +4,23 @@ import Link from 'next/link';
 import { Container, Dropdown, Icon, Image, Menu, Segment } from 'semantic-ui-react';
 import { FbFooter } from './FbFooter';
 import { Loading } from './Loading';
-import { newApiOnClient, newConfigOnClient } from '../utils/clientSide';
 
 // fixed menu at top. rendered only on client-side
 export class ProtectedLayout extends React.Component {
   constructor(props) {
     super(props);
-    this.api = null;
     this.state = { mounted: false };
   }
 
   componentDidMount() {
-    const config = newConfigOnClient();
-    this.api = newApiOnClient(config.api);
     this.setState({ mounted: true });
     // this.props.mountedOnClientSide(this.api); // trigger, wait for children to change
   }
 
-  async render() {
-    const { title = '', children } = this.props;
+  render() {
+    const { title = '', containerClassName = 'fb-page', children } = this.props;
     const { mounted } = this.state;
-
-    let contentNode = null;
-    if (!mounted) {
-      contentNode = <Loading />;
-    } else {
-      contentNode = children; // first server-side, then api called and updated
-    }
+    
     return (
       <>
         <Head>
@@ -45,12 +35,12 @@ export class ProtectedLayout extends React.Component {
               <Link href='/'>FrenchBench</Link>
             </Menu.Item>
             <Menu.Item header>
-              <Link href='/i-need-help'>
+              <Link href='/s/i-need-help'>
                 <span aria-label='I need help'>Need <Icon name='heart outline' color='white' /></span>
               </Link>
             </Menu.Item>
             <Menu.Item header>
-              <Link href='/i-can-help'>
+              <Link href='/s/i-can-help'>
                 <span aria-label='I can help'>Can <Icon name='heart' color='red' /></span>
               </Link>
             </Menu.Item>
@@ -69,8 +59,8 @@ export class ProtectedLayout extends React.Component {
           </Container>
         </Menu>
 
-        <Container text style={{ marginTop: '3.5em' }}>
-          {contentNode}
+        <Container text style={{ marginTop: '3.5em' }} className={containerClassName}>
+          {mounted ? children : <Loading />}
         </Container>
 
         {/* TODO: collapsable footer would be nice */}

@@ -1,47 +1,44 @@
 import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Header, Segment } from 'semantic-ui-react';
-import { PublicLayout, SignInForm } from '../components';
-import { newApiOnClient, newConfigOnClient } from '../utils/clientSide';
+import { Card, Header, Icon, Message, Segment } from 'semantic-ui-react';
+import { PublicLayout, RandomImage, SignUpForm } from '../../components';
+import { apiClient } from '../../lib/apiClient';
 
-class SignIn extends React.Component {
+const api = apiClient();
+
+class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
+      password_confirm: '',
       loading: false,
       errorMessage: null,
       successMessage: null,
     };
-    this.api = null;
   }
 
   componentDidMount() {
-    const config = newConfigOnClient();
-    this.api     = newApiOnClient(config.api);
+    console.log('SignUp.componentDidMount');
   }
 
   onSubmit = async (ev) => {
     ev.preventDefault();
     this.setState({ successMessage: null, errorMessage: null, loading: true });
-    const { username, password } = this.state;
+    const { username, password, password_confirm } = this.state;
     try {
-      const res = await this.api.signin({ username, password });
-      const { data = null, error = null } = res.data; // read response body
+      const { data = null, error = null } = await api.signup({ username, password, password_confirm });
       if (data) { // success
+        const { token, id: userId } = data;
         this.setState({ successMessage: 'success', loading: false });
-        // TODO: redirect
-        console.info('success', data);
-        Router.push('/p');
+        Router.push('/c');
       } else {
         this.setState({ errorMessage: error, loading: false });
-        console.error('error', error);
       }
     } catch (err) {
-      console.error(err);
       this.setState({ errorMessage: err.message, loading: false });
     }
   }
@@ -57,28 +54,39 @@ class SignIn extends React.Component {
       onChange: this.onChange,
       loading,
       errorMessage,
-      successMessage,
+      //successMessage,
     };
-
     return (
-      <PublicLayout title='Sign In'>
+      <PublicLayout title='Sign Up'>
         <Header as='h2'>
-          Sign In
+          Sign Up
           <Header.Subheader>
-            Check what's happening in your neighbourhood
+            You can manage your account later
           </Header.Subheader>
         </Header>
 
+        <Message info>
+          <Message.Header>Please read</Message.Header>
+          <div>
+            <Icon name='sticky note outline' />&nbsp;<Link href='/terms'>Terms of Service</Link> and&nbsp;<Link href='/privacy'>Privacy Policy</Link>
+          </div>
+        </Message>
+
         <Segment>
-          <SignInForm {...formProps} />
+          <SignUpForm {...formProps} />
         </Segment>
 
         <Segment>
-          Please <Link href='/sign-up'>sign up</Link> if you do not have an account
+          Please <Link href='/s/sign-in'>sign in</Link> if you have an account
         </Segment>
+
+        <Card>
+          <RandomImage keywords='signup' />
+        </Card>
+
       </PublicLayout>
-    );
+    )
   }
 }
 
-export default SignIn;
+export default SignUp;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FbCallToAccount, FbCardHelpProvided, PublicLayout } from '../components';
+import { FbCallToAccount, FbCardHelpProvided, PublicLayout } from '../../components';
 
 function INeedHelp(props) {
   return (

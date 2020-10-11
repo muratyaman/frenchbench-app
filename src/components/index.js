@@ -4,7 +4,6 @@ export * from './FbCardHelpProvided';
 export * from './FbCardHelpNeeded';
 export * from './FbLogo';
 export * from './FbFooter';
-export * from './Footer';
 export * from './Loading';
 export * from './PostSummary';
 export * from './PostSummaryList';
