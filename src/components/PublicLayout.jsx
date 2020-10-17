@@ -5,7 +5,10 @@ import { Container, Dropdown, Icon, Image, Menu, Segment } from 'semantic-ui-rea
 import { FbFooter } from './FbFooter';
 
 // fixed menu at top. rendered on both client-side and server-side
-export function PublicLayout({ title = '', containerClassName = 'fb-page', children }) {
+export function PublicLayout({ title = '', containerClassName = 'fb-page', user = null, children }) {
+  // TODO: based on user, show Login or username
+  const { username = null } = user ?? {};
+  const appLinkLabel = username ? String(username).substring(0, 5) + '...': 'Login';
   return (
     <>
       <Head>
@@ -13,31 +16,27 @@ export function PublicLayout({ title = '', containerClassName = 'fb-page', child
       </Head>
       <Menu fixed='top' inverted>
         <Container>
-          <Menu.Item header>
+          <Menu.Item>
             <Link href='/'>
               <Image size='mini' src='/assets/frenchbench-logo-small.jpg' style={{ marginRight: '1.5em' }} />
             </Link>
             <Link href='/'>FrenchBench</Link>
           </Menu.Item>
-          <Menu.Item header>
-            <Link href='/s/i-need-help'>
-              <span aria-label='I need help'>Need <Icon name='heart outline' color='yellow' /></span>
+          <Menu.Item>
+            <Link href='/info/i-need-help'>
+              <span aria-label='I need help'>Need <Icon name='heart outline' color='purple' /></span>
             </Link>
           </Menu.Item>
-          <Menu.Item header>
-            <Link href='/s/i-can-help'>
+          <Menu.Item>
+            <Link href='/info/i-can-help'>
               <span aria-label='I can help'>Can <Icon name='heart' color='purple' /></span>
             </Link>
           </Menu.Item>
-
-          <Dropdown item simple text='i'>
-            <Dropdown.Menu>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item>List Item</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Menu.Item>
+            <Link href='/app'>
+              <span aria-label={appLinkLabel}>{appLinkLabel} <Icon name='key' color='purple' /></span>
+            </Link>
+          </Menu.Item>
         </Container>
       </Menu>
 

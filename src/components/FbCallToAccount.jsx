@@ -7,11 +7,11 @@ export function FbCallToAccount(props) {
     <Message warning>
       <Message.Header>Do you have an account?</Message.Header>
       <div>
-        <b>Yes</b> <Icon name='long arrow alternate right' /> <Link href='/s/sign-in'>Please sign In</Link>
+        <b>Yes</b> <Icon name='long arrow alternate right' /> <Link href='/info/sign-in'>Please sign In</Link>
       </div>
       <hr />
       <div>
-        <b>No</b> <Icon name='long arrow alternate right' /> <Link href='/s/sign-up'>Please sign up</Link>
+        <b>No</b> <Icon name='long arrow alternate right' /> <Link href='/info/sign-up'>Please sign up</Link>
       </div>
       <div><i>* It takes only a minute</i></div>
     </Message>

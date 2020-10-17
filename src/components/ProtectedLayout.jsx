@@ -18,7 +18,8 @@ export class ProtectedLayout extends React.Component {
   }
 
   render() {
-    const { title = '', containerClassName = 'fb-page', children } = this.props;
+    const { title = '', user = {}, containerClassName = 'fb-page', children } = this.props;
+    const { username = null } = user || {};
     const { mounted } = this.state;
     
     return (
@@ -35,17 +36,17 @@ export class ProtectedLayout extends React.Component {
               <Link href='/'>FrenchBench</Link>
             </Menu.Item>
             <Menu.Item header>
-              <Link href='/s/i-need-help'>
-                <span aria-label='I need help'>Need <Icon name='heart outline' color='white' /></span>
+              <Link href='/info/i-need-help'>
+                <span aria-label='I need help'>Need <Icon name='heart outline' color='purple' /></span>
               </Link>
             </Menu.Item>
             <Menu.Item header>
-              <Link href='/s/i-can-help'>
-                <span aria-label='I can help'>Can <Icon name='heart' color='red' /></span>
+              <Link href='/info/i-can-help'>
+                <span aria-label='I can help'>Can <Icon name='heart' color='purple' /></span>
               </Link>
             </Menu.Item>
             <Menu.Item header>
-              *username*
+              {username}
             </Menu.Item>
 
             <Dropdown item simple text='i'>

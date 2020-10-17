@@ -6,7 +6,7 @@ export function useCurrentUser(api) {
   useEffect(() => {
     const callApi = async () => {
       const newOutput = await api.me();
-      setOutput({...newOutput, loading: false });
+      setOutput({ ...newOutput, loading: false });
     }
     callApi();
   }, []);

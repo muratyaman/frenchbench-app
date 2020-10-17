@@ -5,6 +5,7 @@ import md5 from 'md5';
 import { Pool } from 'pg';
 import { v4 as newUuid } from 'uuid';
 
+export const MIN_PASSWORD_LEN = 8;
 export const ts   = () => (new Date()).toISOString();
 export const log  = (...args) => console.log.call(null, ts(), ...args);
 export const penv = () => process.env;
@@ -19,6 +20,7 @@ export const TBL_ASSET        = 'assets';
 export const TBL_ENTITY_ASSET = 'entities_assets';
 export const TBL_LOOKUP       = 'lookups';
 export const TBL_POST         = 'posts';
+export const TBL_ARTICLE      = 'articles';
 
 export const tablesFields = {
   [TBL_USER]:         ['id', 'username', 'password_hash', 'first_name', 'last_name', 'email', 'headline', 'neighbourhood', 'lat', 'lon', 'raw_geo', 'created_at', 'updated_at'],
@@ -26,6 +28,7 @@ export const tablesFields = {
   [TBL_ENTITY_ASSET]: ['id', 'parent_entity_kind', 'parent_entity_id', 'asset_id', 'purpose', 'meta', 'created_at', 'updated_at', 'created_by', 'updated_by'],
   [TBL_LOOKUP]:       ['id', 'category', 'value', 'label', 'meta', 'created_at', 'updated_at', 'created_by', 'updated_by'],
   [TBL_POST]:         ['id', 'user_id', 'post_ref', 'title', 'content', 'tags', 'created_at', 'updated_at', 'created_by', 'updated_by'],
+  [TBL_ARTICLE]:      ['id', 'slug', 'title', 'content', 'keywords', 'created_at', 'updated_at', 'created_by', 'updated_by'],
 };
 
 // all API requests are handled by this function
@@ -111,7 +114,7 @@ export function extendDb(db) {
       } else {
         result = await db.query(text, values);
       }
-      log('db result', id, result);
+      log('db result', id);//, result);
     } catch (err) {
       log('db error', id, err);
       error = err;
@@ -466,7 +469,8 @@ export function newApi({ db }) {
     let data = [], error = null;
     let { q = '', offset = 0, limit = 10 } = input;
     if (100 < limit) limit = 100;
-    const text = 'SELECT p.*, u.username FROM ' + TBL_POST + ' p'
+    // do not include large records e.g. avoid returning large text fields
+    const text = 'SELECT p.id, p.post_ref, p.title, p.tags, p.user_id, u.username FROM ' + TBL_POST + ' p'
       + ' INNER JOIN ' + TBL_USER + ' u ON p.user_id = u.id'
       + ' WHERE (p.title LIKE $1)'
       + '    OR (p.content LIKE $1)'
@@ -525,6 +529,37 @@ export function newApi({ db }) {
       throw new ErrNotFound('post not found');
     }
     return { data, error };
+  }
+
+  async function article_search({ user, input }) {
+    let data = [], error = null;
+    let { q = '', offset = 0, limit = 10 } = input;
+    if (100 < limit) limit = 100;
+    // do not include large records e.g. avoid returning large text fields
+    const text = 'SELECT a.id, a.slug, a.title, keywords FROM ' + TBL_ARTICLE + ' a'
+      + ' WHERE (a.title LIKE $1)'
+      + '    OR (a.content LIKE $1)'
+      + '    OR (a.keywords LIKE $1)'
+      + ' ORDER BY a.created_at DESC'
+      + ' OFFSET $2'
+      + ' LIMIT $3';
+    const { result, error: findError } = await db.query(text, [`%${q}%`, offset, limit], 'article-text-search');
+    if (findError) throw findError;
+    data = result && result.rows ? result.rows : [];
+    return { data, error };
+  }
+
+  async function article_retrieve({ user, id = null, input = {} }) {
+    // TODO: validate uuid
+    // TODO: analytics of 'views' per record per visitor per day
+    const { slug = null } = input;
+    if (id || slug) {
+      const condition = id ? { id } : { slug };
+      const { row: data, error } = await db.find(TBL_ARTICLE, condition, 1);
+      return { data, error };
+    } else {
+      return { data: null, error: 'article id or slug required' };
+    }
   }
 
   const actionsProtected = [
@@ -590,6 +625,9 @@ export function newApi({ db }) {
     post_retrieve_by_username_and_post_ref,
     post_update,
     post_delete,
+
+    article_search,
+    article_retrieve,
   };
 }
 
@@ -615,7 +653,7 @@ export function pruneUsername(username) {
  */
 export function isStrongPassword(password) {
   let s = String(password);
-  return 10 <= s.length
+  return MIN_PASSWORD_LEN <= s.length
     && s.match(/[a-z]/)
     && s.match(/[A-Z]/)
     && s.match(/[0-9]/)

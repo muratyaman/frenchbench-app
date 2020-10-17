@@ -5,8 +5,6 @@ import { Card, Header, Icon, Message, Segment } from 'semantic-ui-react';
 import { PublicLayout, RandomImage, SignUpForm } from '../../components';
 import { apiClient } from '../../lib/apiClient';
 
-const api = apiClient();
-
 class SignUp extends React.Component {
 
   constructor(props) {
@@ -19,10 +17,12 @@ class SignUp extends React.Component {
       errorMessage: null,
       successMessage: null,
     };
+    this.api = null;
   }
 
   componentDidMount() {
     console.log('SignUp.componentDidMount');
+    this.api = apiClient();
   }
 
   onSubmit = async (ev) => {
@@ -30,11 +30,11 @@ class SignUp extends React.Component {
     this.setState({ successMessage: null, errorMessage: null, loading: true });
     const { username, password, password_confirm } = this.state;
     try {
-      const { data = null, error = null } = await api.signup({ username, password, password_confirm });
+      const { data = null, error = null } = await this.api.signup({ username, password, password_confirm });
       if (data) { // success
         const { token, id: userId } = data;
         this.setState({ successMessage: 'success', loading: false });
-        Router.push('/c');
+        Router.push('/app');
       } else {
         this.setState({ errorMessage: error, loading: false });
       }
@@ -77,7 +77,7 @@ class SignUp extends React.Component {
         </Segment>
 
         <Segment>
-          Please <Link href='/s/sign-in'>sign in</Link> if you have an account
+          Please <Link href='/info/sign-in'>sign in</Link> if you have an account
         </Segment>
 
         <Card>

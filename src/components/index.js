@@ -1,3 +1,4 @@
+export * from './FbArticle';
 export * from './FbCallToAccount';
 export * from './FbCardCommunity';
 export * from './FbCardHelpProvided';

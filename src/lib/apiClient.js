@@ -3,19 +3,26 @@ import { v4 as newUuid } from 'uuid';
 import getConfig from 'next/config';
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig(); // only holds serverRuntimeConfig and publicRuntimeConfig
-console.log('serverRuntimeConfig', serverRuntimeConfig); // will only be available on the server-side
-console.log('publicRuntimeConfig', publicRuntimeConfig); // will be available on both server-side and client-side
 
 export function apiClient() {
+  console.log(' ');
+  console.log('***');
+  console.log('apiClient called');
+  console.log('serverRuntimeConfig...');
+  console.log(serverRuntimeConfig); // will only be available on the server-side
+  console.log('publicRuntimeConfig...');
+  console.log(publicRuntimeConfig); // will be available on both server-side and client-side
+  console.log('***');
+  console.log(' ');
   const onServer = typeof window === 'undefined';
-  console.log('apiClient', onServer ? 'node' : 'browser');
+  console.log('apiClient is running on', onServer ? 'node' : 'browser');
   const { host, apiBaseUrl } = onServer ? serverRuntimeConfig : publicRuntimeConfig;
   const baseURL = host + apiBaseUrl;
   const _api = axios.create({ baseURL, withCredentials: true });
 
   const _action = async (action, input = {}, id = null) => {
     const reqId = newUuid();
-    console.log('api request', reqId, action);
+    console.log('api request', reqId, action, input, id);
     let output = { data: null, error: null };
     try {
       const headers = { 'x-fb-request-id': reqId };
@@ -34,18 +41,21 @@ export function apiClient() {
   const signin  = async (input) => _action('signin', input);
   const me      = async ()      => _action('me');
 
-  const searchUsers            = async (input)    => _action('user_search', input);
-  const retrieveUser           = async (id)       => _action('user_retrieve', {}, id);
-  const retrieveUserByUsername = async (username) => _action('user_retrieve_by_username', { username });
+  const user_search               = async (input)    => _action('user_search', input);
+  const user_retrieve             = async (id)       => _action('user_retrieve', {}, id);
+  const user_retrieve_by_username = async (username) => _action('user_retrieve_by_username', { username });
 
-  const retrieveUserPosts = async (username)           => _action('post_search_by_username', { username });
-  const retrieveUserPost  = async (username, post_ref) => _action('post_retrieve_by_username_and_post_ref', { username, post_ref });
+  const post_search_by_username                 = async (username)           => _action('post_search_by_username', { username });
+  const post_retrieve_by_username_and_post_ref  = async (username, post_ref) => _action('post_retrieve_by_username_and_post_ref', { username, post_ref });
 
-  const searchPosts  = async (input)     => _action('post_search', input);
-  const createPost   = async (input)     => _action('post_create', input);
-  const retrievePost = async (id)        => _action('post_retrieve', {}, id);
-  const updatePost   = async (id, input) => _action('post_update', input, id);
-  const deletePost   = async (id)        => _action('post_delete', {}, id);
+  const post_search   = async (input = {}) => _action('post_search', input);
+  const post_create   = async (input)      => _action('post_create', input);
+  const post_retrieve = async (id)         => _action('post_retrieve', {}, id);
+  const post_update   = async (id, input)  => _action('post_update', input, id);
+  const post_delete   = async (id)         => _action('post_delete', {}, id);
+
+  const article_search   = async (input = {}) => _action('article_search', input);
+  const article_retrieve = async (slug)       => _action('article_retrieve', { slug }, null);
 
   return {
     _api,
@@ -57,17 +67,20 @@ export function apiClient() {
     signin,
     me,
 
-    searchUsers,
-    retrieveUser,
-    retrieveUserByUsername,
+    user_search,
+    user_retrieve,
+    user_retrieve_by_username,
 
-    retrieveUserPosts,
-    retrieveUserPost,
+    post_search_by_username,
+    post_retrieve_by_username_and_post_ref,
     
-    searchPosts,
-    createPost,
-    retrievePost,
-    updatePost,
-    deletePost,
+    post_search,
+    post_create,
+    post_retrieve,
+    post_update,
+    post_delete,
+
+    article_search,
+    article_retrieve,
   };
 }

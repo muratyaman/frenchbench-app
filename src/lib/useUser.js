@@ -6,7 +6,7 @@ export function useUser(api, id) {
   useEffect(() => {
     const callApi = async () => {
       const newOutput = await api.retrieveUser(id);
-      setOutput({...newOutput, loading: false });
+      setOutput({ ...newOutput, loading: false });
     };
     callApi();
   }, []);

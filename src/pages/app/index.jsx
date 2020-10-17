@@ -4,15 +4,14 @@ import { apiClient } from '../../lib/apiClient';
 import { useMounted } from '../../lib/useMounted';
 import { useCurrentUser } from '../../lib/useCurrentUser';
 
-const api = apiClient();
-
 function ProtectedIndex({ topic = 'recent' }) {
+  const api = apiClient();
   const isMounted = useMounted();
-  const { data: user, loading, error } = useCurrentUser(api);
+  const { data: user = null, loading, error } = useCurrentUser(api);
   const posts = [];
 
   return (
-    <ProtectedLayout title='Home page'>
+    <ProtectedLayout title='Home page' user={user}>
 
       {isMounted ? (
         <>

@@ -1,4 +1,6 @@
-function RecentPosts(props) {
+import React from 'react';
+
+function ProfilePage(props) {
   return (
     <div>
       <p>recent posts</p>
@@ -7,4 +9,4 @@ function RecentPosts(props) {
   )
 }
 
-export default RecentPosts;
+export default ProfilePage;

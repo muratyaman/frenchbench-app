@@ -30,7 +30,7 @@ export function SignUpForm({ onSubmit, onChange, errorMessage = null, successMes
       />
       <Message info>
         <p>
-          Password should have 10+ characters<br />
+          Password should have at least 8 characters<br />
           Use at least one lower case letter: a...z<br />
           Use at least one upper case letter: A...Z<br />
           Use at least one number: 0...9<br />

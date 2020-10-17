@@ -5,8 +5,6 @@ import { Header, Segment } from 'semantic-ui-react';
 import { PublicLayout, SignInForm } from '../../components';
 import { apiClient } from '../../lib/apiClient';
 
-const api = apiClient();
-
 class SignIn extends React.Component {
 
   constructor(props) {
@@ -18,10 +16,12 @@ class SignIn extends React.Component {
       errorMessage: null,
       successMessage: null,
     };
+    this.api = null;
   }
 
   componentDidMount() {
     console.log('SignIn.componentDidMount');
+    this.api = apiClient();
   }
 
   onSubmit = async (ev) => {
@@ -29,10 +29,10 @@ class SignIn extends React.Component {
     this.setState({ successMessage: null, errorMessage: null, loading: true });
     const { username, password } = this.state;
     try {
-      const { data = null, error = null } = await api.signin({ username, password });
+      const { data = null, error = null } = await this.api.signin({ username, password });
       if (data) { // success
         this.setState({ successMessage: 'success', loading: false });
-        Router.push('/c');
+        Router.push('/app');
       } else {
         this.setState({ errorMessage: error, loading: false });
       }
@@ -69,7 +69,7 @@ class SignIn extends React.Component {
         </Segment>
 
         <Segment>
-          Please <Link href='/s/sign-up'>sign up</Link> if you do not have an account
+          Please <Link href='/info/sign-up'>sign up</Link> if you do not have an account
         </Segment>
       </PublicLayout>
     );
