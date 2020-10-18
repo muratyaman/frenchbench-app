@@ -32,7 +32,6 @@ function FbFooterGrid() {
 
 export function FbFooter({ accordion = false }) {
   let footerLinks = <>
-    <Divider section />
     <FbFooterGrid />
   </>;
   if (accordion) {
@@ -47,8 +46,7 @@ export function FbFooter({ accordion = false }) {
     );
   }
   return (
-    <Container textAlign='center'>
-      <Divider section />
+    <Container text textAlign='center' className='fb-footer-container'>
       <Image centered size='small' src='/assets/frenchbench-logo-small.jpg' />
       <List horizontal divided link size='small'>
         <List.Item><span>&copy;{(new Date().getFullYear())} FrenchBench</span></List.Item>

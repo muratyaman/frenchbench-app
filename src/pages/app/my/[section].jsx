@@ -17,7 +17,7 @@ function ProtectedSection(props) {
       {!isMounted ? <Loading /> : (
         <>
           <Profile userState={userState} />
-          <FbProtectedMenu section={section} api={api} />
+          <FbProtectedMenu section={section} api={api} userState={userState} />
         </>
       )}
     </ProtectedLayout>

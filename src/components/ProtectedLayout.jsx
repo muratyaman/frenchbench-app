@@ -8,6 +8,7 @@ import { FbProfileLink } from './FbProfileLink';
 // fixed menu at top. rendered only on client-side
 export function ProtectedLayout(props) {
   const { title = '', userState = null, containerClassName = 'fb-page', children } = props;
+  const { data: user = null, loading = false, error: userError = null } = userState ?? {};
   return (
     <>
       <Head>
@@ -37,14 +38,11 @@ export function ProtectedLayout(props) {
         </Container>
       </Menu>
 
-      <Container text style={{ marginTop: '3.5em' }} className={containerClassName}>
-        {children}
-      </Container>
+      <div className={containerClassName}>
+        {userError ? <p>Please sign in</p>: children}
+      </div>
 
-      {/* TODO: collapsable footer would be nice */}
-      <Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
-        <FbFooter accordion />
-      </Segment>
+      <FbFooter accordion />
     </>
   );
 

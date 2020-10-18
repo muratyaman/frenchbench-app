@@ -25,6 +25,10 @@ class SignUp extends React.Component {
     this.api = apiClient();
   }
 
+  onChange = (name, value) => {
+    this.setState({ [name]: value });
+  }
+
   onSubmit = async (ev) => {
     ev.preventDefault();
     this.setState({ successMessage: null, errorMessage: null, loading: true });
@@ -41,10 +45,6 @@ class SignUp extends React.Component {
     } catch (err) {
       this.setState({ errorMessage: err.message, loading: false });
     }
-  }
-
-  onChange = (name, value) => {
-    this.setState({ [name]: value });
   }
 
   render() {

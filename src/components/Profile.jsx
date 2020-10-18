@@ -8,15 +8,15 @@ export function Profile({ userState = null }) {
   if (loading) return <Loading />
   if (!user) return <p>no user info</p>;
   return (
-    <p>
+    <div className='fb-profile'>
       <Header as='h3'>
         <RandomImage keywords='silhouette' w='96' h='96' circular wrapped={false} ui={true} label={null} /> Hi, {user.username}
       </Header>
-      <label>email: </label><span>{user.email}</span><br />
-      <label>phone: </label><span>{user.phone}</span><br />
-      <label>first_name: </label><span>{user.first_name}</span><br />
-      <label>last_name: </label><span>{user.last_name}</span><br />
-      <label>id: </label><span>{user.id}</span><br />
-    </p>
+      <div className='fb-profile-row'><label>email: </label><span>{user.email}</span></div>
+      <div className='fb-profile-row'><label>phone: </label><span>{user.phone}</span></div>
+      <div className='fb-profile-row'><label>first_name: </label><span>{user.first_name}</span></div>
+      <div className='fb-profile-row'><label>last_name: </label><span>{user.last_name}</span></div>
+      <div className='fb-profile-row'><label>id: </label><span>{user.id}</span></div>
+    </div>
   );
 }

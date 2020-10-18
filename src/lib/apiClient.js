@@ -39,7 +39,15 @@ export function apiClient() {
   const health  = async ()      => _action('health');
   const signup  = async (input) => _action('signup', input);
   const signin  = async (input) => _action('signin', input);
-  const signout = async ()      => _action('signout');
+  const signout = async ()      => {
+    // call api, clear cookie, go to home page
+    try {
+      const ignore  = await _action('signout'); // token 'x' ==> cookie invalid now
+      const removed = await browser.cookies.remove({ name: 'fbsecret' });// TODO: use env setting
+    } catch (err) {
+      console.error('signout error', err);
+    }
+  }
   const me      = async ()      => _action('me');
 
   const user_search               = async (input)    => _action('user_search', input);
@@ -49,7 +57,7 @@ export function apiClient() {
   const usergeo_update_self       = async (input)    => _action('usergeo_update_self', input);
 
   // pass { user_id } or { username }
-  const post_search_by_user                     = async (input)              => _action('post_search_by_username', input);
+  const post_search_by_user                     = async (input)              => _action('post_search_by_user', input);
   const post_retrieve_by_username_and_post_ref  = async (username, post_ref) => _action('post_retrieve_by_username_and_post_ref', { username, post_ref });
 
   const post_search   = async (input = {}) => _action('post_search', input);

@@ -37,13 +37,11 @@ export function PublicLayout(props) {
         </Container>
       </Menu>
 
-      <Container text style={{ marginTop: '3.5em' }} className={containerClassName}>
+      <div className={containerClassName}>
         {children}
-      </Container>
+      </div>
 
-      <Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
-        <FbFooter />
-      </Segment>
+      <FbFooter />
     </>
   );
 }

@@ -13,7 +13,7 @@ export function FbProfileLink({ userState = null }) {
   if (username) {
     ariaLabel = 'Signed in as ' + username;
     appLinkLabel = String(username).substring(0, 5) + '...';
-    appLinkUrl = '/app';
+    appLinkUrl = '/app/my/home';
     iconName = 'setting';
     iconColour = 'teal';
   }

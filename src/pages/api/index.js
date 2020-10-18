@@ -313,7 +313,7 @@ export function newApi({ db }) {
   }
 
   async function signout() {
-    return { data: true, token: '', error: null };
+    return { data: { token: 'x' }, error: null }; // side-effect ==> invalid cookie on browser
   }
 
   // we can use user_retrieve
@@ -473,8 +473,7 @@ export function newApi({ db }) {
     let data = [], error = null;
     let { q = '', offset = 0, limit = 10 } = input;
     if (100 < limit) limit = 100;
-    // do not include large records e.g. avoid returning large text fields
-    const text = 'SELECT p.id, p.post_ref, p.title, p.tags, p.user_id, u.username FROM ' + TBL_POST + ' p'
+    const text = 'SELECT p.id, p.title, p.tags, p.created_at, u.username FROM ' + TBL_POST + ' p'
       + ' INNER JOIN ' + TBL_USER + ' u ON p.user_id = u.id'
       + ' WHERE (p.title LIKE $1)'
       + '    OR (p.content LIKE $1)'
@@ -491,19 +490,17 @@ export function newApi({ db }) {
   async function post_search_by_user({ input = {} }) {
     let data = [], error = null;
     let { user_id = null, username = null, q = '', offset = 0, limit = 10 } = input;
-
+    if (100 < limit) limit = 100;
     if (!user_id && username) {
       const { row: postOwner, error: userError } = await db.find(TBL_USER, { username }, 1);
       if (userError) throw userError;
       if (!postOwner) throw new ErrNotFound('user not found');
       user_id = postOwner.id;
     }
-    if (!user_id) throw ErrBadRequest('user_id or username is required');
-
-    if (100 < limit) limit = 100;
-    const text = 'SELECT p.id, p.post_ref, p.title, p.tags FROM ' + TBL_POST + ' p'
-      + ' WHERE p.user_id = $1'
-      + ' ORDER BY p.created_at DESC'
+    if (!user_id) throw new ErrBadRequest('user_id or username is required');
+    const text = 'SELECT id, title, tags, created_at FROM ' + TBL_POST
+      + ' WHERE user_id = $1'
+      + ' ORDER BY created_at DESC'
       + ' OFFSET $2'
       + ' LIMIT $3';
     const { result, error: findError } = await db.query(text, [user_id, offset, limit], 'posts-by-user');

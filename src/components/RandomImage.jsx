@@ -1,9 +1,6 @@
 import React from 'react';
 import { Image } from 'semantic-ui-react';
-
-export const randomImgSrc = (keywords = '', w = 400, h = 300) => {
-  return `https://source.unsplash.com/random/${w}x${h}?${keywords}`;
-}
+import { randomImgSrc } from '../lib/randomImgSrc';
 
 export function RandomImage({ keywords = '', w = 400, h = 300, ...overrides }) {
   const imgProps = {

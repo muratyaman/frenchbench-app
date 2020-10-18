@@ -1,4 +1,20 @@
 /* good old fashion CSS: it just works !!! */
+body {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+div#__next {
+  width: 95%;
+  margin: 5px;
+}
+
+
+div.fb-page {
+  margin: 4em auto;
+  width: 100%;
+}
+
 .fb-card-community .ui.card,
 .fb-card-community .ui.cards > .ui.card,
 .fb-card-help-needed .ui.card,
@@ -22,4 +38,25 @@ div.fb-loading {
   display: flex;
   height: 50vh;
   justify-content: center;
+}
+
+div.fb-post-list {
+  padding: 0;
+  margin: 0;
+}
+div.fb-post-list-item {
+  margin-bottom: 5px;
+}
+
+div.fb-post-list-item div.image img {
+  width: 100%;
+}
+div.fb-post-list-item .ui.card .meta,
+div.fb-post-list-item .ui.cards>.card .meta {
+  font-size: 0.8em;
+}
+
+div.fb-footer-container {
+  margin-top: 10px;
+  border-top: 1px solid gray;
 }
