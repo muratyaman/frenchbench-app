@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { Card, Header, Icon, Message, Segment } from 'semantic-ui-react';
 import { PublicLayout, RandomImage, SignUpForm } from '../../components';
 import { apiClient } from '../../lib/apiClient';
@@ -19,10 +19,9 @@ function SignUp(props) {
   const [pageData, setPageData] = useState(defaultPageData);
   const api = apiClient();
   const userState = useCurrentUser(api);
-  const router = useRouter();
 
   if (userState.data) { // special case
-    setTimeout(() => { router.push('/app/my/home') }, 500); // user signed in already, let's go to app
+    setTimeout(() => { Router.push('/app/my/home') }, 500); // user signed in already, let's go to app
   }
 
   const { loading, errorMessage, successMessage } = pageData;
@@ -40,7 +39,7 @@ function SignUp(props) {
       if (data) { // success
         const { token, id: userId } = data;
         setPageData({ ...pageData, successMessage: 'success', loading: false });
-        router.push('/app');
+        Router.push('/app');
       } else {
         setPageData({ ...pageData, errorMessage: error, loading: false });
       }

@@ -1,9 +1,8 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 
 function ProtectedIndex(props) {
-  const router = useRouter();
-  router.push('/app/my/home');
+  setTimeout(() => { Router.push('/app/my/home'); }, 500);
   console.log('ProtectedIndex redirecting...');
   return (
     <div>redirecting...</div>

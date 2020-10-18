@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { Header, Segment } from 'semantic-ui-react';
 import { PublicLayout, SignInForm } from '../../components';
 import { apiClient } from '../../lib/apiClient';
@@ -18,10 +18,9 @@ function SignIn(props) {
   const [pageData, setPageData] = useState(defaultPageData);
   const api = apiClient();
   const userState = useCurrentUser(api);
-  const router = useRouter();
 
   if (userState.data) { // special case
-    setTimeout(() => { router.push('/app/my/home') }, 500); // user signed in already, let's go to app
+    setTimeout(() => { Router.push('/app/my/home') }, 500); // user signed in already, let's go to app
   }
 
   const { loading, errorMessage, successMessage } = pageData;
@@ -39,7 +38,7 @@ function SignIn(props) {
       const { data = null, error = null } = await api.signin({ username, password });
       if (data) { // success
         setPageData({ ...pageData, successMessage: 'success', loading: false });
-        router.push('/app');
+        Router.push('/app');
       } else {
         setPageData({ ...pageData, errorMessage: error, loading: false });
       }
