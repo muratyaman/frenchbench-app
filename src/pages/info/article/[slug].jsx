@@ -11,9 +11,9 @@ function ArticlePage(props) {
   console.log(' ');
   const router = useRouter();
   const api = apiClient();
-  const { data: user = null, loading, error: userErr = null } = useCurrentUser(api);
+  const userState = useCurrentUser(api);
   return (
-    <PublicLayout title={article.title} user={user}>
+    <PublicLayout title={article.title} userState={userState}>
       {router.isFallback ? (
           <Loading />
         ) : (

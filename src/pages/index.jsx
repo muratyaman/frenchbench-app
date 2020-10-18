@@ -6,9 +6,9 @@ import { useCurrentUser } from '../lib/useCurrentUser';
 // public home page
 function PublicIndex(props) {
   const api = apiClient();
-  const { data: user = null, loading, error } = useCurrentUser(api);
+  const userState = useCurrentUser(api);
   return (
-    <PublicLayout title='Home page' user={user}>
+    <PublicLayout title='Home page' userState={userState}>
       <h1>Welcome</h1>
       <FbCardCommunity />
       <FbCallToAccount />

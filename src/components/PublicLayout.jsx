@@ -1,14 +1,13 @@
 import React from 'react';
-import Head from 'next/head'
+import Head from 'next/head';
 import Link from 'next/link';
-import { Container, Dropdown, Icon, Image, Menu, Segment } from 'semantic-ui-react';
+import { Container, Icon, Image, Menu, Segment } from 'semantic-ui-react';
 import { FbFooter } from './FbFooter';
+import { FbProfileLink } from './FbProfileLink';
 
 // fixed menu at top. rendered on both client-side and server-side
-export function PublicLayout({ title = '', containerClassName = 'fb-page', user = null, children }) {
-  // TODO: based on user, show Login or username
-  const { username = null } = user ?? {};
-  const appLinkLabel = username ? String(username).substring(0, 5) + '...': 'Login';
+export function PublicLayout(props) {
+  const { title = '', containerClassName = 'fb-page', userState = null, children } = props;
   return (
     <>
       <Head>
@@ -33,9 +32,7 @@ export function PublicLayout({ title = '', containerClassName = 'fb-page', user 
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <Link href='/app'>
-              <span aria-label={appLinkLabel}>{appLinkLabel} <Icon name='key' color='purple' /></span>
-            </Link>
+            <FbProfileLink userState={userState} />
           </Menu.Item>
         </Container>
       </Menu>
@@ -44,7 +41,7 @@ export function PublicLayout({ title = '', containerClassName = 'fb-page', user 
         {children}
       </Container>
 
-      <Segment inverted vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
+      <Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
         <FbFooter />
       </Segment>
     </>

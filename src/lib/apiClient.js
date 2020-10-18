@@ -39,13 +39,17 @@ export function apiClient() {
   const health  = async ()      => _action('health');
   const signup  = async (input) => _action('signup', input);
   const signin  = async (input) => _action('signin', input);
+  const signout = async ()      => _action('signout');
   const me      = async ()      => _action('me');
 
   const user_search               = async (input)    => _action('user_search', input);
   const user_retrieve             = async (id)       => _action('user_retrieve', {}, id);
   const user_retrieve_by_username = async (username) => _action('user_retrieve_by_username', { username });
+  const usercontact_update_self   = async (input)    => _action('usercontact_update_self', input);
+  const usergeo_update_self       = async (input)    => _action('usergeo_update_self', input);
 
-  const post_search_by_username                 = async (username)           => _action('post_search_by_username', { username });
+  // pass { user_id } or { username }
+  const post_search_by_user                     = async (input)              => _action('post_search_by_username', input);
   const post_retrieve_by_username_and_post_ref  = async (username, post_ref) => _action('post_retrieve_by_username_and_post_ref', { username, post_ref });
 
   const post_search   = async (input = {}) => _action('post_search', input);
@@ -65,13 +69,16 @@ export function apiClient() {
     health,
     signup,
     signin,
+    signout,
     me,
 
     user_search,
     user_retrieve,
     user_retrieve_by_username,
+    usercontact_update_self,
+    usergeo_update_self,
 
-    post_search_by_username,
+    post_search_by_user,
     post_retrieve_by_username_and_post_ref,
     
     post_search,

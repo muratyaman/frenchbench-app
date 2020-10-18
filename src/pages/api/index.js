@@ -312,6 +312,10 @@ export function newApi({ db }) {
     return { data, error };
   }
 
+  async function signout() {
+    return { data: true, token: '', error: null };
+  }
+
   // we can use user_retrieve
   async function user_retrieve_current({ user = {} }) {
     const { id = null } = user;
@@ -484,7 +488,7 @@ export function newApi({ db }) {
     return { data, error };
   }
 
-  async function post_search_by_username({ input = {} }) {
+  async function post_search_by_user({ input = {} }) {
     let data = [], error = null;
     let { user_id = null, username = null, q = '', offset = 0, limit = 10 } = input;
 
@@ -607,6 +611,7 @@ export function newApi({ db }) {
 
     signup,
     signin,
+    signout,
     user_retrieve_current,
     me: user_retrieve_current, // alias
 
@@ -620,7 +625,7 @@ export function newApi({ db }) {
 
     post_create,
     post_search,
-    post_search_by_username,
+    post_search_by_user,
     post_retrieve,
     post_retrieve_by_username_and_post_ref,
     post_update,

@@ -1,17 +1,10 @@
 import React from 'react';
+import { Icon } from 'semantic-ui-react';
 
 export function Loading(props) {
   return (
-    <div>
-      <h3>Loading...</h3>
-      <style jsx>{`
-        div {
-          align-items: center;
-          display: flex;
-          height: 50vh;
-          justify-content: center;
-        }
-      `}</style>
+    <div className='fb-loading'>
+      <h3><Icon name='spinner' size='large' loading /> Loading...</h3>
     </div>
   )
 }

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
-export function useUser(api, id) {
+// input: { user_id } or { username }
+export function usePostsOfUser(api, input) {
   const defaultOutput = { loading: true, data: null, error: null };
   const [output, setOutput] = useState(defaultOutput);
   useEffect(() => {
     const callApi = async () => {
-      const newOutput = await api.user_retrieve(id);
+      const newOutput = await api.post_search_by_user(input);
       setOutput({ ...newOutput, loading: false });
     };
     callApi();
