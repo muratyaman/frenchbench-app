@@ -7,8 +7,10 @@ import { randomImgSrc } from '../lib/randomImgSrc';
 
 export function FbPostListItem({ title = '', tags = '', created_at = null, username }) {
   const dt = formatDistance(new Date(created_at), new Date());
-  const keywords = 'people'; // tags.split(';').map(w => String(w).trim()).join(','); // TODO
-  const tagLinkList = tags.split(';').map(w => w.trim()).map((w, idx) => (
+  const tagArr = tags.split(';').map(w => w.trim());
+  const tag0 = tagArr[0]
+  const keywords = tag0;
+  const tagLinkList = tagArr.map((w, idx) => (
     <Link key={`tag-${idx}-${w}`} href={`/app/posts-by-tag/${w}`}><span>#{w}&nbsp;</span></Link>
   ))
   return (

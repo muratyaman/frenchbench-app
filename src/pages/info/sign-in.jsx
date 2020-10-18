@@ -1,79 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { Header, Segment } from 'semantic-ui-react';
 import { PublicLayout, SignInForm } from '../../components';
 import { apiClient } from '../../lib/apiClient';
+import { useCurrentUser } from '../../lib/useCurrentUser';
 
-class SignIn extends React.Component {
+const defaultPageData = {
+  username: '',
+  password: '',
+  loading: false,
+  errorMessage: null,
+  successMessage: null,
+};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-      loading: false,
-      errorMessage: null,
-      successMessage: null,
-    };
-    this.api = null;
+function SignIn(props) {
+  const [pageData, setPageData] = useState(defaultPageData);
+  const api = apiClient();
+  const userState = useCurrentUser(api);
+  const router = useRouter();
+
+  if (userState.data) { // special case
+    setTimeout(() => { router.push('/app/my/home') }, 500); // user signed in already, let's go to app
   }
 
-  componentDidMount() {
-    console.log('SignIn.componentDidMount');
-    this.api = apiClient();
-  }
+  const { loading, errorMessage, successMessage } = pageData;
+  const formProps = {
+    onSubmit,
+    onChange,
+    loading,
+    errorMessage,
+    successMessage,
+  };
 
-  onChange = (name, value) => {
-    this.setState({ [name]: value });
+  const onChange = (name, value) => {
+    setPageData({ ...pageData, [name]: value });
   }
   
-  onSubmit = async (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
-    this.setState({ successMessage: null, errorMessage: null, loading: true });
-    const { username, password } = this.state;
+    const { username, password } = pageData;
+    setPageData({ ...pageData, successMessage: null, errorMessage: null, loading: true });
+    
     try {
-      const { data = null, error = null } = await this.api.signin({ username, password });
+      const { data = null, error = null } = await api.signin({ username, password });
       if (data) { // success
-        this.setState({ successMessage: 'success', loading: false });
-        Router.push('/app');
+        setPageData({ ...pageData, successMessage: 'success', loading: false });
+        router.push('/app');
       } else {
-        this.setState({ errorMessage: error, loading: false });
+        setPageData({ ...pageData, errorMessage: error, loading: false });
       }
     } catch (err) {
-      this.setState({ errorMessage: err.message, loading: false });
+      setPageData({ ...pageData, errorMessage: err.message, loading: false });
     }
   }
 
-  render() {
-    const { loading, errorMessage, successMessage } = this.state;
-    const formProps = {
-      onSubmit: this.onSubmit,
-      onChange: this.onChange,
-      loading,
-      errorMessage,
-      //successMessage,
-    };
+  return (
+    <PublicLayout title='Sign In' userState={userState}>
+      <Header as='h2'>
+        Sign In
+        <Header.Subheader>
+          Check what's happening in your neighbourhood
+        </Header.Subheader>
+      </Header>
 
-    return (
-      <PublicLayout title='Sign In'>
-        <Header as='h2'>
-          Sign In
-          <Header.Subheader>
-            Check what's happening in your neighbourhood
-          </Header.Subheader>
-        </Header>
+      <Segment>
+        <SignInForm {...formProps} />
+      </Segment>
 
-        <Segment>
-          <SignInForm {...formProps} />
-        </Segment>
-
-        <Segment>
-          Please <Link href='/info/sign-up'>sign up</Link> if you do not have an account
-        </Segment>
-      </PublicLayout>
-    );
-  }
+      <Segment>
+        Please <Link href='/info/sign-up'>sign up</Link> if you do not have an account
+      </Segment>
+    </PublicLayout>
+  );
 }
 
 export default SignIn;

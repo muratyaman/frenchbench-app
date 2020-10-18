@@ -11,7 +11,7 @@ function PublicIndex(props) {
     <PublicLayout title='Home page' userState={userState}>
       <h1>Welcome</h1>
       <FbCardCommunity />
-      <FbCallToAccount />
+      {!userState.data && <FbCallToAccount />}
     </PublicLayout>
   );
 }

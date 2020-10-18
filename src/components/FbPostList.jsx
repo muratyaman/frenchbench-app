@@ -7,8 +7,8 @@ export function FbPostList({ posts = []}) {
     return (
       <Grid stackable>
         {posts.map((post, idx) => (
-          <Grid.Column mobile={16} tablet={8} computer={5}>
-            <FbPostListItem key={`${post.id}-${idx}`} {...post} />
+          <Grid.Column mobile={16} tablet={8} computer={5} key={`${post.id}-${idx}`}>
+            <FbPostListItem {...post} />
           </Grid.Column>
         ))}
       </Grid>
