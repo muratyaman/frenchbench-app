@@ -26,13 +26,6 @@ function SignUp(props) {
   }
 
   const { loading, errorMessage, successMessage } = pageData;
-  const formProps = {
-    onSubmit,
-    onChange,
-    loading,
-    errorMessage,
-    successMessage,
-  };
 
   const onChange = (name, value) => {
     setPageData({ ...pageData, [name]: value });
@@ -55,6 +48,14 @@ function SignUp(props) {
       setPageData({ ...pageData, errorMessage: err.message, loading: false });
     }
   }
+
+  const formProps = {
+    onSubmit,
+    onChange,
+    loading,
+    errorMessage,
+    successMessage,
+  };
 
   return (
     <PublicLayout title='Sign Up' userState={userState}>
