@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Card, Header, Icon, Message, Segment } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Message, Segment } from 'semantic-ui-react';
 import { PublicLayout, RandomImage, SignUpForm } from '../../components';
 import { apiClient } from '../../lib/apiClient';
 import { useCurrentUser } from '../../lib/useCurrentUser';
@@ -18,9 +18,9 @@ const defaultPageData = {
 function SignUp(props) {
   const [pageData, setPageData] = useState(defaultPageData);
   const api = apiClient();
-  const userState = useCurrentUser(api);
+  const currentUserState = useCurrentUser(api);
 
-  if (userState.data) { // special case
+  if (currentUserState.data) { // special case
     setTimeout(() => { Router.push('/app/my/home') }, 500); // user signed in already, let's go to app
   }
 
@@ -57,7 +57,7 @@ function SignUp(props) {
   };
 
   return (
-    <PublicLayout title='Sign Up' userState={userState}>
+    <PublicLayout title='Sign Up' currentUserState={currentUserState}>
       <Header as='h2'>
         Sign Up
         <Header.Subheader>
@@ -72,17 +72,27 @@ function SignUp(props) {
         </div>
       </Message>
 
-      <Segment>
-        <SignUpForm {...formProps} />
-      </Segment>
-
-      <Segment>
-        Please <Link href='/info/sign-in'>sign in</Link> if you have an account
-      </Segment>
-
-      <Card>
-        <RandomImage keywords='signup' />
-      </Card>
+      <Grid>
+        <Grid.Column mobile={16} tablet={8} computer={8}>
+          <Segment>
+            <SignUpForm {...formProps} />
+          </Segment>
+        </Grid.Column>
+        <Grid.Column mobile={16} tablet={8} computer={8}>
+          <Segment>
+            <p>If you have an account</p>
+            <div>
+              <Link href='/info/sign-in'>
+                <Button icon labelPosition='left' color='purple'><Icon name='sign-in' /> Sign in</Button>
+              </Link>
+            </div>
+          </Segment>
+          <Segment className='fb-rand-img'>
+            <RandomImage keywords='welcome' />
+            <p align='center'>It's great to have you here</p>
+          </Segment>
+        </Grid.Column>
+      </Grid>
 
     </PublicLayout>
   );

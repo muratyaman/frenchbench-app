@@ -27,10 +27,32 @@ div.fb-page {
   width: 100%;
 }
 
+.fb-card-community .content .description div {
+  margin-bottom: 4px;
+}
+
+.fb-card-community .ui.card .description img,
+.fb-card-help-needed .ui.card .image img,
+.fb-card-help-provided .ui.card .image img,
+.fb-post-summary .ui.card .image img
+{
+  width: 100%;
+}
+
 .fb-page .ui.card,
 .fb-page .ui.cards > .ui.card
 {
   width: 100%;
+}
+
+.ui.segment.fb-rand-img {
+  padding: 0;
+  margin: 0;
+}
+.ui.segment.fb-rand-img .image img {
+  width: 100%;
+  margin: 0;
+  padding: 0
 }
 
 div.fb-loading {
@@ -51,6 +73,12 @@ div.fb-post-list-item {
 div.fb-post-list-item div.image img {
   width: 100%;
 }
+div.fb-post-list-item .description img {
+  width: 100%;
+}
+div.fb-post-summary .description img {
+  width: 100%;
+}
 div.fb-post-list-item .ui.card .meta,
 div.fb-post-list-item .ui.cards>.card .meta {
   font-size: 0.8em;
@@ -59,4 +87,9 @@ div.fb-post-list-item .ui.cards>.card .meta {
 div.fb-footer-container {
   margin-top: 10px;
   border-top: 1px solid gray;
+}
+
+div.fb-tags {
+  margin-top: 6px;
+  margin-bottom: 6px;
 }

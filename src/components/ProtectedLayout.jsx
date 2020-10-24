@@ -7,8 +7,8 @@ import { FbProfileLink } from './FbProfileLink';
 
 // fixed menu at top. rendered only on client-side
 export function ProtectedLayout(props) {
-  const { title = '', userState = null, containerClassName = 'fb-page', children } = props;
-  const { data: user = null, loading = false, error: userError = null } = userState ?? {};
+  const { title = '', currentUserState = null, containerClassName = 'fb-page', children } = props;
+  const { data: user = null, loading = false, error: userError = null } = currentUserState ?? {};
   return (
     <>
       <Head>
@@ -33,7 +33,7 @@ export function ProtectedLayout(props) {
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <FbProfileLink userState={userState} />
+            <FbProfileLink currentUserState={currentUserState} />
           </Menu.Item>
         </Container>
       </Menu>

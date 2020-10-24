@@ -1,15 +1,33 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { FbProtectedUserMenu, Loading, ProtectedLayout } from '../../../../../components';
+import { apiClient } from '../../../../../lib/apiClient';
+import { useMounted } from '../../../../../lib/useMounted';
+import { useCurrentUser } from '../../../../../lib/useCurrentUser';
+import { useUser } from '../../../../../lib/useUser';
 
 function UserPostPage(props) {
   const router = useRouter();
-  const { username = null, post_ref = null } = router.query;
+  const { username, post_ref } = router.query;
+  const section = 'posts';
+  console.log('UserPostPage props', props, 'router.query', router.query);
+  const api = apiClient();
+  const isMounted = useMounted();
+  const currentUserState = useCurrentUser(api);
+  const userState = useUser(api, { username });
+  const userMenuProps = {
+    username,
+    post_ref,
+    section,
+    api,
+    currentUserState,
+    userState,
+  }
   return (
-    <div>
-      <p>user post</p>
-      <pre>{JSON.stringify(props)}</pre>
-    </div>
-  )
+    <ProtectedLayout title='Home page' currentUserState={currentUserState}>
+      {!isMounted ? <Loading /> : <FbProtectedUserMenu {...userMenuProps} />}
+    </ProtectedLayout>
+  );
 }
 
 export default UserPostPage;

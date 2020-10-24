@@ -36,7 +36,7 @@ export class FbSectionMyNewPost extends React.Component {
   }
 
   render(){
-    const { api } = this.props;
+    const { api, currentUserState } = this.props;
     const { loading, errorMessage, successMessage } = this.state;
     const formProps = {
       onSubmit: this.onSubmit,

@@ -7,7 +7,7 @@ import { FbProfileLink } from './FbProfileLink';
 
 // fixed menu at top. rendered on both client-side and server-side
 export function PublicLayout(props) {
-  const { title = '', containerClassName = 'fb-page', userState = null, children } = props;
+  const { title = '', containerClassName = 'fb-page', currentUserState = null, children } = props;
   return (
     <>
       <Head>
@@ -32,7 +32,7 @@ export function PublicLayout(props) {
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <FbProfileLink userState={userState} />
+            <FbProfileLink currentUserState={currentUserState} />
           </Menu.Item>
         </Container>
       </Menu>

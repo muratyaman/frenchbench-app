@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Message } from 'semantic-ui-react';
+import { Button, Form, Icon, Message } from 'semantic-ui-react';
 
 export function SignInForm({ onSubmit, onChange, errorMessage = null, successMessage = null, ...otherProps }) {
   return (
@@ -20,7 +20,7 @@ export function SignInForm({ onSubmit, onChange, errorMessage = null, successMes
         type='password'
         onChange={(e, { name, value }) => onChange(name, value)}
       />
-      <Button content='Sign In' primary type='submit' />
+      <Button icon labelPosition='left' color='purple' type='submit'><Icon name='sign-in' /> Sign In</Button>
       {errorMessage && ( <Message warning header='Error' list={[ errorMessage ]} />)}
       {successMessage && ( <Message warning header='Success' list={[ successMessage ]} />)}
     </Form>

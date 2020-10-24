@@ -404,8 +404,9 @@ export function newApi({ db }) {
   }
 
   function makePostRef(post_ref = '') {
-    let ref = post_ref.replace(/[^a-zA-Z0-9]/, '-');
+    let ref = post_ref.toLocaleLowerCase();
     if (ref === '') ref = (new Date()).toISOString();
+    ref = ref.toLocaleLowerCase().replace(/[^a-z0-9]/g, '-');
     return ref;
   }
 
@@ -415,8 +416,8 @@ export function newApi({ db }) {
     let { post_ref = '', title = '', content = '', tags = '' } = input;
     const dt = new Date();
     const id = newUuid();
-    if (!title) title = 'my post at ' + dt.toISOString();
-    if (!post_ref) post_ref = title;
+    if (!title) title = 'my post';
+    if (!post_ref) post_ref = title + dt.toISOString();
     post_ref = makePostRef(post_ref);
     const row = {
       id,
@@ -473,7 +474,7 @@ export function newApi({ db }) {
     let data = [], error = null;
     let { q = '', offset = 0, limit = 10 } = input;
     if (100 < limit) limit = 100;
-    const text = 'SELECT p.id, p.title, p.tags, p.created_at, u.username FROM ' + TBL_POST + ' p'
+    const text = 'SELECT p.id, p.post_ref, p.title, p.tags, p.created_at, u.username FROM ' + TBL_POST + ' p'
       + ' INNER JOIN ' + TBL_USER + ' u ON p.user_id = u.id'
       + ' WHERE (p.title LIKE $1)'
       + '    OR (p.content LIKE $1)'
@@ -497,15 +498,21 @@ export function newApi({ db }) {
       if (!postOwner) throw new ErrNotFound('user not found');
       user_id = postOwner.id;
     }
+    if (user_id && !username) {
+      const { row: postOwner2, error: userError2 } = await db.find(TBL_USER, { id: user_id }, 1);
+      if (userError2) throw userError2;
+      if (!postOwner2) throw new ErrNotFound('user not found');
+      username = postOwner2.username;
+    }
     if (!user_id) throw new ErrBadRequest('user_id or username is required');
-    const text = 'SELECT id, title, tags, created_at FROM ' + TBL_POST
+    const text = 'SELECT id, post_ref, title, tags, created_at FROM ' + TBL_POST
       + ' WHERE user_id = $1'
       + ' ORDER BY created_at DESC'
       + ' OFFSET $2'
       + ' LIMIT $3';
     const { result, error: findError } = await db.query(text, [user_id, offset, limit], 'posts-by-user');
     if (findError) throw findError;
-    data = result && result.rows ? result.rows : [];
+    data = result && result.rows ? result.rows.map(row => ({ ...row, username })) : []; // enrich with username
     return { data, error };
   }
 

@@ -6,7 +6,7 @@ import { FbSectionMyHome } from './FbSectionMyHome';
 import { FbSectionMyPosts } from './FbSectionMyPosts';
 import { FbSectionMyNewPost } from './FbSectionMyNewPost';
 
-export function FbProtectedMenu({ section = 'home', api, userState }) {
+export function FbProtectedMyMenu({ section = 'home', api, currentUserState }) {
   const sections = [
     { name: 'home',     href: '/app/my/home',     label: 'Home',        iconName: 'home' },
     { name: 'posts',    href: '/app/my/posts',    label: 'My Posts',    iconName: 'write square' },
@@ -19,9 +19,9 @@ export function FbProtectedMenu({ section = 'home', api, userState }) {
   }
   let sectionContent = null;
   switch (section) {
-    case 'home':     sectionContent = <FbSectionMyHome    api={api} userState={userState} />; break;
-    case 'posts':    sectionContent = <FbSectionMyPosts   api={api} userState={userState} />; break;
-    case 'new-post': sectionContent = <FbSectionMyNewPost api={api} userState={userState} />; break;
+    case 'home':     sectionContent = <FbSectionMyHome    api={api} currentUserState={currentUserState} />; break;
+    case 'posts':    sectionContent = <FbSectionMyPosts   api={api} currentUserState={currentUserState} />; break;
+    case 'new-post': sectionContent = <FbSectionMyNewPost api={api} currentUserState={currentUserState} />; break;
     default:         sectionContent = <div>page not found</div>;
   }
   return (

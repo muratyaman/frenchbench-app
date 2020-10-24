@@ -8,9 +8,9 @@ function ArticlePage(props) {
   const { data: article = {}, error: articleErr = null } = props;
   const router = useRouter();
   const api = apiClient();
-  const userState = useCurrentUser(api);
+  const currentUserState = useCurrentUser(api);
   return (
-    <PublicLayout title={article.title} userState={userState}>
+    <PublicLayout title={article.title} currentUserState={currentUserState}>
       {router.isFallback ? (
           <Loading />
         ) : (

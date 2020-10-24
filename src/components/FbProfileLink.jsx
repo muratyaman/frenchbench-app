@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Icon } from 'semantic-ui-react';
 
-export function FbProfileLink({ userState = null }) {
-  const { data: user = null, loading = false, error = null } = userState ?? {};
+export function FbProfileLink({ currentUserState = null }) {
+  const { data: user = null, loading = false, error = null } = currentUserState ?? {};
   const { username = null } = user ?? {};
   let ariaLabel = 'Sign in', appLinkLabel = 'Sign in', appLinkUrl = '/info/sign-in', iconName = 'sign-in', iconColour = 'yellow';
   if (loading) {
@@ -15,7 +15,7 @@ export function FbProfileLink({ userState = null }) {
     appLinkLabel = String(username).substring(0, 5) + '...';
     appLinkUrl = '/app/my/home';
     iconName = 'setting';
-    iconColour = 'teal';
+    iconColour = 'purple';
   }
 
   return (

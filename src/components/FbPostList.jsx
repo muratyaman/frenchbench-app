@@ -4,15 +4,12 @@ import { FbPostListItem } from './FbPostListItem';
 
 export function FbPostList({ posts = []}) {
   if (posts && posts.length) {
-    return (
-      <Grid stackable>
-        {posts.map((post, idx) => (
-          <Grid.Column mobile={16} tablet={8} computer={5} key={`${post.id}-${idx}`}>
-            <FbPostListItem {...post} />
-          </Grid.Column>
-        ))}
-      </Grid>
-    )
+    const postColumns = posts.map(post => (
+      <Grid.Column mobile={16} tablet={8} computer={5} key={`${post.id}`}>
+        <FbPostListItem {...post} />
+      </Grid.Column>
+    ));
+    return <Grid stackable>{postColumns}</Grid>;
   }
   return (
     <div>no posts found</div>

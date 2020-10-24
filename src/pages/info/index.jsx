@@ -5,12 +5,12 @@ import { useCurrentUser } from '../../lib/useCurrentUser';
 
 function ServerSidePage(props) {
   const api = apiClient();
-  const userState = useCurrentUser(api);
+  const currentUserState = useCurrentUser(api);
   return (
-    <PublicLayout title='Home page' userState={userState}>
+    <PublicLayout title='Home page' currentUserState={currentUserState}>
       <h1>Welcome</h1>
       <FbCardCommunity />
-      {!userState.data && <FbCallToAccount />}
+      {!currentUserState.data && <FbCallToAccount />}
     </PublicLayout>
   )
 }
