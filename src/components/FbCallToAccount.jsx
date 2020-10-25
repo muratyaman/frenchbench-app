@@ -7,18 +7,18 @@ export function FbCallToAccount(props) {
   return (
     <>
       <Segment>
-        <Grid columns={2} relaxed stackable>
-          <Grid.Column verticalAlign='top'>
-            <Header>You have an account</Header>
+        <Grid columns={2}>
+          <Grid.Column textAlign='center'>
+            <Header as='h5'>You have an account</Header>
             <Link href='/info/sign-in'>
-              <Button icon labelPosition='left' color='purple'><Icon name='sign-in' />Sign In</Button>
+              <Button icon labelPosition='left' color='purple' size='small'><Icon name='sign-in' />Sign In</Button>
             </Link>
           </Grid.Column>
 
-          <Grid.Column verticalAlign='top'>
-            <Header>Have one in a minute</Header>
+          <Grid.Column textAlign='center'>
+            <Header as='h5'>Have one in a minute</Header>
             <Link href='/info/sign-up'>
-              <Button icon labelPosition='left' secondary><Icon name='signup' />Sign up</Button>
+              <Button icon labelPosition='left' secondary size='small'><Icon name='signup' />Sign up</Button>
             </Link>
           </Grid.Column>
         </Grid>

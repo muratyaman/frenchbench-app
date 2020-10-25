@@ -5,7 +5,7 @@ import { Icon } from 'semantic-ui-react';
 export function FbProfileLink({ currentUserState = null }) {
   const { data: user = null, loading = false, error = null } = currentUserState ?? {};
   const { username = null } = user ?? {};
-  let ariaLabel = 'Sign in', appLinkLabel = 'Sign in', appLinkUrl = '/info/sign-in', iconName = 'sign-in', iconColour = 'yellow';
+  let ariaLabel = 'Sign in', appLinkLabel = 'Sign in', appLinkUrl = '/info/sign-in', iconName = 'sign-in', iconColour = 'purple';
   if (loading) {
     appLinkLabel = '...';
     iconName = 'spinner';
