@@ -43,33 +43,26 @@ export const images = [
     ref_url: "https://unsplash.com/photos/_3ClM_FeQXk",
     keywords: [ "welcome" ],
   },
-  /*{
-    name: "",
-    artist: "",
-    info: "",
-    ref_url: "",
-    keywords: [ "" ],
+  {
+    name: "007.jpg",
+    artist: "Chrissie Kremer",
+    info: "Half Moon Bay, USA",
+    ref_url: "https://unsplash.com/photos/Eq9uX_TuE_c",
+    keywords: [ "trade" ],
   },
   {
-    name: "",
-    artist: "",
-    info: "",
-    ref_url: "",
-    keywords: [ "" ],
+    name: "008.jpg",
+    artist: "Egor Myznik",
+    info: "Saint Petersburg, Russia",
+    ref_url: "https://unsplash.com/photos/wIQxaR-WeQc",
+    keywords: [ "trade" ],
   },
-  {
-    name: "",
-    artist: "",
-    info: "",
-    ref_url: "",
-    keywords: [ "" ],
-  },*/
 ];
 
 export function randomImg(keywords = '', size = 'small') {
   let filtered = [];
+  const lookup = keywords.split(',');
   if (keywords !== '') {
-    const lookup = keywords.split(',');
     filtered = images.filter(img => img.keywords.filter(kw => lookup.includes(kw).length > 0));
   }
   let newImg = null;
@@ -88,6 +81,5 @@ export function randomImg(keywords = '', size = 'small') {
     const img = images[idx];
     newImg = { ...img, src: process.env.NEXT_PUBLIC_CDN + '/images/' + size + '/' + img.name };
   }
-  console.log('randomImg', keywords, size, '==>', newImg);
   return newImg;
 }
