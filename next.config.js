@@ -1,5 +1,5 @@
-// const isProd = process.env.NODE_ENV === 'production'
-
+//const withPWA = require('next-pwa');
+//const runtimeCaching = require('next-pwa/cache');
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 
 module.exports = (phase, { defaultConfig }) => {
@@ -21,7 +21,7 @@ module.exports = (phase, { defaultConfig }) => {
   };
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    return {
+    return { // withPWA({
       // development only config options here
       poweredByHeader,
       generateEtags,
@@ -29,10 +29,14 @@ module.exports = (phase, { defaultConfig }) => {
       distDir,
       serverRuntimeConfig,
       publicRuntimeConfig,
-    }
+      //pwa: {
+      //  dest: 'public/pwa',
+      //  runtimeCaching,
+      //},
+    };
   }
 
-  return {
+  return { // withPWA({
     // config options for all phases except development here
     // TODO: use the CDN in production and localhost for development.
     // assetPrefix: isProd ? 'https://cdn.mydomain.com' : '',
@@ -42,5 +46,9 @@ module.exports = (phase, { defaultConfig }) => {
     distDir,
     serverRuntimeConfig,
     publicRuntimeConfig,
-  }
-}
+    //pwa: {
+    //  dest: 'public/pwa',
+    //  runtimeCaching,
+    //},
+  };
+};

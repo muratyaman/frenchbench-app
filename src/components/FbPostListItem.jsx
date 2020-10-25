@@ -16,7 +16,6 @@ export function FbPostListItem({ id, title, tags, created_at, username, post_ref
   const avatarSrc = randomImgSrc('silhouette', 96, 96);
   //const avatarSrc = randomAvatarSrc(username);
   const link = makePostLink({ username, post_ref });
-  console.log('FbPostListItem', id, title, post_ref, username, link);
   return (
     <div className='fb-post-list-item'>
       <Card>

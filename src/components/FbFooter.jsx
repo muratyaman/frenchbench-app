@@ -48,7 +48,7 @@ export function FbFooter({ accordion = false }) {
   return (
     <>
     <Container text textAlign='center' className='fb-footer-container'>
-      <Image centered size='small' src='/assets/frenchbench-logo-small.jpg' />
+      <Image centered size='small' src='/assets/frenchbench-logo-small.png' />
     </Container>
     
     <Divider />

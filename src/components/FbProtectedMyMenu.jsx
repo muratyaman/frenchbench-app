@@ -8,9 +8,9 @@ import { FbSectionMyNewPost } from './FbSectionMyNewPost';
 
 export function FbProtectedMyMenu({ section = 'home', api, currentUserState }) {
   const sections = [
-    { name: 'home',     href: '/app/my/home',     label: 'Home',        iconName: 'home' },
-    { name: 'posts',    href: '/app/my/posts',    label: 'My Posts',    iconName: 'write square' },
-    { name: 'new-post', href: '/app/my/new-post', label: 'My New Post', iconName: 'newspaper' },
+    { name: 'home',     href: '/app/my/home',     label: ' ',     iconName: 'home' },
+    { name: 'posts',    href: '/app/my/posts',    label: 'My Posts', iconName: 'write square' },
+    { name: 'new-post', href: '/app/my/new-post', label: 'New Post', iconName: 'newspaper' },
   ];
   const signout = async (ev) => {
     ev.preventDefault();
@@ -33,7 +33,7 @@ export function FbProtectedMyMenu({ section = 'home', api, currentUserState }) {
           </Menu.Item>
         ))}
         {/*<Menu.Item><Input icon='search' placeholder='Search...' /></Menu.Item>*/}
-        <Menu.Item name='signout' onClick={signout}><Icon name='sign-out' /></Menu.Item>
+        <Menu.Item name='signout' onClick={signout}><Icon name='sign-out' color='red' /></Menu.Item>
       </Menu>
       <section>
         {sectionContent}

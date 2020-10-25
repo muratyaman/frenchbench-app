@@ -10,7 +10,6 @@ function UserPostPage(props) {
   const router = useRouter();
   const { username, post_ref } = router.query;
   const section = 'posts';
-  console.log('UserPostPage props', props, 'router.query', router.query);
   const api = apiClient();
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);

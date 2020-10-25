@@ -8,7 +8,6 @@ import { useCurrentUser } from '../../../lib/useCurrentUser';
 function ProtectedMySection(props) {
   const router = useRouter();
   const { section = 'home' } = router.query;
-  console.log('ProtectedSection props', props, 'router.query', router.query);
   const api = apiClient();
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);

@@ -10,7 +10,7 @@ function PublicIndex(props) {
   const currentUserState = useCurrentUser(api);
   return (
     <PublicLayout title='Home page' currentUserState={currentUserState}>
-      <h1>Welcome</h1>
+      <h2>Welcome</h2>
       <Grid>
         <Grid.Column mobile={16} tablet={8} computer={8}>
           <FbCardCommunity />

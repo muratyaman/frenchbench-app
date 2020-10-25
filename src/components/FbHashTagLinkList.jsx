@@ -7,7 +7,9 @@ export function FbHashTagLinkList({ tags = '' }) {
   const tagArr = makeHashTagList(tags);
   if (0 === tagArr.length) return null;
   const tagLinkList = tagArr.map((w, idx) => (
-    <Link key={`tag-${idx}-${w}`} href={`/app/posts-by-tag/${w}`}><Label size='small'><Icon name='hashtag' /> {w}&nbsp;</Label></Link>
+    <Link key={`tag-${idx}-${w}`} href={`/app/posts-by-tag/${w}`}>
+      <Label size='small'><Icon name='hashtag' /> {w}&nbsp;</Label>
+    </Link>
   ))
   return <div className='fb-tags'>{tagLinkList}</div>;
 }

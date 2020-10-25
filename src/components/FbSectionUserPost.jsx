@@ -1,9 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
 import { usePostByUserAndRef } from '../lib/usePostByUserAndRef';
 import { FbLoadingParagraph } from './FbLoadingParagraph';
 import { FbPostDetails } from './FbPostDetails';
-import { Icon, Label } from 'semantic-ui-react';
 
 export function FbSectionUserPost({ api, username, post_ref }) {
   const { data: post = null, loading = false, error = null } = usePostByUserAndRef(api, { username, post_ref });

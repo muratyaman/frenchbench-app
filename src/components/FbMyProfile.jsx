@@ -13,14 +13,14 @@ export function FbMyProfile({ currentUserState = null }) {
   return (
     <div className='fb-profile'>
       <Grid>
-        <Grid.Column width={10}>
+        <Grid.Column width={9}>
           <Header as='h3'><RandomImage {...imgProps} /> Hi {greet}!</Header>
           <p>This is your profile page</p>
           <div className='fb-profile-row'><Header as='h3'>{first_name}&nbsp;{last_name}</Header></div>
           <div className='fb-profile-row'><Icon name='mobile alternate' /> <span>{phone ?? 'no phone number'}</span></div>
           <div className='fb-profile-row'><Icon name='mail' size='small' /> <span>{email ?? 'no email' }</span></div>
         </Grid.Column>
-        <Grid.Column width={6} textAlign='right'>
+        <Grid.Column width={7} textAlign='right'>
           <div><Icon name='globe' /> Website.com</div>
           <div><Icon name='facebook' /> Facebook.com</div>
           <div><Icon name='instagram' /> Instagram.com</div>

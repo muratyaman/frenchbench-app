@@ -5,15 +5,10 @@ import getConfig from 'next/config';
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig(); // only holds serverRuntimeConfig and publicRuntimeConfig
 
 export function apiClient() {
-  console.log(' ');
-  console.log('***');
-  console.log('apiClient called');
-  console.log('serverRuntimeConfig...');
-  console.log(serverRuntimeConfig); // will only be available on the server-side
-  console.log('publicRuntimeConfig...');
-  console.log(publicRuntimeConfig); // will be available on both server-side and client-side
-  console.log('***');
-  console.log(' ');
+  
+  //console.log(serverRuntimeConfig); // will only be available on the server-side
+  //console.log(publicRuntimeConfig); // will be available on both server-side and client-side
+  
   const onServer = typeof window === 'undefined';
   console.log('apiClient is running on', onServer ? 'node' : 'browser');
   const { host, apiBaseUrl } = onServer ? serverRuntimeConfig : publicRuntimeConfig;

@@ -1,12 +1,16 @@
 import React from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
+import { useMounted } from '../../lib/useMounted';
+import { Loading } from '../../components';
 
 function ProtectedIndex(props) {
-  setTimeout(() => { Router.push('/app/my/home'); }, 500);
-  console.log('ProtectedIndex redirecting...');
-  return (
-    <div>redirecting...</div>
-  );
+  const router = useRouter();
+  const isMounted = useMounted();
+  if (isMounted) {
+    router.push('/app/my/home');
+    return <div>redirecting...</div>
+  }
+  return <Loading />;
 }
 
 export default ProtectedIndex;
