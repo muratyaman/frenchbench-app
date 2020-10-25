@@ -25,6 +25,7 @@ export * from './FbSectionUserHome';
 export * from './FbSectionUserPost';
 export * from './FbSectionUserPosts';
 export * from './FbUserProfile';
+export * from './ImageLoader';
 export * from './Loading';
 export * from './ProtectedLayout';
 export * from './PublicLayout';
