@@ -4,7 +4,7 @@ import { FbLoadingParagraph } from './FbLoadingParagraph';
 import { FbPostDetails } from './FbPostDetails';
 
 export function FbSectionUserPost({ api, username, post_ref }) {
-  const { data: post = null, loading = false, error = null } = usePostByUserAndRef(api, { username, post_ref });
+  const { data: post = null, loading = false, error = null } = usePostByUserAndRef(api, { username, post_ref, with_assets: true });
   return (
     <div className='fb-post-details'>
       { loading && <FbLoadingParagraph /> }

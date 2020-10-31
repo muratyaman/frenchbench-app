@@ -6,7 +6,7 @@ import { FbPostSummaryList } from './FbPostSummaryList';
 export function FbSectionMyPosts({ api, currentUserState }) {
   const { data: user = null } = currentUserState ?? {};
   const { id: user_id = null } = user ?? {};
-  const { data: posts = [], loading = false, error = null } = usePostsOfUser(api, { user_id });
+  const { data: posts = [], loading = false, error = null } = usePostsOfUser(api, { user_id, with_assets: true });
   return (
     <div className='fb-post-search'>
       { loading && <FbLoadingParagraph /> }

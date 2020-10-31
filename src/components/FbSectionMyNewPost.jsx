@@ -9,6 +9,8 @@ export class FbSectionMyNewPost extends React.Component {
     title: '',
     content: '',
     tags: '',
+    asset_id: null, // uuid
+    asset_file: null, // uuid.jpg
     loading: false,
     errorMessage: null,
     successMessage: null,
@@ -21,9 +23,9 @@ export class FbSectionMyNewPost extends React.Component {
   onSubmit = async (ev) => {
     ev.preventDefault();
     this.setState({ successMessage: null, errorMessage: null, loading: true });
-    const { title, content, tags} = this.state;
+    const { title, content, tags, asset_id } = this.state;
     try {
-      const { data = null, error = null } = await this.props.api.post_create({ title, content, tags });
+      const { data = null, error = null } = await this.props.api.post_create({ title, content, tags, asset_id });
       if (data) { // success
         this.setState({ successMessage: 'success', loading: false });
         Router.push('/app/my/posts');

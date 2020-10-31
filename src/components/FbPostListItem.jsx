@@ -2,13 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
-import { RandomImage } from './RandomImage';
+import { FbAssetImage } from './FbAssetImage';
 import { randomImgSrc } from '../lib/randomImgSrc';
 import { makePostLink } from '../lib/makePostLink';
 import { makeHashTagList } from '../lib/makeHashTagLinkList';
 import { FbHashTagLinkList } from './FbHashTagLinkList';
 
-export function FbPostListItem({ id, title, tags, created_at, username, post_ref }) {
+export function FbPostListItem({ id, title, tags, created_at, username, post_ref, assets = [] }) {
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
   const tag0 = tagArr[0];
@@ -16,6 +16,9 @@ export function FbPostListItem({ id, title, tags, created_at, username, post_ref
   const avatarSrc = randomImgSrc('silhouette', 96, 96);
   //const avatarSrc = randomAvatarSrc(username);
   const link = makePostLink({ username, post_ref });
+  console.log('FbPostListItem', assets);
+  const asset0 = assets[0] ?? null;
+  const asset0info = asset0?.asset ?? null;
   return (
     <div className='fb-post-list-item'>
       <Card>
@@ -26,7 +29,7 @@ export function FbPostListItem({ id, title, tags, created_at, username, post_ref
           <Card.Description>
             <Link href={link}>
               <div>
-                <RandomImage keywords={keywords} link={link} w={240} h={240} wrapped={false} label={null} />
+                <FbAssetImage asset={asset0info} keywords={keywords} link={link} w={240} h={240} wrapped={false} label={null} />
                 <Label color='purple' ribbon='right'>Read post</Label>
               </div>
             </Link>

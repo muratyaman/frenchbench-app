@@ -22,6 +22,19 @@ export const TBL_LOOKUP       = 'lookups';
 export const TBL_POST         = 'posts';
 export const TBL_ARTICLE      = 'articles';
 
+export const ENTITY_ASSET_PARENT_KIND = {
+  USER: 'users',
+  POST: 'posts',
+  ARTICLE: 'articles',
+};
+
+export const ENTITY_ASSET_PURPOSE = {
+  USER_PROFILE_IMAGE: 'user-profile-image',
+  POST_IMAGE: 'post-image',
+  ARTICLE_IMAGE: 'article-image',
+};
+
+
 export const tablesFields = {
   [TBL_USER]:         ['id', 'username', 'password_hash', 'first_name', 'last_name', 'email', 'headline', 'neighbourhood', 'lat', 'lon', 'raw_geo', 'created_at', 'updated_at'],
   [TBL_ASSET]:        ['id', 'asset_type', 'media_type', 'label', 'url', 'meta', 'created_at', 'updated_at', 'created_by', 'updated_by'],
@@ -34,7 +47,6 @@ export const tablesFields = {
 // all API requests are handled by this function
 export default async function pgHandler(req, res) {
   const t1 = new Date();
-  // req.ts = t1;
   req.id = newUuid();
   log(req.id, 'request START');
   let output = null, user = null;
@@ -223,6 +235,7 @@ export function extendDb(db) {
     update,
     del,
     now,
+    placeHolder,
   };
 }
 
@@ -349,7 +362,7 @@ export function newApi({ db }) {
 
   async function user_search({ user, input = {} }) {
     let data = [], error = null;
-    let { lat1 = 0, lon1 = 0, lat2 = 0, lon2 = 0 } = input;
+    let { lat1 = 0, lon1 = 0, lat2 = 0, lon2 = 0, with_assets = false } = input;
     // TODO: restrict area that can be searched e.g. by geolocation of current user
     lat1 = lat1 ? lat1 : user.lat - GEO_LAT_DELTA;
     lat2 = lat2 ? lat2 : user.lat + GEO_LAT_DELTA;
@@ -364,6 +377,12 @@ export function newApi({ db }) {
     );
     if (user_search_err) throw user_search_err;
     data = result.rows.map(hideSensitiveUserProps);
+
+    if (with_assets && data.length) {
+      // with side effect on data
+      await find_attach_assets({ user, data, parent_entity_kind: ENTITY_ASSET_PARENT_KIND.user });
+    }
+
     return { data, error };
   }
 
@@ -413,7 +432,7 @@ export function newApi({ db }) {
   async function post_create({ user, input }) {
     if (!user) throw new ErrForbidden();
 
-    let { post_ref = '', title = '', content = '', tags = '' } = input;
+    let { post_ref = '', title = '', content = '', tags = '', asset_id = null } = input;
     const dt = new Date();
     const id = newUuid();
     if (!title) title = 'my post';
@@ -432,6 +451,22 @@ export function newApi({ db }) {
       tags,
     };
     const { result, error } = await db.insert(TBL_POST, row);
+    if (asset_id) {
+      try {
+        const entityAssetInsertResult = await entity_asset_create({
+          user,
+          input: {
+            parent_entity_kind: ENTITY_ASSET_PARENT_KIND.POST,
+            parent_entity_id: id,
+            purpose: ENTITY_ASSET_PURPOSE.POST_IMAGE,
+            asset_id,
+          },
+        });
+        log('entityAssetInsertResult success', entityAssetInsertResult);
+      } catch (err) {
+        log('entityAssetInsertResult error', err);
+      }
+    }
     return { data: 0 < result.rowCount ? id : null, error };
   }
 
@@ -472,7 +507,9 @@ export function newApi({ db }) {
 
   async function post_search({ user, input }) {
     let data = [], error = null;
-    let { q = '', offset = 0, limit = 10 } = input;
+    let { q = '', offset = 0, limit = 10, with_assets = false } = input;
+    offset = Number.parseInt(offset);
+    limit = Number.parseInt(limit);
     if (100 < limit) limit = 100;
     const text = 'SELECT p.id, p.post_ref, p.title, p.tags, p.created_at, u.username FROM ' + TBL_POST + ' p'
       + ' INNER JOIN ' + TBL_USER + ' u ON p.user_id = u.id'
@@ -485,12 +522,20 @@ export function newApi({ db }) {
     const { result, error: findError } = await db.query(text, [`%${q}%`, offset, limit], 'posts-text-search');
     if (findError) throw findError;
     data = result && result.rows ? result.rows : [];
+
+    if (with_assets && data.length) {
+      // with side effect on data
+      await find_attach_assets({ user, data, parent_entity_kind: ENTITY_ASSET_PARENT_KIND.post });
+    }
+
     return { data, error };
   }
 
-  async function post_search_by_user({ input = {} }) {
+  async function post_search_by_user({ user, input = {} }) {
     let data = [], error = null;
-    let { user_id = null, username = null, q = '', offset = 0, limit = 10 } = input;
+    let { user_id = null, username = null, q = '', offset = 0, limit = 10, with_assets = false } = input;
+    offset = Number.parseInt(offset);
+    limit = Number.parseInt(limit);
     if (100 < limit) limit = 100;
     if (!user_id && username) {
       const { row: postOwner, error: userError } = await db.find(TBL_USER, { username }, 1);
@@ -513,13 +558,19 @@ export function newApi({ db }) {
     const { result, error: findError } = await db.query(text, [user_id, offset, limit], 'posts-by-user');
     if (findError) throw findError;
     data = result && result.rows ? result.rows.map(row => ({ ...row, username })) : []; // enrich with username
+
+    if (with_assets && data.length) {
+      // with side effect on data
+      await find_attach_assets({ user, data, parent_entity_kind: ENTITY_ASSET_PARENT_KIND.post });
+    }
+
     return { data, error };
   }
 
   // use retrieve_post(), it is faster
   async function post_retrieve_by_username_and_post_ref({ user, input = {} }) {
     let data = null, error = null;
-    let { username = '', post_ref = '' } = input;
+    let { username = '', post_ref = '', with_assets = false } = input;
     username = username.toLowerCase();
     post_ref = post_ref.toLowerCase();
     const { row: postOwner, error: userError } = await db.find(TBL_USER, { username }, 1);
@@ -536,12 +587,20 @@ export function newApi({ db }) {
     } else {
       throw new ErrNotFound('post not found');
     }
+
+    if (with_assets && data) {
+      // with side effect on data
+      await find_attach_assets({ user, data: [ data ], parent_entity_kind: ENTITY_ASSET_PARENT_KIND.post });
+    }
+
     return { data, error };
   }
 
   async function article_search({ user, input }) {
     let data = [], error = null;
-    let { q = '', offset = 0, limit = 10 } = input;
+    let { q = '', offset = 0, limit = 10, with_assets = false } = input;
+    offset = Number.parseInt(offset);
+    limit = Number.parseInt(limit);
     if (100 < limit) limit = 100;
     // do not include large records e.g. avoid returning large text fields
     const text = 'SELECT a.id, a.slug, a.title, keywords FROM ' + TBL_ARTICLE + ' a'
@@ -554,19 +613,180 @@ export function newApi({ db }) {
     const { result, error: findError } = await db.query(text, [`%${q}%`, offset, limit], 'article-text-search');
     if (findError) throw findError;
     data = result && result.rows ? result.rows : [];
+
+    if (with_assets && data.length) {
+      // with side effect on data
+      await find_attach_assets({ user, data, parent_entity_kind: ENTITY_ASSET_PARENT_KIND.article });
+    }
+
     return { data, error };
   }
 
   async function article_retrieve({ user, id = null, input = {} }) {
     // TODO: validate uuid
     // TODO: analytics of 'views' per record per visitor per day
-    const { slug = null } = input;
+    const { slug = null, with_assets = false } = input;
     if (id || slug) {
       const condition = id ? { id } : { slug };
       const { row: data, error } = await db.find(TBL_ARTICLE, condition, 1);
+
+      if (with_assets && data) {
+        // with side effect on data
+        await find_attach_assets({ user, data: [ data ], parent_entity_kind: ENTITY_ASSET_PARENT_KIND.article });
+      }
+
       return { data, error };
     } else {
       return { data: null, error: 'article id or slug required' };
+    }
+  }
+
+  async function asset_create({ user, input }) {
+    if (!user) throw new ErrForbidden();
+
+    let { id = newUuid(), asset_type = null, media_type = null, label = null, url = null, meta = {} } = input;
+    const dt = new Date();
+    const row = {
+      id,
+      created_at: dt,
+      updated_at: dt,
+      created_by: user.id,
+      updated_by: user.id,
+      asset_type,
+      media_type,
+      label,
+      url,
+      meta,
+    };
+    const { result, error } = await db.insert(TBL_ASSET, row);
+    return { data: 0 < result.rowCount ? id : null, error };
+  }
+
+  async function asset_search({ user, input }) {
+    let data = [], error = null;
+    let { ids = [], offset = 0, limit = 10 } = input;
+    offset = Number.parseInt(offset);
+    limit = Number.parseInt(limit);
+    if (100 < limit) limit = 100;
+    const conditions = [];
+    const params = [];
+    if (ids.length) {
+      conditions.push('a.id IN (' + ids.map(id => {
+        params.push(id);
+        return db.placeHolder(params.length);
+      }) + ')');
+    }
+    params.push(offset);
+    const offsetStr = ' OFFSET ' + db.placeHolder(params.length);
+    params.push(limit);
+    const limitStr = ' LIMIT ' + db.placeHolder(params.length);
+    const whereStr = conditions.length ? ' WHERE (' + conditions.join(') AND (') + ')' : '';
+    const text = 'SELECT a.* FROM ' + TBL_ASSET + ' a'
+      + whereStr
+      + ' ORDER BY a.created_at DESC' // TODO: ranking, relevance
+      + offsetStr
+      + limitStr;
+    const preparedQryName = 'asset-search-' + md5(text);
+    const { result, error: findError } = await db.query(text, params, preparedQryName);
+    if (findError) throw findError;
+    data = result && result.rows ? result.rows : [];
+    return { data, error };
+  }
+
+  async function asset_delete({ user, id, input }) {
+    // TODO: validate uuid
+    // TODO: delete related records
+    const { result, error } = await db.del(TBL_ASSET, { id }, 1);
+    return { data: 0 < result.rowCount, error };
+  }
+
+  async function entity_asset_create({ user, input }) {
+    if (!user) throw new ErrForbidden();
+
+    let { parent_entity_kind = null, parent_entity_id = null, purpose = null, asset_id = null, meta = {} } = input;
+    const dt = new Date();
+    const id = newUuid();
+    const row = {
+      id,
+      created_at: dt,
+      updated_at: dt,
+      created_by: user.id,
+      updated_by: user.id,
+      parent_entity_kind, // posts, users, articles
+      parent_entity_id,   // ref: posts.id or users.id ...
+      purpose,  // 'user-profile-image'
+      asset_id, // ref: assets.id
+      meta,
+    };
+    const { result, error } = await db.insert(TBL_ASSET, row);
+    return { data: 0 < result.rowCount ? id : null, error };
+  }
+
+  async function entity_asset_search({ user, input }) {
+    let data = [], error = null;
+    let { parent_entity_kind = null, parent_entity_ids = [], offset = 0, limit = 10 } = input;
+    offset = Number.parseInt(offset);
+    limit = Number.parseInt(limit);
+    if (100 < limit) limit = 100;
+    const conditions = [];
+    const params = [];
+    if (parent_entity_kind) {
+      params.push(parent_entity_kind);
+      conditions.push('parent_entity_kind = ' + db.placeHolder(params.length));
+    }
+    if (parent_entity_ids.length) {
+      conditions.push('parent_entity_id IN (' + parent_entity_ids.map(peid => {
+        params.push(peid);
+        return db.placeHolder(params.length);
+      }) + ')');
+    }
+    params.push(offset);
+    const offsetStr = ' OFFSET ' + db.placeHolder(params.length);
+    params.push(limit);
+    const limitStr = ' LIMIT ' + db.placeHolder(params.length);
+    const whereStr = conditions.length ? ' WHERE (' + conditions.join(') AND (') + ')' : '';
+    const text = 'SELECT ea.*, row_to_json(a.*) AS asset '
+      + ' FROM '+ TBL_ENTITY_ASSET + ' ea'
+      + ' INNER JOIN ' + TBL_ASSET + ' a ON ea.asset_id = a.id '
+      + whereStr
+      + ' ORDER BY ea.created_at DESC' // TODO: ranking, relevance
+      + offsetStr
+      + limitStr;
+    const preparedQryName = 'entity-asset-search-' + md5(text);
+    const { result, error: findError } = await db.query(text, params, preparedQryName);
+    if (findError) throw findError;
+    data = result && result.rows ? result.rows : [];
+    return { data, error };
+  }
+
+  async function entity_asset_delete({ user, id, input }) {
+    // TODO: validate uuid
+    // TODO: delete related records
+    const { result, error } = await db.del(TBL_ENTITY_ASSET, { id }, 1);
+    return { data: 0 < result.rowCount, error };
+  }
+
+  async function find_attach_assets({ user, data, parent_entity_kind = null }) {
+    const { data: entityAssets, error: entityAssetErr } = await entity_asset_search({
+      user,
+      input: {
+        parent_entity_kind,
+        parent_entity_ids: data.map(r => r.id),
+        limit: data.length,
+      },
+    });
+    if (entityAssetErr) {
+      log('find_attach_assets', entityAssetErr);
+    }
+    if (entityAssets) {
+      entityAssets.forEach(eaRow => {
+        const { parent_entity_id } = eaRow;
+        const parentEntity = data.find(row => row.id === parent_entity_id);
+        if (parentEntity) {
+          if (!('assets' in parentEntity)) parentEntity.assets = []; // init assets array
+          parentEntity.assets.push(eaRow);
+        }
+      });
     }
   }
 
@@ -577,7 +797,9 @@ export function newApi({ db }) {
     'usercontact_update_self',
     'usergeo_update',
     'usergeo_update_self',
-    'post_create', 'post_update',
+    'post_create', 'post_update', 'post_delete',
+    'asset_create', 'asset_delete',
+    'entity_asset_create', 'entity_asset_delete',
   ];
   const actionsForUser = [
     'usergeo_update',
@@ -587,7 +809,7 @@ export function newApi({ db }) {
     'usergeo_update_self',
     'usercontact_update_self',
   ];
-  const actionsForOwners = ['post_update'];
+  const actionsForOwners = ['post_update', 'asset_delete', 'entity_asset_delete'];
 
   function _isAllowed({ action = '', user, id, input, rowFound }) {
     let protect = false;
@@ -637,6 +859,14 @@ export function newApi({ db }) {
 
     article_search,
     article_retrieve,
+
+    asset_create,
+    asset_search,
+    asset_delete,
+
+    entity_asset_create,
+    entity_asset_search,
+    entity_asset_delete,
   };
 }
 

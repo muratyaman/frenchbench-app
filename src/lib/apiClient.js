@@ -29,6 +29,21 @@ export function apiClient() {
     console.log('api response', reqId, output);
     return output;
   }
+
+  const _upload = async (form) => {
+    const reqId = newUuid();
+    console.log('api request upload', reqId, form);
+    let output = { data: null, error: null };
+    try {
+      const headers = { 'x-fb-request-id': reqId };
+      const res = await _api.post('/upload', form, { headers }); // to avoid 308 perm. redirect from '/api/' to '/api'
+      output = res.data; // return body; expecting { data, error }
+    } catch (err) {
+      output.error = err.message;
+    }
+    console.log('api response upload', reqId, output);
+    return output;
+  }
   
   const echo    = async ()      => _action('echo');
   const health  = async ()      => _action('health');
@@ -64,9 +79,16 @@ export function apiClient() {
   const article_search   = async (input = {}) => _action('article_search', input);
   const article_retrieve = async (slug)       => _action('article_retrieve', { slug }, null);
 
+  const asset_create   = async (input)      => _action('asset_create', input);
+  const asset_delete   = async (id)         => _action('asset_delete', {}, id);
+
+  const entity_asset_create   = async (input)      => _action('entity_asset_create', input);
+  const entity_asset_delete   = async (id)         => _action('entity_asset_delete', {}, id);
+
   return {
     _api,
     _action,
+    _upload,
 
     echo,
     health,
@@ -92,5 +114,11 @@ export function apiClient() {
 
     article_search,
     article_retrieve,
+
+    asset_create,
+    asset_delete,
+
+    entity_asset_create,
+    entity_asset_delete,
   };
 }
