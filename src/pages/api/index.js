@@ -718,7 +718,7 @@ export function newApi({ db }) {
       asset_id, // ref: assets.id
       meta,
     };
-    const { result, error } = await db.insert(TBL_ASSET, row);
+    const { result, error } = await db.insert(TBL_ENTITY_ASSET, row);
     return { data: 0 < result.rowCount ? id : null, error };
   }
 
