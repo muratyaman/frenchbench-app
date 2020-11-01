@@ -14,9 +14,7 @@ export function FbPostListItem({ id, title, tags, created_at, username, post_ref
   const tag0 = tagArr[0];
   const keywords = tag0 !== '' ? tag0 : 'community';
   const avatarSrc = randomImgSrc('silhouette', 96, 96);
-  //const avatarSrc = randomAvatarSrc(username);
   const link = makePostLink({ username, post_ref });
-  console.log('FbPostListItem', assets);
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   return (

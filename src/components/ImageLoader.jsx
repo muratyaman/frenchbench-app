@@ -9,23 +9,14 @@ export function ImageLoader({ w = 320, h = 240, text = null, imgProps = {} }) {
   const [imgState, setImgState] = useState(imgStateLoading);
   const srcTemp = placeHolderImgSrc({ w, h, text })
   const loaderImgProps = { ...imgProps, src: srcTemp };
-  const onLoad = () => {
-    console.log('ImageLoader onLoad', imgProps.src);
-    setImgState(imgStateLoaded);
-  }
-  const onError = () => {
-    console.warn('ImageLoader onError', imgProps.src);
-    setImgState(imgStateError);
-  }
+  const onLoad = () => { setImgState(imgStateLoaded); }
+  const onError = () => { setImgState(imgStateError); }
   if (imgState === imgStateLoaded) return <Image {...imgProps} />;
   if (imgState === imgStateError) return <Image {...loaderImgProps} />;
   // default: loading
   return (
     <>
-      <img src={imgProps.src} style={{display:'none'}} 
-        onLoad={onLoad} 
-        onError={onError}
-      />
+      <img src={imgProps.src} style={{display:'none'}} onLoad={onLoad} onError={onError} />
       <Image {...loaderImgProps} />
     </>
   )

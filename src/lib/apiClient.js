@@ -30,13 +30,13 @@ export function apiClient() {
     return output;
   }
 
-  const _upload = async (form) => {
+  const _upload = async (form, options = {}) => {
     const reqId = newUuid();
     console.log('api request upload', reqId, form);
     let output = { data: null, error: null };
     try {
       const headers = { 'x-fb-request-id': reqId };
-      const res = await _api.post('/upload', form, { headers }); // to avoid 308 perm. redirect from '/api/' to '/api'
+      const res = await _api.post('/upload', form, { headers, ...options }); // to avoid 308 perm. redirect from '/api/' to '/api'
       output = res.data; // return body; expecting { data, error }
     } catch (err) {
       output.error = err.message;
@@ -68,7 +68,7 @@ export function apiClient() {
 
   // pass { user_id } or { username }
   const post_search_by_user                     = async (input)              => _action('post_search_by_user', input);
-  const post_retrieve_by_username_and_post_ref  = async (username, post_ref) => _action('post_retrieve_by_username_and_post_ref', { username, post_ref });
+  const post_retrieve_by_username_and_post_ref  = async (input) => _action('post_retrieve_by_username_and_post_ref', input);
 
   const post_search   = async (input = {}) => _action('post_search', input);
   const post_create   = async (input)      => _action('post_create', input);
