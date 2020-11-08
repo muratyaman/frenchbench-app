@@ -21,34 +21,36 @@ module.exports = (phase, { defaultConfig }) => {
   };
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    return { // withPWA({
-      // development only config options here
+    return {
       poweredByHeader,
       generateEtags,
       compress,
       distDir,
       serverRuntimeConfig,
       publicRuntimeConfig,
-      //pwa: {
-      //  dest: 'public/pwa',
-      //  runtimeCaching,
-      //},
+      async rewrites() {
+        return [
+          // we need to define a no-op rewrite to trigger checking
+          // all pages/static files before we attempt proxying
+          {
+            source: '/:path*',
+            destination: '/:path*',
+          },
+          {
+            source: '/:path*',
+            destination: `http://127.0.0.1:12000/:path*`,
+          },
+        ]
+      },
     };
   }
 
-  return { // withPWA({
-    // config options for all phases except development here
-    // TODO: use the CDN in production and localhost for development.
-    // assetPrefix: isProd ? 'https://cdn.mydomain.com' : '',
+  return {
     poweredByHeader,
     generateEtags,
     compress,
     distDir,
     serverRuntimeConfig,
     publicRuntimeConfig,
-    //pwa: {
-    //  dest: 'public/pwa',
-    //  runtimeCaching,
-    //},
   };
 };

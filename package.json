@@ -1,6 +1,11 @@
 {
   "name": "frenchbench-app",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frenchbench/frenchbench-app"
+  },
+  "homepage": "https://github.com/frenchbench/frenchbench-app",
   "scripts": {
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "lint": "eslint ./src",
@@ -10,35 +15,21 @@
     "start:dev": "next -p 11000"
   },
   "dependencies": {
-    "aws-sdk": "^2.782.0",
     "axios": "^0.20.0",
-    "bcrypt": "^5.0.0",
     "date-fns": "^2.16.1",
-    "express": "^4.17.1",
-    "formidable": "^1.2.2",
-    "jsonwebtoken": "^8.5.1",
-    "md5": "^2.3.0",
-    "multer": "^1.4.2",
-    "multer-s3": "^2.9.0",
     "next": "^9.5.5",
-    "next-pwa": "^3.1.5",
-    "pg": "^8.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-text-loop": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.0",
-    "sharp": "^0.26.2",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@types/node": "^14.11.10",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
-    "@typescript-eslint/parser": "^4.4.1",
-    "eslint": "^7.11.0",
     "node-sass": "^4.14.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
