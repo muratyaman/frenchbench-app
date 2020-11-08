@@ -21,7 +21,9 @@ div.fb-page {
 .fb-card-help-provided .ui.card,
 .fb-card-help-provided .ui.cards > .ui.card,
 .fb-post-summary .ui.card,
-.fb-post-summary .ui.cards > .ui.card
+.fb-post-summary .ui.cards > .ui.card,
+.fb-card-idea .ui.card,
+.fb-card-idea .ui.cards > .ui.card
 {
   width: 100%;
 }
@@ -33,7 +35,8 @@ div.fb-page {
 .fb-card-community .ui.card .description img,
 .fb-card-help-needed .ui.card .image img,
 .fb-card-help-provided .ui.card .image img,
-.fb-post-summary .ui.card .image img
+.fb-post-summary .ui.card .image img,
+.fb-post-idea .ui.card .image img
 {
   width: 100%;
 }

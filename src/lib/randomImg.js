@@ -57,13 +57,21 @@ export const images = [
     ref_url: "https://unsplash.com/photos/wIQxaR-WeQc",
     keywords: [ "trade" ],
   },
+  {
+    name: "009.jpg",
+    artist: "Sasha Freemind",
+    info: "Never give up. It is during our darkest moments that we must focus to see the light. And it will light the way..",
+    ref_url: "https://unsplash.com/photos/Pv5WeEyxMWU",
+    keywords: [ "loneliness" ],
+  },
 ];
 
 export function randomImg(keywords = '', size = 'small') {
   let filtered = [];
-  const lookup = keywords.split(',');
-  if (keywords !== '') {
-    filtered = images.filter(img => img.keywords.filter(kw => lookup.includes(kw).length > 0));
+  const lookup = keywords.split(',').map(kw => kw.trim()).filter(kw => kw !== '');
+  if (lookup.length) {
+    filtered = images.filter(img => img.keywords.filter(kw => lookup.includes(kw)).length > 0);
+    console.log('found images for', keywords, filtered);
   }
   let newImg = null;
   if (filtered.length === 0) {
@@ -77,9 +85,12 @@ export function randomImg(keywords = '', size = 'small') {
       src,
     };
   } else {
-    const idx = Math.round(Math.random(filtered.length - 1));
-    const img = images[idx];
-    newImg = { ...img, src: process.env.NEXT_PUBLIC_CDN + '/images/' + size + '/' + img.name };
+    const idx = filtered.length === 1 ? 0 : Math.round(Math.random(filtered.length - 1));
+    const img = filtered[idx];
+    newImg = {
+      ...img,
+      src: process.env.NEXT_PUBLIC_CDN + '/images/' + size + '/' + img.name,
+    };
   }
   return newImg;
 }
