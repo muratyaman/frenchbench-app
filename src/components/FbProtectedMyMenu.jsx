@@ -5,12 +5,14 @@ import { Menu, Icon } from 'semantic-ui-react';
 import { FbSectionMyHome } from './FbSectionMyHome';
 import { FbSectionMyPosts } from './FbSectionMyPosts';
 import { FbSectionMyNewPost } from './FbSectionMyNewPost';
+import { FbSectionMySearchPostsByTag } from './FbSectionMySearchPostsByTag';
 
-export function FbProtectedMyMenu({ section = 'home', api, currentUserState }) {
+export function FbProtectedMyMenu({ section = 'home', api, currentUserState, tag = '' }) {
   const sections = [
-    { name: 'home',     href: '/app/my/home',     label: ' ',     iconName: 'home' },
+    { name: 'home',     href: '/app/my/home',     label: ' ',        iconName: 'home' },
     { name: 'posts',    href: '/app/my/posts',    label: 'My Posts', iconName: 'write square' },
     { name: 'new-post', href: '/app/my/new-post', label: 'New Post', iconName: 'newspaper' },
+    { name: 'search',   href: '/app/my/search/posts-by-tag/help', label: 'Search', iconName: 'search' },
   ];
   const signout = async (ev) => {
     ev.preventDefault();
@@ -18,10 +20,12 @@ export function FbProtectedMyMenu({ section = 'home', api, currentUserState }) {
     Router.push('/');
   }
   let sectionContent = null;
+  const commonProps = { api, currentUserState };
   switch (section) {
-    case 'home':     sectionContent = <FbSectionMyHome    api={api} currentUserState={currentUserState} />; break;
-    case 'posts':    sectionContent = <FbSectionMyPosts   api={api} currentUserState={currentUserState} />; break;
-    case 'new-post': sectionContent = <FbSectionMyNewPost api={api} currentUserState={currentUserState} />; break;
+    case 'home':     sectionContent = <FbSectionMyHome             {...commonProps} />; break;
+    case 'posts':    sectionContent = <FbSectionMyPosts            {...commonProps} />; break;
+    case 'new-post': sectionContent = <FbSectionMyNewPost          {...commonProps} />; break;
+    case 'search':   sectionContent = <FbSectionMySearchPostsByTag {...commonProps} tag={tag} />; break;
     default:         sectionContent = <div>page not found</div>;
   }
   return (

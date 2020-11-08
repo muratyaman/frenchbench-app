@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-export function usePostByUserAndRef(api, { username, post_ref, with_assets = false }) {
+export function usePostByUserAndRef(api, input) {
+  const { username, post_ref, with_assets = false } = input;
   const defaultOutput = { loading: true, data: null, error: null };
   const [output, setOutput] = useState(defaultOutput);
   useEffect(() => {
