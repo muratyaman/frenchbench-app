@@ -66,12 +66,15 @@ export const images = [
   },
 ];
 
-export function randomImg(keywords = '', size = 'small') {
-  let filtered = [];
-  const lookup = keywords.split(',').map(kw => kw.trim()).filter(kw => kw !== '');
-  if (lookup.length) {
-    filtered = images.filter(img => img.keywords.filter(kw => lookup.includes(kw)).length > 0);
-    console.log('found images for', keywords, filtered);
+export function randomImg(keywords = '', size = 'small', preferName = null) {
+  let filtered = [], lookup = [];
+  if (preferName) {
+    filtered = images.filter(img => img.name === preferName);
+  } else {
+    lookup = keywords.split(',').map(kw => kw.trim()).filter(kw => kw !== '');
+    if (lookup.length) {
+      filtered = images.filter(img => img.keywords.filter(kw => lookup.includes(kw)).length > 0);
+    }
   }
   let newImg = null;
   if (filtered.length === 0) {
@@ -89,7 +92,7 @@ export function randomImg(keywords = '', size = 'small') {
     const img = filtered[idx];
     newImg = {
       ...img,
-      src: process.env.NEXT_PUBLIC_CDN + '/images/' + size + '/' + img.name,
+      src: process.env.REACT_APP_CDN + '/images/' + size + '/' + img.name,
     };
   }
   return newImg;

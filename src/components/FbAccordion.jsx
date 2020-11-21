@@ -1,8 +1,14 @@
-import React, { Component } from 'react'
-import { Accordion, Icon } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Accordion, Icon } from 'semantic-ui-react';
 
 export class FbAccordion extends Component {
-  state = { activeIndex: -1 }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIndex: -1,
+    }
+  }
 
   handleClick = (e, titleProps) => {
     const { index } = titleProps;

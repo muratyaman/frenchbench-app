@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Grid, Header, Icon } from 'semantic-ui-react'
+import { Grid, Header, Icon } from 'semantic-ui-react'
 import { Loading } from './Loading';
 import { RandomImage } from './RandomImage';
 
-export function FbMyProfile({ currentUserState = null }) {
+export function FbMyProfile({ currentUserState = null, i18n }) {
   const { data: user = null, loading = null, error = null } = currentUserState ?? {};
   if (loading) return <Loading />
   if (!user) return <p>no user info</p>;

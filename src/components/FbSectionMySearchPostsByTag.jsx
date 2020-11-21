@@ -1,7 +1,7 @@
 import React from 'react';
-import { usePostSearchByTag } from '../lib/usePostSearchByTag';
 import { FbLoadingParagraph } from './FbLoadingParagraph';
 import { FbPostList } from './FbPostList';
+import { usePostSearchByTag } from '../hooks/usePostSearchByTag';
 
 export function FbSectionMySearchPostsByTag({ api, tag }) {
   const { data: posts = [], loading = false, error = null } = usePostSearchByTag(api, { tag, with_assets: true });

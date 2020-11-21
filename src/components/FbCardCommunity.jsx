@@ -3,11 +3,11 @@ import { Card, Label } from 'semantic-ui-react';
 import TextLoop from 'react-text-loop';
 import { RandomImage } from './RandomImage';
 
-export function FbCardCommunity(props) {
+export function FbCardCommunity({ i18n }) {
   return (
     <div className='fb-card-community'>
-      <Card>
-        <RandomImage keywords='community' />
+      <Card fluid>
+        <RandomImage keywords='community' preferName='001.jpg' />
         <Card.Content>
           <Card.Header>FrenchBench Communities</Card.Header>
           <Card.Description>

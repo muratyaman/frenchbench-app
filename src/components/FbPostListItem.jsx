@@ -1,12 +1,12 @@
 import React from 'react';
-import Link from 'next/link';
+import { FbLink } from './FbLink';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { FbAssetImage } from './FbAssetImage';
+import { FbHashTagLinkList } from './FbHashTagLinkList';
 import { randomImgSrc } from '../lib/randomImgSrc';
 import { makePostLink } from '../lib/makePostLink';
 import { makeHashTagList } from '../lib/makeHashTagLinkList';
-import { FbHashTagLinkList } from './FbHashTagLinkList';
 
 export function FbPostListItem({ id, title, tags, created_at, username, post_ref, assets = [] }) {
   const dt = formatDistance(new Date(created_at), new Date());
@@ -21,16 +21,16 @@ export function FbPostListItem({ id, title, tags, created_at, username, post_ref
     <div className='fb-post-list-item'>
       <Card>
         <Card.Content>
-          <Link href={`/app/user/${username}`}><Image floated='right' size='mini' src={avatarSrc} /></Link>
+          <FbLink to={`/app/user/${username}`}><Image floated='right' size='mini' src={avatarSrc} /></FbLink>
           <Card.Header>{title}</Card.Header>
           <Card.Meta>{username} posted {dt} ago (123 views)</Card.Meta>
           <Card.Description>
-            <Link href={link}>
+            <FbLink to={link}>
               <div>
                 <FbAssetImage asset={asset0info} keywords={keywords} link={link} w={240} h={240} wrapped={false} label={null} />
                 <Label color='purple' ribbon='right'>Read post</Label>
               </div>
-            </Link>
+            </FbLink>
           </Card.Description>
           <Card.Description extra>
             <FbHashTagLinkList tags={tags} />

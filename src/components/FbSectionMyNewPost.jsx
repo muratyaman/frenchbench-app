@@ -1,5 +1,5 @@
 import React from 'react';
-import Router from 'next/router';
+import { Redirect } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
 import { FbPostCreateForm } from './FbPostCreateForm';
 
@@ -14,6 +14,7 @@ export class FbSectionMyNewPost extends React.Component {
     loading: false,
     errorMessage: null,
     successMessage: null,
+    redirect: null,
   };
 
   onChange = (name, value) => {
@@ -27,8 +28,7 @@ export class FbSectionMyNewPost extends React.Component {
     try {
       const { data = null, error = null } = await this.props.api.post_create({ title, content, tags, asset_id });
       if (data) { // success
-        this.setState({ successMessage: 'success', loading: false });
-        Router.push('/app/my/posts');
+        this.setState({ successMessage: 'success', loading: false, redirect: '/app/my/posts' });
       } else {
         this.setState({ errorMessage: error, loading: false });
       }
@@ -39,7 +39,10 @@ export class FbSectionMyNewPost extends React.Component {
 
   render(){
     const { api, currentUserState } = this.props;
-    const { loading, errorMessage, successMessage } = this.state;
+    const { loading, errorMessage, successMessage, redirect } = this.state;
+    if (redirect) {
+      return <Redirect to={redirect} />
+    }
     const formProps = {
       onSubmit: this.onSubmit,
       onChange: this.onChange,

@@ -5,7 +5,7 @@ import { RandomImage } from './RandomImage';
 export function FbCardIdea({ title, keywords, idea }) {
   return (
     <div className='fb-card-idea'>
-      <Card>
+      <Card fluid>
         <RandomImage keywords={keywords} />
         <Card.Content>
           <Card.Header>{title}</Card.Header>

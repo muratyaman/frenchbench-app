@@ -1,3 +1,0 @@
-# protected pages
-
-login required

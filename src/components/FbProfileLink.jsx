@@ -1,6 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import { Icon } from 'semantic-ui-react';
+import { FbLink } from './FbLink';
 
 export function FbProfileLink({ currentUserState = null }) {
   const { data: user = null, loading = false, error = null } = currentUserState ?? {};
@@ -19,8 +19,8 @@ export function FbProfileLink({ currentUserState = null }) {
   }
 
   return (
-    <Link href={appLinkUrl}>
+    <FbLink to={appLinkUrl}>
       <span aria-label={ariaLabel}>{appLinkLabel} <Icon loading={loading} name={iconName} color={iconColour} /></span>
-    </Link>
+    </FbLink>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image } from 'semantic-ui-react';
 import { placeHolderImgSrc } from '../lib/placeHolderImgSrc';
-import { useMounted } from '../lib/useMounted';
+import { useMounted } from '../hooks/useMounted';
 
 export function ImageLoader({ w = 320, h = 240, text = null, imgProps = {}, off = false }) {
   const mounted = useMounted();

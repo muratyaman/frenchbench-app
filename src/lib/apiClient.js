@@ -1,19 +1,15 @@
 import axios from 'axios';
 import { v4 as newUuid } from 'uuid';
-import getConfig from 'next/config';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig(); // only holds serverRuntimeConfig and publicRuntimeConfig
+export function apiClient({ host, baseUrl, browser = null }) {
 
-export function apiClient() {
-  
-  //console.log(serverRuntimeConfig); // will only be available on the server-side
-  //console.log(publicRuntimeConfig); // will be available on both server-side and client-side
-  
   const onServer = typeof window === 'undefined';
   console.log('apiClient is running on', onServer ? 'node' : 'browser');
-  const { host, apiBaseUrl } = onServer ? serverRuntimeConfig : publicRuntimeConfig;
-  const baseURL = host + apiBaseUrl;
-  const _api = axios.create({ baseURL, withCredentials: true });
+
+  const _api = axios.create({
+    baseURL: host + baseUrl,
+    withCredentials: true,
+  });
 
   const _action = async (action, input = {}, id = null) => {
     const reqId = newUuid();
@@ -53,12 +49,14 @@ export function apiClient() {
     // call api, clear cookie, go to home page
     try {
       const ignore  = await _action('signout'); // token 'x' ==> cookie invalid now
-      const removed = await browser.cookies.remove({ name: 'fbsecret' });// TODO: use env setting
+      if (browser && browser.cookies) {
+        const removed = await browser.cookies.remove({ name: 'fbsecret' });// TODO: use env setting
+      }
     } catch (err) {
       console.error('signout error', err);
     }
   }
-  const me      = async ()      => _action('me');
+  const me = async () => _action('me');
 
   const user_search               = async (input)    => _action('user_search', input);
   const user_retrieve             = async (id)       => _action('user_retrieve', {}, id);
@@ -77,7 +75,7 @@ export function apiClient() {
   const post_delete   = async (id)         => _action('post_delete', {}, id);
 
   const article_search   = async (input = {}) => _action('article_search', input);
-  const article_retrieve = async (slug)       => _action('article_retrieve', { slug }, null);
+  const article_retrieve = async ({ slug })       => _action('article_retrieve', { slug }, null);
 
   const asset_create   = async (input)      => _action('asset_create', input);
   const asset_delete   = async (id)         => _action('asset_delete', {}, id);

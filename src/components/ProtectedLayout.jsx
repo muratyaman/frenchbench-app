@@ -1,32 +1,37 @@
 import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { Container, Icon, Image, Menu } from 'semantic-ui-react';
+import Helmet from 'react-helmet';
+import { Icon, Image, Menu } from 'semantic-ui-react';
+import { FbLink } from './FbLink';
 import { FbFooter } from './FbFooter';
 import { FbProfileLink } from './FbProfileLink';
+import { I18N_KEYS } from '../lib/i18n';
 
 // fixed menu at top. rendered only on client-side
 export function ProtectedLayout(props) {
-  const { title = '', currentUserState = null, containerClassName = 'fb-page', children } = props;
+  const { title = '', currentUserState = null, containerClassName = 'fb-page', i18n, children } = props;
   const { data: user = null, loading = false, error: userError = null } = currentUserState ?? {};
   return (
     <>
-      <Head>
+      <Helmet>
         <title>{title} - FrenchBench</title>
-      </Head>
-      <Menu fixed='top'>
+      </Helmet>
+      <Menu fixed='top' compact>
         <Menu.Item className='fb-header-logo'>
-          <Link href='/'><Image size='mini' src='/assets/frenchbench-logo-mini.png' /></Link>
+          <FbLink to='/'><Image size='mini' src='/assets/frenchbench-logo-mini.png' /></FbLink>
         </Menu.Item>
         <Menu.Item>
-          <Link href='/info/i-need-help'>
-            <span aria-label='I need help'>Need <Icon name='heart outline' color='purple' /></span>
-          </Link>
+          <FbLink to='/info/i-need-help'>
+            <span aria-label={i18n._(I18N_KEYS.common_i_need_help)}>
+              {i18n._(I18N_KEYS.common_need)} <Icon name='heart outline' color='purple' />
+            </span>
+          </FbLink>
         </Menu.Item>
         <Menu.Item>
-          <Link href='/info/i-can-help'>
-            <span aria-label='I can help'>Can <Icon name='heart' color='purple' /></span>
-          </Link>
+          <FbLink to='/info/i-can-help'>
+            <span aria-label={i18n._(I18N_KEYS.common_i_can_help)}>
+              {i18n._(I18N_KEYS.common_can)} <Icon name='heart' color='purple' />
+            </span>
+          </FbLink>
         </Menu.Item>
         <Menu.Item>
           <FbProfileLink currentUserState={currentUserState} />

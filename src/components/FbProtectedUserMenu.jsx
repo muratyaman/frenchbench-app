@@ -1,6 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import { Menu, Icon } from 'semantic-ui-react';
+import { FbLink } from './FbLink';
 import { FbSectionUserHome } from './FbSectionUserHome';
 import { FbSectionUserPost } from './FbSectionUserPost';
 import { FbSectionUserPosts } from './FbSectionUserPosts';
@@ -31,7 +31,7 @@ export function FbProtectedUserMenu({ username, section = 'home', api, userState
       <Menu secondary>
         {sections.map(({ name, href, iconName, label }) => (
           <Menu.Item key={name} name={name} active={section === name}>
-            <Link href={href}><span><Icon name={iconName} /> {label}</span></Link>
+            <FbLink to={href}><span><Icon name={iconName} /> {label}</span></FbLink>
           </Menu.Item>
         ))}
       </Menu>

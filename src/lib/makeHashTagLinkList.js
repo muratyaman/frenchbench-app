@@ -1,3 +1,3 @@
 export function makeHashTagList(tags = '') {
-  return tags.replace(/,/g, ';').split(';').map(w => w.trim());
+  return tags.split(/[,|;]/g).map(w => w.trim());
 }

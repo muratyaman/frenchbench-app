@@ -5,33 +5,55 @@
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
   },
-  "homepage": "https://github.com/frenchbench/frenchbench-app",
   "scripts": {
-    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "clean:client": "rm -rf build",
+    "clean:server": "rm -rf build-server",
     "lint": "eslint ./src",
-    "build:next": "next build",
-    "build": "npm run clean && npm run build:next",
-    "start": "next start -p 11000",
-    "start:dev": "next -p 11000"
+    "type-check": "tsc",
+    "build:client": "yarn run clean:client && yarn run rs:build",
+    "start:server:dev": "ts-node ./start-server-dev.js",
+    "start:server": "ts-node ./start-server-live.js",
+    "rs:start": "react-scripts start",
+    "rs:build": "react-scripts build",
+    "rs:test": "react-scripts test",
+    "rs:eject": "react-scripts eject"
   },
   "dependencies": {
+    "@babel/core": "^7.12.7",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/register": "^7.12.1",
     "axios": "^0.20.0",
     "date-fns": "^2.16.1",
-    "next": "^9.5.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.6",
+    "morgan": "^1.10.0",
     "prop-types": "^15.7.2",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.0",
     "react-text-loop": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^2.0.0",
+    "semantic-ui-react": "^2.0.1",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
-    "@types/node": "^14.11.10",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
-    "node-sass": "^4.14.1",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

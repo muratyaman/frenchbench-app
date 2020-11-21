@@ -2,9 +2,9 @@ import React from 'react';
 import { ImageLoader } from './ImageLoader';
 import { randomImg } from '../lib/randomImg';
 
-export function RandomImage({ keywords = '', w = 320, h = 240, ...overrides }) {
+export function RandomImage({ preferName = null, keywords = '', w = 320, h = 240, ...overrides }) {
   //const src = randomImgSrc(keywords, w, h);
-  const { src, info } = randomImg(keywords, 'small');
+  const { src, info } = randomImg(keywords, 'small', preferName);
   const imgProps = {
     src,
     alt: info,

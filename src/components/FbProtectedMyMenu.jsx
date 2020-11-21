@@ -1,14 +1,15 @@
 import React from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
 import { Menu, Icon } from 'semantic-ui-react';
+import { FbLink } from './FbLink';
 import { FbSectionMyHome } from './FbSectionMyHome';
 import { FbSectionMyPosts } from './FbSectionMyPosts';
 import { FbSectionMyNewPost } from './FbSectionMyNewPost';
 import { FbSectionMySearchPostsByTag } from './FbSectionMySearchPostsByTag';
 import { FbSectionMyNeighbours } from './FbSectionMyNeighbours';
 
-export function FbProtectedMyMenu({ section = 'home', api, currentUserState, tag = '' }) {
+export function FbProtectedMyMenu({ section = 'home', api, currentUserState, tag = '', i18n }) {
+  const history = useHistory();
   const sections = [
     { name: 'home',     href: '/app/my/home',       label: ' ',        iconName: 'home' },
     { name: 'posts',    href: '/app/my/posts',      label: 'My Posts', iconName: 'write square' },
@@ -19,7 +20,7 @@ export function FbProtectedMyMenu({ section = 'home', api, currentUserState, tag
   const signout = async (ev) => {
     ev.preventDefault();
     const ignore = await api.signout();
-    Router.push('/');
+    history.push('/');
   }
   let sectionContent = null;
   const commonProps = { api, currentUserState };
@@ -36,7 +37,7 @@ export function FbProtectedMyMenu({ section = 'home', api, currentUserState, tag
       <Menu secondary>
         {sections.map(({ name, href, iconName, label }) => (
           <Menu.Item key={name} name={name} active={section === name}>
-            <Link href={href}><span><Icon name={iconName} /> {label}</span></Link>
+            <FbLink to={href}><span><Icon name={iconName} /> {label}</span></FbLink>
           </Menu.Item>
         ))}
         {/*<Menu.Item><Input icon='search' placeholder='Search...' /></Menu.Item>*/}

@@ -1,12 +1,12 @@
 import React from 'react';
-import Link from 'next/link';
+import { FbLink } from './FbLink';
 import { formatDistance } from 'date-fns';
 import { Card, Image } from 'semantic-ui-react';
 import { FbAssetImage } from './FbAssetImage';
+import { FbHashTagLinkList } from './FbHashTagLinkList';
 import { randomImgSrc } from '../lib/randomImgSrc';
 import { makePostLink } from '../lib/makePostLink';
 import { makeHashTagList } from '../lib/makeHashTagLinkList';
-import { FbHashTagLinkList } from './FbHashTagLinkList';
 
 export function FbPostDetails({ post, username }) {
   const { title = '', content = '', tags = '', created_at = null, post_ref, assets = [] } = post;
@@ -23,7 +23,7 @@ export function FbPostDetails({ post, username }) {
     <div className='fb-post-list-item'>
       <Card>
         <Card.Content>
-          <Link href={`/app/user/${username}`}><Image floated='right' size='mini' src={avatarSrc} /></Link>
+          <FbLink to={`/app/user/${username}`}><Image floated='right' size='mini' src={avatarSrc} /></FbLink>
           <Card.Header>{title}</Card.Header>
           <Card.Meta>{username} posted {dt} ago</Card.Meta>
           <Card.Description>

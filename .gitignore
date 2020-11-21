@@ -70,6 +70,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.local
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -106,4 +107,13 @@ dist
 .idea/
 .vscode/
 
-.env.local
+
+build/
+dist/
+lib/
+
+packages/client/build/
+packages/common/build/
+packages/server/build/
+
+tsconfig.tsbuildinfo

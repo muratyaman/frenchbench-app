@@ -3,10 +3,10 @@ import { Card } from 'semantic-ui-react';
 import TextLoop from 'react-text-loop';
 import { RandomImage } from './RandomImage';
 
-export function FbCardHelpNeeded(props) {
+export function FbCardHelpNeeded({ i18n }) {
   return (
     <div className='fb-card-help-needed'>
-      <Card>
+      <Card fluid>
         <RandomImage keywords='community,care,doctor,nurse,garden,barber,handyman' />
         <Card.Content>
           <Card.Header>I Need Help</Card.Header>

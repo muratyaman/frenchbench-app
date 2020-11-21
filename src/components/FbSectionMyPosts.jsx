@@ -1,7 +1,7 @@
 import React from 'react';
-import { usePostsOfUser } from '../lib/usePostsOfUser';
 import { FbLoadingParagraph } from './FbLoadingParagraph';
 import { FbPostSummaryList } from './FbPostSummaryList';
+import { usePostsOfUser } from '../hooks/usePostsOfUser';
 
 export function FbSectionMyPosts({ api, currentUserState }) {
   const { data: user = null } = currentUserState ?? {};
