@@ -19,7 +19,7 @@ const serverConfig = {
   title: 'FrenchBench',
   version: 'v1.0.0-beta',
   http: {
-    port: parseInt(process.env.HTT_PORT || '3000'),
+    port: parseInt(process.env.HTTP_PORT || '3000'),
   },
   api: {
     host: process.env.API_HOST || 'http://127.0.0.1:12000',
