@@ -4,8 +4,9 @@ import { formatDistance } from 'date-fns';
 import { RandomImage } from './RandomImage';
 
 export function FbArticle({ title, content, keywords, created_at = null }) {
-  const contentWithBr = content.split('\n').map((line, idx) => (<p key={`${line}-${idx}`}>{line}</p>))
+  //const contentWithBr = content.split('\n').map((line, idx) => (<p key={`${line}-${idx}`}>{line}</p>))
   const ago = formatDistance(new Date(created_at), new Date());
+  // TODO: danger: content is html generated from markdown text
   return (
     <div className='fb-article'>
       <Card>
@@ -16,7 +17,9 @@ export function FbArticle({ title, content, keywords, created_at = null }) {
             <span className='date'>{ago} ago</span>
           </Card.Meta>
           <Card.Description>
-            {contentWithBr}
+            <div
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
           </Card.Description>
         </Card.Content>
       </Card>

@@ -9,14 +9,7 @@ export function FbSectionUserPost({ api, username, post_ref }) {
     <div className='fb-post-details'>
       { loading && <FbLoadingParagraph /> }
       { error && <p>Error loading post</p>}
-      { post && (
-        <>
-          { /*<div><Link href={`/app/user/${username}`}><Label><Icon name='arrow alternate circle left'/> Back </Label></Link></div>*/ }
-          { loading && <FbLoadingParagraph /> }
-          { error && <p>Error loading post</p>}
-          { post && <FbPostDetails post={post} username={username} />}
-        </>
-      )}
+      { post && <FbPostDetails post={post} username={username} />}
     </div>
   );
 }

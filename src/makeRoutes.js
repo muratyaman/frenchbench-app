@@ -2,8 +2,9 @@ import * as pages from './pages';
 
 export function makeRoutes() {
   return [
-    { path: '/app/my/:section/posts-by-tag/:tag', component: pages.AppMySectionPostsByTagPage },
-    { path: '/app/my/:section',                   component: pages.AppMySectionPage },
+    { path: '/app/my/:section/posts-by-tag/:tag',  component: pages.AppMySectionPostsByTagPage },
+    { path: '/app/my/:section/article/:articleId', component: pages.AppMySectionPage },
+    { path: '/app/my/:section',                    component: pages.AppMySectionPage },
 
     { path: '/app/user/:username/post/:post_ref', component: pages.AppUserPostPage },
     { path: '/app/user/:username/posts',          component: pages.AppUserPostsPage },

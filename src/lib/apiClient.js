@@ -65,7 +65,7 @@ export function apiClient({ host, baseUrl, browser = null }) {
   const usergeo_update_self       = async (input)    => _action('usergeo_update_self', input);
 
   // pass { user_id } or { username }
-  const post_search_by_user                     = async (input)              => _action('post_search_by_user', input);
+  const post_search_by_user                     = async (input) => _action('post_search_by_user', input);
   const post_retrieve_by_username_and_post_ref  = async (input) => _action('post_retrieve_by_username_and_post_ref', input);
 
   const post_search   = async (input = {}) => _action('post_search', input);
@@ -75,13 +75,14 @@ export function apiClient({ host, baseUrl, browser = null }) {
   const post_delete   = async (id)         => _action('post_delete', {}, id);
 
   const article_search   = async (input = {}) => _action('article_search', input);
-  const article_retrieve = async ({ slug })       => _action('article_retrieve', { slug }, null);
+  const article_retrieve = async ({ slug }, id = null)   => _action('article_retrieve', { slug }, id);
+  const article_update   = async (id, input)  => _action('article_update', input, id);
 
-  const asset_create   = async (input)      => _action('asset_create', input);
-  const asset_delete   = async (id)         => _action('asset_delete', {}, id);
+  const asset_create   = async (input) => _action('asset_create', input);
+  const asset_delete   = async (id)    => _action('asset_delete', {}, id);
 
-  const entity_asset_create   = async (input)      => _action('entity_asset_create', input);
-  const entity_asset_delete   = async (id)         => _action('entity_asset_delete', {}, id);
+  const entity_asset_create   = async (input) => _action('entity_asset_create', input);
+  const entity_asset_delete   = async (id)    => _action('entity_asset_delete', {}, id);
 
   return {
     _api,
@@ -112,6 +113,7 @@ export function apiClient({ host, baseUrl, browser = null }) {
 
     article_search,
     article_retrieve,
+    article_update,
 
     asset_create,
     asset_delete,

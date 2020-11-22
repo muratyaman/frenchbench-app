@@ -1,5 +1,8 @@
 export * from './FbAccordion';
 export * from './FbArticle';
+export * from './FbArticleEditor';
+export * from './FbArticleList';
+export * from './FbArticleListItem';
 export * from './FbAssetImage';
 export * from './FbCallToAccount';
 export * from './FbCardCommunity';
@@ -23,6 +26,8 @@ export * from './FbPostSummaryList';
 export * from './FbProfileLink';
 export * from './FbProtectedMyMenu';
 export * from './FbProtectedUserMenu';
+export * from './FbSectionMyArticle';
+export * from './FbSectionMyArticles';
 export * from './FbSectionMyHome';
 export * from './FbSectionMyNeighbours';
 export * from './FbSectionMyNewPost';
