@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import { appConfig } from './appConfig';
+// for now, include all CSS here; SSR does not work with CSS imported by a component
 import 'semantic-ui-css/semantic.min.css';
+import 'react-mde/lib/styles/css/react-mde-all.css';
 import './styles/index.css';
 
 const initialState = window.__INITIAL_STATE__ || {};
