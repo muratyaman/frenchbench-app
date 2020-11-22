@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { FbGreatYouHere, FbLink, PublicLayout, SignInForm } from '../components';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import { I18N, I18N_KEYS } from '../lib/i18n';
+import { I18N, I18N_KEYS } from '../utils/i18n';
 
 const defaultPageData = {
   username: '',

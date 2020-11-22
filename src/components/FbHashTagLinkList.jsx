@@ -1,7 +1,7 @@
 import React from 'react';
 import { FbLink } from './FbLink';
 import { Icon, Label } from 'semantic-ui-react';
-import { makeHashTagList } from '../lib/makeHashTagLinkList';
+import { makeHashTagList } from '../utils/makeHashTagLinkList';
 
 export function FbHashTagLinkList({ tags = '' }) {
   const tagArr = makeHashTagList(tags);

@@ -4,7 +4,7 @@ import { FbProtectedUserMenu, Loading, ProtectedLayout } from '../components';
 import { useMounted } from '../hooks/useMounted';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useUser } from '../hooks/useUser';
-import { I18N_KEYS } from '../lib/i18n';
+import { I18N_KEYS } from '../utils/i18n';
 
 export function AppUserIndexPage({ api, i18n }) {
   const { username } = useParams();

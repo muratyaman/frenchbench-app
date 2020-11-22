@@ -1,7 +1,7 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 import { RandomImage } from './RandomImage';
-import { I18N_KEYS } from '../lib/i18n';
+import { I18N_KEYS } from '../utils/i18n';
 
 export const FbGreatYouHere = ({ i18n }) => {
   return (

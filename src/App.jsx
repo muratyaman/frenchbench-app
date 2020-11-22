@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { newI18N } from './lib/i18n';
-import { apiClient } from './lib/apiClient';
+import { newI18N } from './utils/i18n';
+import { apiClient } from './utils/apiClient';
 import { makeRoutes } from './makeRoutes.js';
 
 export class App extends React.Component {

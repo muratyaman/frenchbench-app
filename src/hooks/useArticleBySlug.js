@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { md2Html } from '../lib/md2html';
+import { md2Html } from '../utils/md2html';
 
 export function useArticleBySlug(api, ssr, hydrating, slug, ssrData = {}) {
   const defaultOutput = { loading: true, data: null, error: null, ...ssrData };

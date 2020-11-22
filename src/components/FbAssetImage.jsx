@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageLoader } from './ImageLoader';
-import { randomImg } from '../lib/randomImg';
-import { assetImgSrc } from '../lib/assetImgSrc';
+import { randomImg } from '../utils/randomImg';
+import { assetImgSrc } from '../utils/assetImgSrc';
 
 export function FbAssetImage({ asset = null, keywords = '', w = 320, h = 240, ...overrides }) {
   let src, alt;

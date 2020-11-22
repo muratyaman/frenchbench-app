@@ -4,9 +4,9 @@ import { formatDistance } from 'date-fns';
 import { Card, Image } from 'semantic-ui-react';
 import { FbAssetImage } from './FbAssetImage';
 import { FbHashTagLinkList } from './FbHashTagLinkList';
-import { randomImgSrc } from '../lib/randomImgSrc';
-import { makePostLink } from '../lib/makePostLink';
-import { makeHashTagList } from '../lib/makeHashTagLinkList';
+import { randomImgSrc } from '../utils/randomImgSrc';
+import { makePostLink } from '../utils/makePostLink';
+import { makeHashTagList } from '../utils/makeHashTagLinkList';
 
 export function FbPostDetails({ post, username }) {
   const { title = '', content = '', tags = '', created_at = null, post_ref, assets = [] } = post;

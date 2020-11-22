@@ -3,7 +3,7 @@ import { formatDistance } from 'date-fns';
 import { Card } from 'semantic-ui-react';
 import { FbLink } from './FbLink';
 import { FbAssetImage } from './FbAssetImage';
-import { makePostLink } from '../lib/makePostLink';
+import { makePostLink } from '../utils/makePostLink';
 
 export function FbPostSummary({ id, title, summary, keywords, created_at, username, post_ref, assets = [] }) {
   const dt = formatDistance(new Date(created_at), new Date());

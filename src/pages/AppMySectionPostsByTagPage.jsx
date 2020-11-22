@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { FbMyProfile, FbProtectedMyMenu, Loading, ProtectedLayout } from '../components';
 import { useMounted } from '../hooks/useMounted';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import { I18N_KEYS } from '../lib/i18n';
+import { I18N_KEYS } from '../utils/i18n';
 
 export function AppMySectionPostsByTagPage({ api, i18n }) {
   const { section = 'search', tag = '' } = useParams();

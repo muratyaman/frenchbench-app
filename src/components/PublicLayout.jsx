@@ -4,7 +4,7 @@ import { Icon, Image, Menu } from 'semantic-ui-react';
 import { FbLink } from './FbLink';
 import { FbFooter } from './FbFooter';
 import { FbProfileLink } from './FbProfileLink';
-import { I18N_KEYS } from '../lib/i18n';
+import { I18N_KEYS } from '../utils/i18n';
 
 // fixed menu at top. rendered on both client-side and server-side
 export function PublicLayout(props) {

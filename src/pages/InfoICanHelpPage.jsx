@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { FbCallToAccount, FbCardHelpProvided, PublicLayout } from '../components';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import { I18N_KEYS } from '../lib/i18n';
+import { I18N_KEYS } from '../utils/i18n';
 
 export function InfoICanHelpPage({ api, i18n }) {
   const currentUserState = useCurrentUser(api);

@@ -2,7 +2,7 @@ import React from 'react';
 import { FbArticle, Loading, PublicLayout } from '../components';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useArticleBySlug } from '../hooks/useArticleBySlug';
-import { I18N_KEYS } from '../lib/i18n';
+import { I18N_KEYS } from '../utils/i18n';
 import { Grid } from 'semantic-ui-react';
 
 export function InfoArticlePage(props) {

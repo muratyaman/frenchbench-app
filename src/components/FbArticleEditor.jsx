@@ -2,7 +2,7 @@ import React from 'react';
 import ReactMde from 'react-mde';
 import { Button, Form, Icon, Message } from 'semantic-ui-react';
 import { FbLoadingParagraph } from './FbLoadingParagraph';
-import { md2Html } from '../lib/md2html';
+import { md2Html } from '../utils/md2html';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
 const STAGE_LOADING = 'loading';

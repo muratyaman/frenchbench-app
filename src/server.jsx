@@ -8,8 +8,8 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { matchPath, StaticRouter } from 'react-router-dom';
 import { appConfig } from './appConfig';
-import { apiClient } from './lib/apiClient';
-import { newI18N } from './lib/i18n';
+import { apiClient } from './utils/apiClient';
+import { newI18N } from './utils/i18n';
 import { App } from './App';
 import { makeRoutes } from './makeRoutes.js';
 

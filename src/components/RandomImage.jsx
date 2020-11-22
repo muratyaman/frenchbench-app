@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageLoader } from './ImageLoader';
-import { randomImg } from '../lib/randomImg';
+import { randomImg } from '../utils/randomImg';
 
 export function RandomImage({ preferName = null, keywords = '', w = 320, h = 240, ...overrides }) {
   //const src = randomImgSrc(keywords, w, h);
