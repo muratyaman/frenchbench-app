@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
-const STATE_PROMPT  = 'prompt';
-const STATE_GRANTED = 'granted';
-const STATE_DENIED  = 'denied';
+export const STATUS_PROMPT  = 'prompt';
+export const STATUS_GRANTED = 'granted';
+export const STATUS_DENIED  = 'denied';
 
-export function usePermissionsGeolocation() {
+export const PERM_NAME_GEOLOCATION = 'geolocation';
+
+export function usePermissions(name) {
 
   const [permissionObj, setPermissionObj] = useState({
     granted: false,
@@ -17,18 +19,18 @@ export function usePermissionsGeolocation() {
 
   useEffect(() => {
     try {
-      navigator.permissions.query({ name: 'geolocation' })
+      navigator.permissions.query({ name })
         .then(result => {
-          permissionObj.prompt  = (result.state === STATE_PROMPT);
-          permissionObj.granted = (result.state === STATE_GRANTED);
-          permissionObj.denied  = (result.state === STATE_DENIED);
+          permissionObj.prompt  = (result.state === STATUS_PROMPT);
+          permissionObj.granted = (result.state === STATUS_GRANTED);
+          permissionObj.denied  = (result.state === STATUS_DENIED);
           setPermissionObj(permissionObj);
         });
     } catch (err) {
       permissionObj.error = err;
       setPermissionObj(permissionObj);
     }
-  }, []);
+  }, [ name ]);
 
   return permissionObj;
 }

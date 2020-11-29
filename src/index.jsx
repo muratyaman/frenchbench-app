@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
-import { appConfig } from './appConfig';
-// for now, include all CSS here; SSR does not work with CSS imported by a component
+import { newAppConfig } from './appConfig';
+// TODO: for now, include all CSS here; SSR does not work with CSS imported by a component
 import 'semantic-ui-css/semantic.min.css';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import './styles/index.css';
@@ -11,9 +11,7 @@ import './styles/index.css';
 const initialState = window.__INITIAL_STATE__ || {};
 delete window.__INITIAL_STATE__;
 
-console.log('process.env', process.env);
-
-const appProps = { localeCode: 'en', appConfig, initialState, pageProps: {}, ssr: false };
+const appProps = { localeCode: 'en', appConfig: newAppConfig(process.env), initialState, pageProps: {}, ssr: false };
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -23,7 +21,7 @@ if (rootElement) {
     appProps.hydrating = true;
     ReactDOM.hydrate(<React.StrictMode><BrowserRouter><App {...appProps} /></BrowserRouter></React.StrictMode>, rootElement);
   } else {
-    // pure client-side rendering
+    // client-side rendering without SSR
     console.info('client-side render');
     ReactDOM.render(<React.StrictMode><BrowserRouter><App {...appProps} /></BrowserRouter></React.StrictMode>, rootElement);
   }

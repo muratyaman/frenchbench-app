@@ -7,7 +7,7 @@ import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { matchPath, StaticRouter } from 'react-router-dom';
-import { appConfig } from './appConfig';
+import { newAppConfig } from './appConfig';
 import { apiClient } from './utils/apiClient';
 import { newI18N } from './utils/i18n';
 import { App } from './App';
@@ -48,12 +48,7 @@ const indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
 // Nginx replacement - START
 console.log('proxy middleware ...');
-const proxyOptions = {
-  target: serverConfig.api.host,
-  changeOrigin: true,
-  ws: true, // proxy websockets
-};
-server.use('/api', createProxyMiddleware(proxyOptions));
+server.use(serverConfig.api.baseUrl, createProxyMiddleware({ target: serverConfig.api.host, changeOrigin: true, ws: true }));
 console.log('proxy middleware ... ready');
 // Nginx replacement - END ===================================================
 
@@ -92,7 +87,7 @@ async function sendPage(req, res) { // server-side rendering of all pages
   const ssrDataProvider = makeSsrDataProvider();
 
   const { initialState, content } = await ssrHtml({
-    req, res, initialState, staticRouterProps, routes, appConfig, api, i18n, ssrDataProvider,
+    req, res, initialState, staticRouterProps, routes, appConfig: newAppConfig(process.env), api, i18n, ssrDataProvider,
   });
 
   const initialStateJson = JSON.stringify(initialState);

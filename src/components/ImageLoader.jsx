@@ -11,7 +11,7 @@ export function ImageLoader({ w = 320, h = 240, text = null, imgProps = {}, off 
   const [imgState, setImgState] = useState(off ? imgStateLoaded : imgStateLoading);
   const srcTemp = placeHolderImgSrc({ w, h, text })
   const loaderImgProps = { ...imgProps, src: srcTemp };
-  const onLoad  = () => { console.log('img loaded',     imgProps.src); setImgState(imgStateLoaded); }
+  const onLoad  = () => { setImgState(imgStateLoaded); }
   const onError = () => { console.log('img not loaded', imgProps.src); setImgState(imgStateError); }
   
   if (!mounted) return <img src={imgProps.src} style={{display:'none'}} />

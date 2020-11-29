@@ -14,8 +14,8 @@ export class App extends React.Component {
   }
 
   render() {
-    const { localeCode = 'en', ssr = false, hydrating = false, initialState = {}, pageProps = {} } = this.props;
     console.log('App', this.props);
+    const { appConfig, localeCode = 'en', ssr = false, hydrating = false, initialState = {}, pageProps = {} } = this.props;
     const i18n = newI18N(localeCode);
     const { api, routes } = this;
     return (
@@ -23,7 +23,7 @@ export class App extends React.Component {
         {routes.map((route, idx) => {
           let newRoute = { ...route, component: null };
           newRoute.render = renderProps => {
-            const newRenderProps = { ...renderProps, ...pageProps, api, i18n, ssr, hydrating, initialState };
+            const newRenderProps = { ...renderProps, ...pageProps, appConfig, api, i18n, ssr, hydrating, initialState };
             return (<route.component {...newRenderProps} />);
           };
           return (<Route key={idx} {...newRoute} />);

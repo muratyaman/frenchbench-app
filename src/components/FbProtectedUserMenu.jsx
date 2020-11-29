@@ -5,6 +5,7 @@ import { FbSectionUserHome } from './FbSectionUserHome';
 import { FbSectionUserPost } from './FbSectionUserPost';
 import { FbSectionUserPosts } from './FbSectionUserPosts';
 
+// NOTE: use only after mounting on client side
 export function FbProtectedUserMenu({ username, section = 'home', api, userState, post_ref = null }) {
   const sections = [
     { name: 'home',  href: `/app/user/${username}`,       label: username, iconName: 'user circle' },
