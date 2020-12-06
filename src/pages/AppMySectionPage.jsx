@@ -10,13 +10,14 @@ export function AppMySectionPage({ appConfig, api, i18n }) {
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);
   const myMenuProps = { appConfig, section, api, currentUserState, i18n, tag, slug, articleId };
+  
+  if (!isMounted) return (<Loading content={i18n._(I18N_KEYS.common_loading) + ' ...'} />);
+  
+  const layoutProps = { appConfig, title: 'Home', currentUserState, i18n };
   return (
-    <ProtectedLayout title='Home page' currentUserState={currentUserState} i18n={i18n}>
-      {!isMounted && <Loading content={i18n._(I18N_KEYS.common_loading) + ' ...'} />}
-      {isMounted && <>
-        <FbMyProfile currentUserState={currentUserState} i18n={i18n} />
-        <FbProtectedMyMenu {...myMenuProps} />
-      </>}
+    <ProtectedLayout {...layoutProps}>
+      <FbMyProfile currentUserState={currentUserState} i18n={i18n} />
+      <FbProtectedMyMenu {...myMenuProps} />
     </ProtectedLayout>
   );
 }

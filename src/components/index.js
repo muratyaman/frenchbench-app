@@ -12,6 +12,8 @@ export * from './FbCardIdea';
 export * from './FbChat';
 export * from './FbFileUploadModal';
 export * from './FbFooter';
+export * from './FbGeoLocationStatus';
+export * from './FbGeoLocationTracker';
 export * from './FbGreatYouHere';
 export * from './FbHashTagLinkList';
 export * from './FbLink';

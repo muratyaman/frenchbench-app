@@ -1,5 +1,10 @@
-// TODO: keep this file generic
 import React from 'react';
+
+export const MSG_KIND_SES    = 'ses'; // connected, server => session ID => client
+export const MSG_KIND_GEO    = 'geo'; // geolocation update
+export const MSG_KIND_JOINED = 'joined';
+export const MSG_KIND_LEFT   = 'left';
+export const MSG_KIND_CHAT   = 'chat';
 
 export const SOCKET_STATUS_UNKNOWN = -1;
 
@@ -20,6 +25,7 @@ export const SOCKET_STATUS_LABELS = {
 export const defaultContext = {
   lastError: null,
   lastMessage: null,
+  messages: [],
   send: () => {},
   socketStatus: SOCKET_STATUS_LABELS[SOCKET_STATUS_UNKNOWN],
   socketStatusFlags: () => {},
@@ -34,9 +40,12 @@ export class WebSocketContextProvider extends React.Component {
     super(props);
     this.ws = null;
     this.unmounting = false;
-    this.ses = null;
+    this.sesId = null;
+    this.timerId = null;
     this.state = {
       ...defaultContext,
+      open: this.open,
+      close: this.close,
       send: this.send,
       socketStatusFlags: this.socketStatusFlags, // function easier to use
     };
@@ -73,10 +82,22 @@ export class WebSocketContextProvider extends React.Component {
 
   onMessage = (ev) => {
     console.log('WebSocketContextProvider.onMessage', ev);
-    this.setState({ lastMessage: ev.data });
-    const { onMessage } = this.props;
-    if (onMessage) {
-      setTimeout(() => onMessage(ev.data), 500); // trigger later
+    const { messages } = this.state;
+    const msgObj = JSON.parse(ev.data);
+    if (msgObj) { // parsed
+
+      if (msgObj.kind) { // we have a custom protocol
+        if(msgObj.kind === MSG_KIND_SES) { // special msg
+          if (msgObj.ses) this.sesId = msgObj.ses; // capture session ID
+        } else {
+          this.setState({ lastMessage: msgObj, messages: [ ...messages, msgObj ] });
+        }
+      }
+      
+      const { onMessage } = this.props;
+      if (onMessage) {
+        setTimeout(() => onMessage(msgObj), 500); // trigger later
+      }
     }
   }
 
@@ -88,6 +109,15 @@ export class WebSocketContextProvider extends React.Component {
   componentDidMount() {
     console.log('WebSocketContextProvider.componentDidMount');
     this.open();
+    this.timerId = setTimeout(this.retry, 30 * 1000); // every 30 seconds try to reconnect
+  }
+
+  retry = () => {
+    const { isOpen } = this.socketStatusFlags();
+    if (!isOpen) {
+      console.log('WebSocketContextProvider.retry() => websocket is not open yet');
+      this.open();
+    }
   }
 
   // command to open websocket
@@ -107,11 +137,12 @@ export class WebSocketContextProvider extends React.Component {
   }
 
   // command to send message
-  send = (msg) => {
-    console.log('WebSocketContextProvider.send', msg);
+  send = (msgObj) => {
+    console.log('WebSocketContextProvider.send', msgObj);
     if (this.ws) {
       try {
-        this.ws.send(msg);
+        msgObj.ses = this.sesId;
+        this.ws.send(JSON.stringify(msgObj));
       } catch (err) {
         console.error('WebSocketContextProvider.send ERROR', err);
         this.setState({ lastError: err.message });
@@ -125,6 +156,7 @@ export class WebSocketContextProvider extends React.Component {
     if (this.ws) {
       try {
         this.ws.close();
+        this.ws = null;
       } catch (err) {
         console.error('WebSocketContextProvider.close ERROR', err);
         if (!this.unmounting) {
@@ -137,15 +169,16 @@ export class WebSocketContextProvider extends React.Component {
   componentWillUnmount() {
     this.unmounting = true;
     this.close();
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { url, message } = this.props;
+    const { url } = this.props;
     if (prevProps.url !== url) {
       this.close();
       this.open();
-    } else if (prevProps.message !== message) { // we can send message by changing 'message' property
-      this.send(message);
     }
   }
 

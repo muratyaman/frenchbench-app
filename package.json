@@ -12,7 +12,7 @@
     "type-check": "tsc",
     "build:client": "yarn run clean:client && yarn run rs:build",
     "start:server:dev": "ts-node ./start-server-dev.js",
-    "start:server": "ts-node ./start-server-live.js",
+    "start:server:TODO": "ts-node ./start-server-live.js",
     "rs:start": "react-scripts start",
     "rs:build": "react-scripts build",
     "rs:test": "react-scripts test",

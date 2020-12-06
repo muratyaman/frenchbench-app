@@ -2,29 +2,40 @@
 
 import { useEffect, useState } from 'react';
 
-export function useGeolocation(options = {}, defaultLocation = null) {
+// @see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
+export const defaultOptions = {
+  enableHighAccuracy: true,
+  timeout: 60 * 1000,
+  maximumAge: 60 * 1000,
+};
 
-  const [location, setLocation] = useState({ location: defaultLocation, error: null });
+export function useGeolocation(options = defaultOptions, defaultLocation = null) {
+
+  const [location, setLocation] = useState(defaultLocation);
+  const [error, setError] = useState(null);
   
+  let mounted = false, watchId = 0, geo = null;
+
+  const onSuccess = newLocation => {
+    if (mounted) {
+      setLocation(newLocation);
+    }
+  }
+
+  const onError = error => {
+    if (mounted) setLocation(error);
+  }
+
   useEffect(() => {
-    let mounted = true, watchId = 0;
-    const geo = navigator.geolocation || null; // localize
-    
-    if (!geo) {
-      setLocation({ location, error: 'geolocation is not supported' });
-    }
-
-    const onGeoLocation = location => {
-      if (mounted) setLocation({ location, error: null });
-    }
-
-    const onError = error => {
-      if (mounted) setLocation({ location: null, error });
-    }
+    mounted = true;
+    watchId = 0;
+    geo = navigator.geolocation; // localize
     
     if (geo) {
-      // geo.getCurrentPosition(onGeoLocation, onError); // ask once, need this ?!
-      watchId = geo.watchPosition(onGeoLocation, onError, options); // start watching
+      watchId = geo.watchPosition(onSuccess, onError, options); // start watching
+      console.log('useGeolocation watchId', watchId);
+    } else {
+      setError('geolocation is not supported');
     }
 
     return function cleanup(){
@@ -35,5 +46,5 @@ export function useGeolocation(options = {}, defaultLocation = null) {
     }
   }, []);
 
-  return location;
+  return { location, error, mounted, watchId };
 }

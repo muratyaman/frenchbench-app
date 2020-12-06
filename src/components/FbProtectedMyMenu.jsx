@@ -9,10 +9,7 @@ import { FbSectionMySearchPostsByTag } from './FbSectionMySearchPostsByTag';
 import { FbSectionMyNeighbours } from './FbSectionMyNeighbours';
 import { FbSectionMyArticle } from './FbSectionMyArticle';
 import { FbSectionMyArticles } from './FbSectionMyArticles';
-import { GeoLocationContextProvider } from './GeoLocationContext';
-import { FbGeoLocationStatus } from './FbGeoLocationStatus';
-import { WebSocketContextProvider } from './WebSocketContext';
-import { FbWebSocketStatus } from './FbWebSocketStatus';
+
 
 // NOTE: use only after mounting on client side
 export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUserState, i18n, tag = null, slug = null, articleId = null }) {
@@ -40,31 +37,14 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
     history.push('/');
   }
 
-  // websocket
-  const [wsMessages, setWsMessages] = useState([]); // TODO: use local storage?
-  const appendWsMessage = (msgObj) => {
-    setWsMessages([ ...wsMessages, msgObj ]);
-  }
-  const [wsSesId, setWsSesId] = useState(null); // TODO: use local storage?
-  const onWsMessage = (msg) => {
-    const msgObj = JSON.parse(msg);
-    if (msgObj){
-      if (msgObj.kind && (msgObj.kind === 'ses') && msgObj.ses) {
-        setWsSesId(msgObj.ses);
-      }
-      // else ?
-      appendWsMessage(msgObj);
-    }
-  }
-
   let sectionContent = null;
-  const commonProps = { api, currentUserState, wsMessages };
+  const commonProps = { api, currentUserState };
   switch (section) {
     case 'home':       sectionContent = <FbSectionMyHome             {...commonProps} />; break;
     case 'posts':      sectionContent = <FbSectionMyPosts            {...commonProps} />; break;
     case 'new-post':   sectionContent = <FbSectionMyNewPost          {...commonProps} />; break;
     case 'search':     sectionContent = <FbSectionMySearchPostsByTag {...commonProps} tag={tag} />; break;
-    case 'neighbours': sectionContent = <FbSectionMyNeighbours       {...commonProps} wsMessages={wsMessages} wsSesId={wsSesId} appendWsMessage={appendWsMessage} />; break;
+    case 'neighbours': sectionContent = <FbSectionMyNeighbours       {...commonProps} />; break;
     case 'articles':
       if (articleId) {
         sectionContent = <FbSectionMyArticle {...commonProps} slug={slug} articleId={articleId} />;
@@ -78,22 +58,18 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
   }
 
   return (
-    <GeoLocationContextProvider>
-      <WebSocketContextProvider url={appConfig.ws.fullUrl} onMessage={onWsMessage}>
-        <Menu secondary>
-          {sections.map(({ name, href, iconName, label }) => (
-            <Menu.Item key={name} name={name} active={section === name}>
-              <FbLink to={href}><span><Icon name={iconName} /> {label}</span></FbLink>
-            </Menu.Item>
-          ))}
-          <Menu.Item name='signout' onClick={signout}><Icon name='sign-out' color='black' /></Menu.Item>
-          <Menu.Item name='location'><FbGeoLocationStatus /></Menu.Item>
-          <Menu.Item name='websocket'><FbWebSocketStatus /></Menu.Item>
-        </Menu>
-        <section>
-          {sectionContent}
-        </section>
-      </WebSocketContextProvider>
-    </GeoLocationContextProvider>
+    <>
+      <Menu secondary>
+        {sections.map(({ name, href, iconName, label }) => (
+          <Menu.Item key={name} name={name} active={section === name}>
+            <FbLink to={href}><span><Icon name={iconName} /> {label}</span></FbLink>
+          </Menu.Item>
+        ))}
+        <Menu.Item name='signout' onClick={signout}><Icon name='sign-out' color='black' /></Menu.Item>
+      </Menu>
+      <section>
+        {sectionContent}
+      </section>
+    </>
   )
 }
