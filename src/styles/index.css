@@ -4,9 +4,8 @@ body {
   margin: 0;
   padding: 0;
 }
-div#__next {
-  width: 95%;
-  margin: 5px;
+div#root {
+  margin: 2px;
 }
 
 div.fb-page {
@@ -22,6 +21,8 @@ div.fb-page {
 .fb-card-help-provided .ui.cards > .ui.card,
 .fb-post-summary .ui.card,
 .fb-post-summary .ui.cards > .ui.card,
+.fb-advert-summary .ui.card,
+.fb-advert-summary .ui.cards > .ui.card,
 .fb-card-idea .ui.card,
 .fb-card-idea .ui.cards > .ui.card
 {
@@ -36,9 +37,10 @@ div.fb-page {
 .fb-card-help-needed .ui.card .image img,
 .fb-card-help-provided .ui.card .image img,
 .fb-post-summary .ui.card .image img,
+.fb-advert-summary .ui.card .image img,
 .fb-post-idea .ui.card .image img
 {
-  /*width: 100%;*/
+  width: 100%;
 }
 
 .fb-page .ui.card,
@@ -64,25 +66,42 @@ div.fb-loading {
   justify-content: center;
 }
 
-div.fb-post-list {
+div.fb-post-list,
+div.fb-advert-list
+{
   padding: 0;
   margin: 0;
 }
-div.fb-post-list-item {
+
+div.fb-post-list-item,
+div.fb-advert-list-item
+{
   margin-bottom: 5px;
 }
 
-div.fb-post-list-item div.image img {
+div.fb-post-list-item div.image img,
+div.fb-advert-list-item div.image img
+{
   width: 100%;
 }
-div.fb-post-list-item .description img {
+
+div.fb-post-list-item .description img,
+div.fb-advert-list-item .description img
+{
   width: 100%;
 }
-div.fb-post-summary .description img {
+
+div.fb-post-summary .description img,
+div.fb-advert-summary .description img
+{
   width: 100%;
 }
+
 div.fb-post-list-item .ui.card .meta,
-div.fb-post-list-item .ui.cards>.card .meta {
+div.fb-post-list-item .ui.cards>.card .meta,
+div.fb-advert-list-item .ui.card .meta,
+div.fb-advert-list-item .ui.cards>.card .meta
+{
   font-size: 0.8em;
 }
 

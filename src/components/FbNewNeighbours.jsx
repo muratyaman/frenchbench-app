@@ -27,7 +27,7 @@ export function FbNewNeighbours({ api, currentUserState, socketCtx }) {
             <Feed.Label image={randomImg('person', 'small')} />
             <Feed.Content>
               <Feed.Summary>
-                <a>{neighbours.username}</a> joined
+                <a>{neighbours.username}</a> signed up
                 <Feed.Date>{neighbours.created_at}</Feed.Date>
               </Feed.Summary>
             </Feed.Content>

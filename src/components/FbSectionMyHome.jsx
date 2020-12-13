@@ -1,15 +1,24 @@
 import React from 'react';
-import { FbLoadingParagraph } from './FbLoadingParagraph';
-import { FbPostList } from './FbPostList';
-import { usePostSearch } from '../hooks/usePostSearch';
+import { Tab } from 'semantic-ui-react';
+import { FbPostSearch } from './FbPostSearch';
+import { FbAdvertSearch } from './FbAdvertSearch';
 
-export function FbSectionMyHome({ api, searchInput = {}, currentUserState }) {
-  const { data: posts = [], loading = false, error = null } = usePostSearch(api, {...searchInput, with_assets: true });
+export function FbSectionMyHome({ api, currentUserState }) {
+  const searchProps = { api, currentUserState }
+  const panes = [
+    {
+      menuItem: 'Posts',
+      render: () => <Tab.Pane as='div' attached={false}><FbPostSearch {...searchProps} /></Tab.Pane>,
+    },
+    {
+      menuItem: 'Adverts',
+      render: () => <Tab.Pane as='div' attached={false}><FbAdvertSearch {...searchProps} /></Tab.Pane>,
+    },
+  ];
+
   return (
-    <div className='fb-post-search'>
-      { loading && <FbLoadingParagraph /> }
-      { error && <p>Error loading posts</p>}
-      { posts && <FbPostList posts={posts} />}
+    <div className='fb-my-home'>
+      <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
     </div>
   )
 }

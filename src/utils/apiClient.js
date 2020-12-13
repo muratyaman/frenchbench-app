@@ -74,6 +74,16 @@ export function apiClient({ host, baseUrl, browser = null }) {
   const post_update   = async (id, input)  => _action('post_update', input, id);
   const post_delete   = async (id)         => _action('post_delete', {}, id);
 
+  // pass { user_id } or { username }
+  const advert_search_by_user                     = async (input) => _action('advert_search_by_user', input);
+  const advert_retrieve_by_username_and_advert_ref  = async (input) => _action('advert_retrieve_by_username_and_advert_ref', input);
+
+  const advert_search   = async (input = {}) => _action('advert_search', input);
+  const advert_create   = async (input)      => _action('advert_create', input);
+  const advert_retrieve = async (id)         => _action('advert_retrieve', {}, id);
+  const advert_update   = async (id, input)  => _action('advert_update', input, id);
+  const advert_delete   = async (id)         => _action('advert_delete', {}, id);
+
   const article_search   = async (input = {}) => _action('article_search', input);
   const article_retrieve = async ({ slug }, id = null)   => _action('article_retrieve', { slug }, id);
   const article_update   = async (id, input)  => _action('article_update', input, id);
@@ -83,6 +93,22 @@ export function apiClient({ host, baseUrl, browser = null }) {
 
   const entity_asset_create   = async (input) => _action('entity_asset_create', input);
   const entity_asset_delete   = async (id)    => _action('entity_asset_delete', {}, id);
+
+  const buyingOptionList = () => ([
+    { label: 'Take', id: '0' },
+    { label: 'Give', id: '1' },
+  ]);
+  
+  const serviceOptionList = () => ([
+    { label: 'Product', id: '0' },
+    { label: 'Service', id: '1' },
+  ]);
+  
+  const currencyOptionList = () => ([
+    { label: 'Pound Sterling', symbol: '£', id: 'GBP' },
+    { label: 'Euro',           symbol: '€', id: 'EUR' },
+    { label: 'US Dollar',      symbol: '$', id: 'USD' },
+  ]);
 
   return {
     _api,
@@ -111,6 +137,15 @@ export function apiClient({ host, baseUrl, browser = null }) {
     post_update,
     post_delete,
 
+    advert_search_by_user,
+    advert_retrieve_by_username_and_advert_ref,
+    
+    advert_search,
+    advert_create,
+    advert_retrieve,
+    advert_update,
+    advert_delete,
+
     article_search,
     article_retrieve,
     article_update,
@@ -120,5 +155,11 @@ export function apiClient({ host, baseUrl, browser = null }) {
 
     entity_asset_create,
     entity_asset_delete,
+
+    options: {
+      buyingOptionList,
+      serviceOptionList,
+      currencyOptionList,
+    }
   };
 }

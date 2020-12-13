@@ -6,9 +6,11 @@ export function makeRoutes() {
     { path: '/app/my/:section/article/:articleId', component: pages.AppMySectionPage },
     { path: '/app/my/:section',                    component: pages.AppMySectionPage },
 
-    { path: '/app/user/:username/post/:post_ref', component: pages.AppUserPostPage },
-    { path: '/app/user/:username/posts',          component: pages.AppUserPostsPage },
-    { path: '/app/user/:username',                component: pages.AppUserIndexPage },
+    { path: '/app/user/:username/post/:post_ref',     component: pages.AppUserPostPage },
+    { path: '/app/user/:username/posts',              component: pages.AppUserPostsPage },
+    { path: '/app/user/:username/advert/:advert_ref', component: pages.AppUserAdvertPage },
+    { path: '/app/user/:username/adverts',            component: pages.AppUserAdvertsPage },
+    { path: '/app/user/:username',                    component: pages.AppUserIndexPage },
 
     { path: '/app', component: pages.AppMySectionPage }, // defaults to '/app/my/home'
 

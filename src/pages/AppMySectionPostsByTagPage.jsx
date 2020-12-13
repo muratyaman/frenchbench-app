@@ -13,7 +13,7 @@ export function AppMySectionPostsByTagPage({ appConfig, api, i18n }) {
 
   if (!isMounted) return (<Loading content={i18n._(I18N_KEYS.common_loading) + ' ...'} />);
 
-  const layoutProps = { appConfig, title: 'Home', currentUserState, i18n };
+  const layoutProps = { appConfig, title: 'Posts', currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
       <FbMyProfile currentUserState={currentUserState} i18n={i18n} />

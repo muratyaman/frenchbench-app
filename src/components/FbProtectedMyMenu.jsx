@@ -5,6 +5,8 @@ import { FbLink } from './FbLink';
 import { FbSectionMyHome } from './FbSectionMyHome';
 import { FbSectionMyPosts } from './FbSectionMyPosts';
 import { FbSectionMyNewPost } from './FbSectionMyNewPost';
+import { FbSectionMyAdverts } from './FbSectionMyAdverts';
+import { FbSectionMyNewAdvert } from './FbSectionMyNewAdvert';
 import { FbSectionMySearchPostsByTag } from './FbSectionMySearchPostsByTag';
 import { FbSectionMyNeighbours } from './FbSectionMyNeighbours';
 import { FbSectionMyArticle } from './FbSectionMyArticle';
@@ -18,8 +20,10 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
   const sections = [
     { name: 'home',       href: '/app/my/home',       label: ' ',        iconName: 'home' },
     { name: 'posts',      href: '/app/my/posts',      label: 'My Posts', iconName: 'write square' },
-    { name: 'new-post',   href: '/app/my/new-post',   label: 'New Post', iconName: 'newspaper' },
+    { name: 'new-post',   href: '/app/my/new-post',   label: 'New', iconName: ['write square', 'add'] },
     { name: 'search',     href: '/app/my/search/posts-by-tag/help', label: ' ', iconName: 'search' },
+    { name: 'adverts',    href: '/app/my/adverts',    label: 'My Adverts', iconName: 'newspaper' },
+    { name: 'new-advert', href: '/app/my/new-advert', label: 'New', iconName: ['newspaper', 'add'] },
     { name: 'neighbours', href: '/app/my/neighbours', label: ' ', iconName: 'users' },
   ];
 
@@ -44,6 +48,8 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
     case 'posts':      sectionContent = <FbSectionMyPosts            {...commonProps} />; break;
     case 'new-post':   sectionContent = <FbSectionMyNewPost          {...commonProps} />; break;
     case 'search':     sectionContent = <FbSectionMySearchPostsByTag {...commonProps} tag={tag} />; break;
+    case 'adverts':    sectionContent = <FbSectionMyAdverts          {...commonProps} />; break;
+    case 'new-advert': sectionContent = <FbSectionMyNewAdvert        {...commonProps} />; break;
     case 'neighbours': sectionContent = <FbSectionMyNeighbours       {...commonProps} />; break;
     case 'articles':
       if (articleId) {
@@ -62,7 +68,19 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
       <Menu secondary>
         {sections.map(({ name, href, iconName, label }) => (
           <Menu.Item key={name} name={name} active={section === name}>
-            <FbLink to={href}><span><Icon name={iconName} /> {label}</span></FbLink>
+            <FbLink to={href}>
+              <span>
+                {Array.isArray(iconName) ? (
+                  <Icon.Group>
+                    <Icon name={iconName[0]} />
+                    <Icon corner name={iconName[1]} color='red' />
+                  </Icon.Group>
+                ) : (
+                  <Icon name={iconName} />
+                )}
+                {label}
+              </span>
+            </FbLink>
           </Menu.Item>
         ))}
         <Menu.Item name='signout' onClick={signout}><Icon name='sign-out' color='black' /></Menu.Item>

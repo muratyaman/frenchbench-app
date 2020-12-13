@@ -16,7 +16,7 @@ export function AppUserPostPage({ appConfig, api, i18n }) {
 
   if (!isMounted) return (<Loading content={i18n._(I18N_KEYS.common_loading) + ' ...'} />);
 
-  const layoutProps = { appConfig, title: 'Home', currentUserState, i18n };
+  const layoutProps = { appConfig, title: 'Post', currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
       <FbProtectedUserMenu {...userMenuProps} />

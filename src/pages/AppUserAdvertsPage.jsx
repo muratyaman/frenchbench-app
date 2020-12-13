@@ -6,9 +6,9 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useUser } from '../hooks/useUser';
 import { I18N_KEYS } from '../utils/i18n';
 
-export function AppUserPostsPage({ appConfig, api, i18n }) {
+export function AppUserAdvertsPage({ appConfig, api, i18n }) {
   const { username } = useParams();
-  const section = 'posts';
+  const section = 'adverts';
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);
   const userState = useUser(api, { username });
@@ -16,7 +16,7 @@ export function AppUserPostsPage({ appConfig, api, i18n }) {
 
   if (!isMounted) return (<Loading content={i18n._(I18N_KEYS.common_loading) + ' ...'} />);
 
-  const layoutProps = { appConfig, title: 'Posts', currentUserState, i18n };
+  const layoutProps = { appConfig, title: 'Adverts', currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
       <FbProtectedUserMenu {...userMenuProps} />
