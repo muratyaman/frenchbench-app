@@ -22,7 +22,7 @@ export const SOCKET_STATUS_LABELS = {
   [SOCKET_STATUS_CLOSED]:     'closed',
 };
 
-export const defaultContext = {
+export const WS_defaultContext = {
   lastError: null,
   lastMessage: null,
   messages: [],
@@ -31,7 +31,7 @@ export const defaultContext = {
   socketStatusFlags: () => {},
 };
 
-export const WebSocketContext = React.createContext(defaultContext);
+export const WebSocketContext = React.createContext(WS_defaultContext);
 
 export class WebSocketContextProvider extends React.Component {
 
@@ -43,7 +43,7 @@ export class WebSocketContextProvider extends React.Component {
     this.sesId = null;
     this.timerId = null;
     this.state = {
-      ...defaultContext,
+      ...WS_defaultContext,
       open: this.open,
       close: this.close,
       send: this.send,

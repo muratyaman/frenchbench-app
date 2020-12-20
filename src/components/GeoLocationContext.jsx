@@ -4,7 +4,7 @@ import { geoDistance, GeoPos } from '../utils/geo';
 
 export const LOCATION_CHANGE_THRESHOLD = 10; // metres
 
-export const defaultContext = {
+export const GL_defaultContext = {
   error: null,
   location: null,
   startWatching: () => {},
@@ -12,13 +12,13 @@ export const defaultContext = {
 };
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
-export const defaultOptions = {
+export const GL_defaultOptions = {
   enableHighAccuracy: true,
   timeout: 60 * 1000,
   maximumAge: 60 * 1000,
 };
 
-export const GeoLocationContext = React.createContext(defaultContext);
+export const GeoLocationContext = React.createContext(GL_defaultContext);
 
 export class GeoLocationContextProvider extends React.Component {
 
@@ -29,7 +29,7 @@ export class GeoLocationContextProvider extends React.Component {
     this.unmounting = false;
     this.watchId = null;
     this.state = {
-      ...defaultContext,
+      ...GL_defaultContext,
       startWatching: this.startWatching,
       stopWatching: this.stopWatching,
       error: this.geo ? null : 'geolocation not supported',
@@ -39,7 +39,7 @@ export class GeoLocationContextProvider extends React.Component {
   startWatching = (ev) => {
     console.log('GeoLocationContextProvider.startWatching', ev);
     if (this.geo) {
-      const { options = defaultOptions } = this.props;
+      const { options = GL_defaultOptions } = this.props;
       try {
         this.watchId = this.geo.watchPosition(this.onLocation, this.onError, options);
       } catch (err) {
