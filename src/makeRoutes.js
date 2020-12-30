@@ -1,27 +1,28 @@
-import * as pages from './pages';
+import * as privatePages from './privatePages';
+import * as publicPages from './publicPages';
 
 export function makeRoutes() {
   return [
-    { path: '/app/my/:section/posts-by-tag/:tag',  component: pages.AppMySectionPostsByTagPage },
-    { path: '/app/my/:section/article/:articleId', component: pages.AppMySectionPage },
-    { path: '/app/my/:section',                    component: pages.AppMySectionPage },
+    { path: '/app/my/:section/posts-by-tag/:tag',  component: privatePages.AppMySectionPostsByTagPage },
+    { path: '/app/my/:section/article/:articleId', component: privatePages.AppMySectionPage },
+    { path: '/app/my/:section',                    component: privatePages.AppMySectionPage },
 
-    { path: '/app/user/:username/post/:post_ref',     component: pages.AppUserPostPage },
-    { path: '/app/user/:username/posts',              component: pages.AppUserPostsPage },
-    { path: '/app/user/:username/advert/:advert_ref', component: pages.AppUserAdvertPage },
-    { path: '/app/user/:username/adverts',            component: pages.AppUserAdvertsPage },
-    { path: '/app/user/:username',                    component: pages.AppUserIndexPage },
+    { path: '/app/user/:username/post/:post_ref',     component: privatePages.AppUserPostPage },
+    { path: '/app/user/:username/posts',              component: privatePages.AppUserPostsPage },
+    { path: '/app/user/:username/advert/:advert_ref', component: privatePages.AppUserAdvertPage },
+    { path: '/app/user/:username/adverts',            component: privatePages.AppUserAdvertsPage },
+    { path: '/app/user/:username',                    component: privatePages.AppUserIndexPage },
 
-    { path: '/app', component: pages.AppMySectionPage }, // defaults to '/app/my/home'
+    { path: '/app', component: privatePages.AppMySectionPage }, // defaults to '/app/my/home'
 
-    { path: '/info/article/:slug', component: pages.InfoArticlePage, ssr: 'InfoArticlePage' },
-    { path: '/info/i-can-help',    component: pages.InfoICanHelpPage },
-    { path: '/info/i-need-help',   component: pages.InfoINeedHelpPage },
-    { path: '/info/sign-in',       component: pages.InfoSignInPage },
-    { path: '/info/sign-up',       component: pages.InfoSignUpPage },
+    { path: '/info/article/:slug', component: publicPages.InfoArticlePage, ssr: 'InfoArticlePage' },
+    { path: '/info/i-can-help',    component: publicPages.InfoICanHelpPage },
+    { path: '/info/i-need-help',   component: publicPages.InfoINeedHelpPage },
+    { path: '/info/sign-in',       component: publicPages.InfoSignInPage },
+    { path: '/info/sign-up',       component: publicPages.InfoSignUpPage },
 
-    { path: '/info', component: pages.IndexPage, ssr: 'IndexPage' },
-    { path: '/',     component: pages.IndexPage, ssr: 'IndexPage' },
-    { path: '*',     component: pages.ErrorPage },
+    { path: '/info', component: publicPages.IndexPage, ssr: 'IndexPage' },
+    { path: '/',     component: publicPages.IndexPage, ssr: 'IndexPage' },
+    { path: '*',     component: publicPages.ErrorPage },
   ];
 }

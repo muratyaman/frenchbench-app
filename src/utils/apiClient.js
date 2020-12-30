@@ -14,11 +14,11 @@ export function apiClient({ host, baseUrl, browser = null }) {
   const _action = async (action, input = {}, id = null) => {
     const reqId = newUuid();
     console.log('api request', reqId, action, input, id);
-    let output = { data: null, error: null };
+    let output = { data: null, meta: null, error: null };
     try {
       const headers = { 'x-fb-request-id': reqId };
       const res = await _api.post('', { action, input, id }, { headers }); // to avoid 308 perm. redirect from '/api/' to '/api'
-      output = res.data; // return body; expecting { data, error }
+      output = res.data; // return body; expecting { data, meta, error }
     } catch (err) {
       output.error = err.message;
     }
@@ -29,11 +29,11 @@ export function apiClient({ host, baseUrl, browser = null }) {
   const _upload = async (form, options = {}) => {
     const reqId = newUuid();
     console.log('api request upload', reqId, form);
-    let output = { data: null, error: null };
+    let output = { data: null, meta: null, error: null };
     try {
       const headers = { 'x-fb-request-id': reqId };
       const res = await _api.post('/upload', form, { headers, ...options }); // to avoid 308 perm. redirect from '/api/' to '/api'
-      output = res.data; // return body; expecting { data, error }
+      output = res.data; // return body; expecting { data, meta, error }
     } catch (err) {
       output.error = err.message;
     }

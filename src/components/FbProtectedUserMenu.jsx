@@ -1,18 +1,18 @@
 import React from 'react';
 import { Menu, Icon } from 'semantic-ui-react';
+import { FbSectionUserAdvert } from '../sections/FbSectionUserAdvert';
+import { FbSectionUserAdverts } from '../sections/FbSectionUserAdverts';
+import { FbSectionUserHome } from '../sections/FbSectionUserHome';
+import { FbSectionUserPost } from '../sections/FbSectionUserPost';
+import { FbSectionUserPosts } from '../sections/FbSectionUserPosts';
 import { FbLink } from './FbLink';
-import { FbSectionUserHome } from './FbSectionUserHome';
-import { FbSectionUserPost } from './FbSectionUserPost';
-import { FbSectionUserPosts } from './FbSectionUserPosts';
-import { FbSectionUserAdvert } from './FbSectionUserAdvert';
-import { FbSectionUserAdverts } from './FbSectionUserAdverts';
 
 // NOTE: use only after mounting on client side
 export function FbProtectedUserMenu({ username, section = 'home', api, userState, post_ref = null, advert_ref = null }) {
   const sections = [
-    { name: 'home',  href: `/app/user/${username}`,       label: username, iconName: 'user circle' },
-    { name: 'posts', href: `/app/user/${username}/posts`, label: 'Posts',  iconName: 'write square' },
-    { name: 'adverts', href: `/app/user/${username}/adverts`, label: 'Adverts',  iconName: 'newspaper' },
+    { name: 'home',    href: `/app/user/${username}`,         label: username,  iconName: 'user circle' },
+    { name: 'posts',   href: `/app/user/${username}/posts`,   label: 'Posts',   iconName: 'write square' },
+    { name: 'adverts', href: `/app/user/${username}/adverts`, label: 'Adverts', iconName: 'newspaper' },
   ];
   
   let sectionContent = null;

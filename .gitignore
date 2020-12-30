@@ -117,3 +117,5 @@ packages/common/build/
 packages/server/build/
 
 tsconfig.tsbuildinfo
+
+.DS_Store

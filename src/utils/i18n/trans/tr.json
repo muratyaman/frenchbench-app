@@ -1,0 +1,27 @@
+{
+  "home_welcome": "Hoşgeldin",
+  "home_loneliness": "Yalnızlık",
+  "home_loneliness_quote": "Mutluyken veya üzgünken hiç kimse yalnız kalmamalı",
+
+  "common_and": "ve",
+  "common_need": "Yok",
+  "common_can": "Var",
+  "common_i_need_help": "Yardım lazım",
+  "common_i_can_help": "Yardım edebilirim",
+  "common_terms": "Kullanım Koşulları",
+  "common_privacy": "Kişisel Veriler Koşulları",
+  "common_redirecting": "Yönlendiriliyor",
+  "common_loading": "Yükleniyor",
+
+  "account_sign_in": "Giriş Yap",
+  "account_signin_prompt": "Mahallede neler oluyor öğren",
+  "account_if_account": "Eğer bir hesabın varsa",
+
+  "account_sign_up": "Üye Ol",
+  "account_signup_prompt": "Hesabını sonra düzenleyebilirsin",
+  "account_if_no_account": "Eğer bir hesabın yoksa",
+  
+  "account_great_you_here": "Burada olduğuna sevindik!",
+
+  "article_not_found": "makale bulunamadı"
+}

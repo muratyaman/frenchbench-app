@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Menu, Icon } from 'semantic-ui-react';
+import { FbSectionMyAdverts } from '../sections/FbSectionMyAdverts';
+import { FbSectionMyHome } from '../sections/FbSectionMyHome';
+import { FbSectionMyNeighbours } from '../sections/FbSectionMyNeighbours';
+import { FbSectionMyNewAdvert } from '../sections/FbSectionMyNewAdvert';
+import { FbSectionMyNewPost } from '../sections/FbSectionMyNewPost';
+import { FbSectionMyPosts } from '../sections/FbSectionMyPosts';
+import { FbSectionMySearchPostsByTag } from '../sections/FbSectionMySearchPostsByTag';
 import { FbLink } from './FbLink';
-import { FbSectionMyHome } from './FbSectionMyHome';
-import { FbSectionMyPosts } from './FbSectionMyPosts';
-import { FbSectionMyNewPost } from './FbSectionMyNewPost';
-import { FbSectionMyAdverts } from './FbSectionMyAdverts';
-import { FbSectionMyNewAdvert } from './FbSectionMyNewAdvert';
-import { FbSectionMySearchPostsByTag } from './FbSectionMySearchPostsByTag';
-import { FbSectionMyNeighbours } from './FbSectionMyNeighbours';
-import { FbSectionMyArticle } from './FbSectionMyArticle';
-import { FbSectionMyArticles } from './FbSectionMyArticles';
-
 
 // NOTE: use only after mounting on client side
 export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUserState, i18n, tag = null, slug = null, articleId = null }) {

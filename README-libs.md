@@ -1,42 +1,43 @@
-# re-install dependencies
+# prepare
 
-```
-npm i -S react react-dom
-npm i -S prop-types
+update package.json, remove sections `devDependencies` and `dependencies`
 
-npm i -S next
+delete `yarn.lock` and `node_modules`
 
-npm i -S aws-sdk
-npm i -S axios
-npm i -S bcrypt
-npm i -S date-fns
-npm i -S formidable
-npm i -S jsonwebtoken
-npm i -S md5
+run `re-install-lib.sh`
 
-npm i -S pg
-
-npm i -S react-text-loop
-npm i -S semantic-ui-react
-npm i -S semantic-ui-css
-
-npm i -S sharp
-
-npm i -S uuid
-```
+which has following commands
 
 # re-install devDependencies
 
 ```
-npm i -D typescript
-npm i -D ts-node
+yarn add -D ts-node
+yarn add -D typescript
+```
 
-npm i -D @types/node
-npm i -D @types/react
-npm i -D @types/react-dom
+# re-install dependencies
 
-npm i -D node-sass
-
-npm i -D eslint
-npm i -D @typescript-eslint/eslint-plugin @typescript-eslint/parser
+```
+yarn add @babel/core
+yarn add @babel/plugin-proposal-class-properties
+yarn add @babel/plugin-transform-runtime
+yarn add @babel/register
+yarn add axios
+yarn add date-fns
+yarn add dotenv
+yarn add express
+yarn add http-proxy-middleware
+yarn add morgan
+yarn add prop-types
+yarn add react
+yarn add react-dom
+yarn add react-helmet
+yarn add react-mde
+yarn add react-router-dom
+yarn add react-scripts
+yarn add react-text-loop
+yarn add remark
+yarn add remark-html
+yarn add semantic-ui-react semantic-ui-css
+yarn add uuid
 ```

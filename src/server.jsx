@@ -9,8 +9,9 @@ import ReactDOMServer from 'react-dom/server';
 import { matchPath, StaticRouter } from 'react-router-dom';
 import { newAppConfig } from './appConfig';
 import { apiClient } from './utils/apiClient';
-import { newI18N } from './utils/i18n';
+import { defaultLocaleCode } from './utils/i18n';
 import { App } from './App';
+import { FbApiContextProvider, FbI18nContextProvider } from './contexts';
 import { makeRoutes } from './makeRoutes.js';
 
 console.log('FrenchBench API starting...', process.env);
@@ -82,12 +83,13 @@ async function sendPage(req, res) { // server-side rendering of all pages
     context: {},
   };
 
-  const localeCode = 'en'; // TODO: detect locale code
-  const i18n = newI18N(localeCode);
+  const appConfig = newAppConfig(process.env);
+  const localeCode = defaultLocaleCode(); // TODO: detect locale code
+  
   const ssrDataProvider = makeSsrDataProvider();
-
+  
   const { initialState, content } = await ssrHtml({
-    req, res, initialState, staticRouterProps, routes, appConfig: newAppConfig(process.env), api, i18n, ssrDataProvider,
+    req, res, initialState, staticRouterProps, routes, appConfig, api, localeCode, ssrDataProvider,
   });
 
   const initialStateJson = JSON.stringify(initialState);
@@ -137,9 +139,13 @@ async function ssrHtml({
 
   const content = ReactDOMServer.renderToString(
     <React.StrictMode>
-      <StaticRouter {...staticRouterProps}>
-        <App {...appProps} />
-      </StaticRouter>
+      <FbApiContextProvider apiConfig={appConfig.api} api={api}>
+        <FbI18nContextProvider localeCode={localeCode}>
+          <StaticRouter {...staticRouterProps}>
+            <App {...appProps} />
+          </StaticRouter>
+        </FbI18nContextProvider>
+      </FbApiContextProvider>
     </React.StrictMode>
   );
   return { content, initialState };
@@ -148,7 +154,7 @@ async function ssrHtml({
 function makeSsrDataProvider() {
   return {
     IndexPage: async ({ req, res, api, i18n }) => {
-      console.log('IndexPage ssr', req.path);
+      console.log('IndexPage SSR', req.path);
       const slug = 'home';
       let ssrData = { slug, data: null, error: null };
       try {
@@ -160,7 +166,7 @@ function makeSsrDataProvider() {
       return { ssrData };
     },
     InfoArticlePage: async ({ req, res, api, i18n }) => {
-      console.log('InfoArticlePage ssr', req.path);
+      console.log('InfoArticlePage SSR', req.path);
       const { slug = null } = req.params;
       let ssrData = { slug, data: null, error: null };
       if (slug) {
