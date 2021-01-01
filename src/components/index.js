@@ -3,6 +3,7 @@ export * from './FbFooter';
 export * from './FbHashTagLinkList';
 export * from './FbLink';
 export * from './FbLoadingParagraph';
+export * from './FbLocaleSwitch';
 export * from './FbLogo';
 export * from './FbNewNeighbours';
 export * from './FbProfileLink';

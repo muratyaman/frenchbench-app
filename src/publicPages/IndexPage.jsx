@@ -12,12 +12,12 @@ export function IndexPage({ api, i18n }) {
       <h1>{i18n.home_welcome()}</h1>
       <Grid>
         <Grid.Column mobile={16} tablet={8} computer={8}>
-          <FbCardCommunity />
+          <FbCardCommunity i18n={i18n} />
         </Grid.Column>
         
         {!currentUserState.data && 
           <Grid.Column mobile={16} tablet={8} computer={8}>
-            <FbCallToAccount />
+            <FbCallToAccount i18n={i18n} />
           </Grid.Column>}
         
         <Grid.Column mobile={16} tablet={8} computer={8}>

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 import { Icon, Image, Menu } from 'semantic-ui-react';
-import { FbFooter, FbLink, FbProfileLink } from '../components';
+import { FbFooter, FbLink, FbLocaleSwitch, FbProfileLink } from '../components';
 import { FbI18nContext } from '../contexts';
 
 // fixed menu at top. rendered on both client-side and server-side
@@ -32,7 +32,10 @@ export function PublicLayout(props) {
           </FbLink>
         </Menu.Item>
         <Menu.Item>
-          <FbProfileLink currentUserState={currentUserState} />
+          <FbProfileLink currentUserState={currentUserState} i18n={i18n} />
+        </Menu.Item>
+        <Menu.Item>
+          <FbLocaleSwitch />
         </Menu.Item>
       </Menu>
 

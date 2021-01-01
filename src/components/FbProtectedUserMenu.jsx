@@ -1,10 +1,5 @@
 import React from 'react';
 import { Menu, Icon } from 'semantic-ui-react';
-import { FbSectionUserAdvert } from '../sections/FbSectionUserAdvert';
-import { FbSectionUserAdverts } from '../sections/FbSectionUserAdverts';
-import { FbSectionUserHome } from '../sections/FbSectionUserHome';
-import { FbSectionUserPost } from '../sections/FbSectionUserPost';
-import { FbSectionUserPosts } from '../sections/FbSectionUserPosts';
 import { FbLink } from './FbLink';
 
 // NOTE: use only after mounting on client side
@@ -15,6 +10,7 @@ export function FbProtectedUserMenu({ username, section = 'home', api, userState
     { name: 'adverts', href: `/app/user/${username}/adverts`, label: 'Adverts', iconName: 'newspaper' },
   ];
   
+  /*
   let sectionContent = null;
   const commonProps = { api, userState, username };
   switch (section) {
@@ -38,6 +34,7 @@ export function FbProtectedUserMenu({ username, section = 'home', api, userState
     default:
       sectionContent = <div>page not found</div>;
   }
+  */
   return (
     <>
       <Menu secondary>
@@ -47,9 +44,6 @@ export function FbProtectedUserMenu({ username, section = 'home', api, userState
           </Menu.Item>
         ))}
       </Menu>
-      <section>
-        {sectionContent}
-      </section>
     </>
   )
 }

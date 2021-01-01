@@ -3,6 +3,7 @@
   "home_loneliness": "Loneliness",
   "home_loneliness_quote": "No one should be alone in happiness or sadness",
 
+  "common_error": "Error",
   "common_and": "and",
   "common_need": "Need",
   "common_can": "Can",
@@ -12,16 +13,37 @@
   "common_privacy": "Privacy Policy",
   "common_redirecting": "Redirecting",
   "common_loading": "Loading",
+  "common_please_read": "Please read",
+
+  "common_relevant": "relevant",
+  "common_local": "local",
+  "common_keep_helping_with_your": "keep helping with your",
+  "common_time": "time",
+  "common_knowledge": "knowledge",
+  "common_products": "products",
+  "common_services": "services",
+  "common_find_receive_help_in_your": "find/receive help in your",
+  "common_in_neighbourhood": "neighbourhood",
+  "common_neighbourhood": "neighbourhood",
+  "common_happy": "happy",
+  "common_exchanging": "exchanging",
 
   "account_sign_in": "Sign In",
   "account_signin_prompt": "Check what's happening in your neighbourhood",
   "account_if_account": "If you have an account",
+  "account_you_have_an_account": "You have an account",
+  "account_have_one_in_a_minute": "Have one in a minute",
 
   "account_sign_up": "Sign Up",
   "account_signup_prompt": "You can manage your account later",
   "account_if_no_account": "If you do not have an account",
   
   "account_great_you_here": "It's great to have you here!",
+
+  "account_username": "Username",
+  "account_password": "Password",
+  "account_confirm_password": "Confirm Password",
+  "account_password_rules": "Password should have at least 8 characters\nUse at least one lower case letter: a...z\nUse at least one upper case letter: A...Z\nUse at least one number: 0...9\nUse at least one special character:\n. , - _ < > ? ! @ $ ; : ( ) & % + - * / \\",
 
   "article_not_found": "article not found"
 }

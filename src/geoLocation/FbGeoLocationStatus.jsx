@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
 import { formatDistanceToNow } from 'date-fns';
-import { usePermissions, PERM_NAME_GEOLOCATION } from '../../hooks/usePermissions';
+import { usePermissions, PERM_NAME_GEOLOCATION } from '../hooks/usePermissions';
 import { FbGeoLocationContext } from './FbGeoLocationContext';
 
 const factor = 1000000;

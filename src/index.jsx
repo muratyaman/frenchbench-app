@@ -14,7 +14,8 @@ import './styles/index.css';
 const initialState = window.__INITIAL_STATE__ || {};
 delete window.__INITIAL_STATE__;
 
-const localeCode = defaultLocaleCode(navigator.language); // TODO: pick from browser, cookie, etc.
+const lang = navigator.language ?? null; // TODO: pick from browser, cookie, etc.
+const localeCode = defaultLocaleCode(lang);
 const appConfig = newAppConfig(process.env);
 const appProps = { appConfig, initialState, pageProps: {}, ssr: false };
 

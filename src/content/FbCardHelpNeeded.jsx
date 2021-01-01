@@ -12,7 +12,7 @@ export function FbCardHelpNeeded({ i18n }) {
           <Card.Header>I Need Help</Card.Header>
           <Card.Description>
             <div>
-              <span>&#9733; I need&nbsp;</span>
+              <span>⭐️ I need&nbsp;</span>
               <TextLoop>
                 <span>to talk to someone</span>
                 <span>to learn coding</span>

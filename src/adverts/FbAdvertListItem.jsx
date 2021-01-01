@@ -2,8 +2,8 @@ import React from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { randomImgSrc } from '../utils/randomImgSrc';
-import { makeAdvertLink } from '../utils/makeAdvertLink';
-import { makeHashTagList } from '../utils/makeHashTagLinkList';
+import { makeAdvertLink } from '../makeRoutes';
+import { makeHashTagList } from '../utils/makeHashTagList';
 import { FbHashTagLinkList, FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
 

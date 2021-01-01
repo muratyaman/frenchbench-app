@@ -1,27 +1,23 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { FbProtectedUserMenu, Loading } from '../components';
-import { FbSectionUserPosts } from '../sections/FbSectionUserPosts';
+import { Loading } from '../components';
+import { FbSectionPostsByTag } from '../sections/FbSectionPostsByTag';
 import { useMounted } from '../hooks/useMounted';
 import { useCurrentUser } from '../hooks/useCurrentUser';
-import { useUser } from '../hooks/useUser';
 
-export function AppUserPostsPage({ appConfig, api, i18n }) {
-  const { username } = useParams();
-  const section = 'posts';
+export function AppPostsByTagPage({ appConfig, api, i18n }) {
+  const { section = 'search', tag = '' } = useParams();
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);
-  const userState = useUser(api, { username });
 
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
   const layoutProps = { appConfig, title: 'Posts', currentUserState, i18n };
-  const userMenuProps = { username, section, api, userState, currentUserState, i18n };
+  const myMenuProps = { section, tag, api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
-      <FbProtectedUserMenu {...userMenuProps} />
-      <FbSectionUserPosts {...userMenuProps} />
+      <FbSectionPostsByTag {...myMenuProps} />
     </ProtectedLayout>
   );
 }

@@ -8,9 +8,13 @@ export const localeCodeEn = 'en';
 export const localeCodeTr = 'tr';
 
 export const localeCodes = [
-  { code: localeCodeEn, name: 'English', pattern: /en.*/i },
-  { code: localeCodeTr, name: 'Türkçe',  pattern: /tr.*/i },
+  { code: localeCodeEn, name: 'English', pattern: /en.*/i, flag: 'gb' },
+  { code: localeCodeTr, name: 'Türkçe',  pattern: /tr.*/i, flag: 'tr' },
 ];
+
+export const countryOptions = localeCodes.map(({ code, name, flag }) => (
+  { key: code, value: code, flag, text: '', content: name }
+));
 
 export const translations = {
   [localeCodeEn]: en,
@@ -18,7 +22,7 @@ export const translations = {
 };
 
 export function defaultLocaleCode(localeExpression = '') {
-  if (localeExpression !== '') {
+  if (localeExpression && (localeExpression !== '')) {
     const le = localeExpression.toLowerCase();
     const found = localeCodes.find(row => row.code === le || row.pattern.test(localeExpression));
     if (found) return found.code;
@@ -29,12 +33,22 @@ export function defaultLocaleCode(localeExpression = '') {
 // to match strings like 'my name is {first_name}'
 export const VAR_PATTERN = /\{([^\}]+)\}/g;
 
-export function template(txt = '', ctx = {}) {
-  const replaceEachWith = (match, name) => match && name ? (name in ctx ? ctx[name] : `{${name}}`) : 'NULL';
-  return txt.replaceAll(VAR_PATTERN, replaceEachWith);
+export function template(txt = '', ctx = null) {
+  if (!ctx) return txt;
+
+  const replaceEachWith = (match, name) => {
+    if (match && name) {
+      if (name in ctx) return ctx[name];
+      return `{${name}}`;
+    }
+    return 'NULL';
+  };
+  
+  return String(txt).replaceAll(VAR_PATTERN, replaceEachWith);
 }
 
 export function newI18N(_code = null) {
+  console.log('newI18N', _code);
   if (!_code) _code = defaultLocaleCode();
   
   if (!(_code in translations)) {
@@ -43,7 +57,11 @@ export function newI18N(_code = null) {
   
   const _lookup = translations[_code];
 
-  const translate = (key, ctx = {}) => (_lookup[key] ? template(_lookup[key], ctx) : `[${key}]`);
+  const translate = (key, ctx = null) => {
+    return ((key in _lookup) ? template(_lookup[key], ctx) : `[${key}]`);
+  }
+
+  const coreProps = ['_code', '_lookup', '_'];
 
   const i18n = {
     _code,
@@ -53,19 +71,18 @@ export function newI18N(_code = null) {
 
   // extend obj: translations by added methods
   //Object.entries(I18N_KEYS).forEach(([k,v]) => {
-  //  obj[k] = (ctx = {}) => translate(k, ctx);
+  //  obj[k] = (ctx = null) => translate(k, ctx);
   //});
 
   const handler = {
     // translation by virtual prop access
     get: (target, property) => {
-      if (['_code', '_lookup', '_'].includes(property)) return target[property];
-      return function(ctx = {}) {
+      if (coreProps.includes(property)) return target[property];
+      return function(ctx = null) {
         return translate(property, ctx); // artificial method using I18N_KEYS
       }
     },
   };
-  const i18nProxy = new Proxy(i18n, handler);
 
-  return i18nProxy;
+  return new Proxy(i18n, handler);
 }

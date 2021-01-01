@@ -4,8 +4,8 @@ import { Card, Image } from 'semantic-ui-react';
 import { FbHashTagLinkList, FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
 import { randomImgSrc } from '../utils/randomImgSrc';
-import { makePostLink } from '../utils/makePostLink';
-import { makeHashTagList } from '../utils/makeHashTagLinkList';
+import { makePostLink, makeUserProfileLink } from '../makeRoutes';
+import { makeHashTagList } from '../utils/makeHashTagList';
 
 export function FbPostDetails({ post, username }) {
   const { title = '', content = '', tags = '', created_at = null, post_ref, assets = [] } = post;
@@ -17,12 +17,13 @@ export function FbPostDetails({ post, username }) {
   const link = makePostLink({ username, post_ref });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
-  const contentLines = content.split('\n').map((line, idx) => (<p key={`${idx}-${line}`}>{line}</p>))
+  const contentLines = content.split('\n').map((line, idx) => (<p key={`${idx}-${line}`}>{line}</p>));
+  const userProfileLink = makeUserProfileLink({ username });
   return (
     <div className='fb-post-list-item'>
       <Card>
         <Card.Content>
-          <FbLink to={`/app/user/${username}`}><Image floated='right' size='mini' src={avatarSrc} /></FbLink>
+          <FbLink to={userProfileLink}><Image floated='right' size='mini' src={avatarSrc} /></FbLink>
           <Card.Header>{title}</Card.Header>
           <Card.Meta>{username} posted {dt} ago</Card.Meta>
           <Card.Description>

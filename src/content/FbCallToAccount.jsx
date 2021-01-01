@@ -9,16 +9,16 @@ export function FbCallToAccount({ i18n }) {
       <Segment>
         <Grid columns={2}>
           <Grid.Column textAlign='center'>
-            <Header as='h5'>You have an account</Header>
+            <Header as='h5'>{i18n.account_you_have_an_account()}</Header>
             <FbLink to='/info/sign-in'>
-              <Button icon labelPosition='left' color='purple' size='small' type='button'><Icon name='sign-in' />Sign In</Button>
+              <Button icon labelPosition='left' color='purple' size='small' type='button'><Icon name='sign-in' />{i18n.account_sign_in()}</Button>
             </FbLink>
           </Grid.Column>
 
           <Grid.Column textAlign='center'>
-            <Header as='h5'>Have one in a minute</Header>
+            <Header as='h5'>{i18n.account_have_one_in_a_minute()}</Header>
             <FbLink to='/info/sign-up'>
-              <Button icon labelPosition='left' secondary size='small' type='button'><Icon name='signup' />Sign up</Button>
+              <Button icon labelPosition='left' secondary size='small' type='button'><Icon name='signup' />{i18n.account_sign_up()}</Button>
             </FbLink>
           </Grid.Column>
         </Grid>

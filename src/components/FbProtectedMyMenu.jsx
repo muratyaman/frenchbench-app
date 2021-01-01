@@ -1,13 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Menu, Icon } from 'semantic-ui-react';
-import { FbSectionMyAdverts } from '../sections/FbSectionMyAdverts';
-import { FbSectionMyHome } from '../sections/FbSectionMyHome';
-import { FbSectionMyNeighbours } from '../sections/FbSectionMyNeighbours';
-import { FbSectionMyNewAdvert } from '../sections/FbSectionMyNewAdvert';
-import { FbSectionMyNewPost } from '../sections/FbSectionMyNewPost';
-import { FbSectionMyPosts } from '../sections/FbSectionMyPosts';
-import { FbSectionMySearchPostsByTag } from '../sections/FbSectionMySearchPostsByTag';
 import { FbLink } from './FbLink';
 
 // NOTE: use only after mounting on client side
@@ -38,6 +31,7 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
     history.push('/');
   }
 
+  /*
   let sectionContent = null;
   const commonProps = { api, currentUserState };
   switch (section) {
@@ -59,7 +53,7 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
       sectionContent = <div>page not found</div>;
       break;
   }
-
+  */
   return (
     <>
       <Menu secondary>
@@ -82,9 +76,6 @@ export function FbProtectedMyMenu({ appConfig, section = 'home', api, currentUse
         ))}
         <Menu.Item name='signout' onClick={signout}><Icon name='sign-out' color='black' /></Menu.Item>
       </Menu>
-      <section>
-        {sectionContent}
-      </section>
     </>
   )
 }

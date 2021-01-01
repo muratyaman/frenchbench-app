@@ -1,9 +1,9 @@
 import React from 'react';
 import { PublicLayout } from '../layouts/PublicLayout';
 
-export function ErrorPage({ message }) {
+export function ErrorPage({ i18n, message }) {
   return (
-    <PublicLayout title='Error' code='error'>
+    <PublicLayout title={i18n.common_error()} code='error'>
       {message}
     </PublicLayout>
   );

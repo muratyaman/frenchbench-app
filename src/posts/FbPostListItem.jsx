@@ -4,8 +4,8 @@ import { Card, Image, Label } from 'semantic-ui-react';
 import { FbAssetImage } from '../assets/FbAssetImage';
 import { FbHashTagLinkList, FbLink } from '../components';
 import { randomImgSrc } from '../utils/randomImgSrc';
-import { makePostLink } from '../utils/makePostLink';
-import { makeHashTagList } from '../utils/makeHashTagLinkList';
+import { makePostLink } from '../makeRoutes';
+import { makeHashTagList } from '../utils/makeHashTagList';
 
 export function FbPostListItem({ id, title, tags, created_at, username, post_ref, assets = [] }) {
   const dt = formatDistance(new Date(created_at), new Date());

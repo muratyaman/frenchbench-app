@@ -2,10 +2,12 @@ import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import { FbLink } from './FbLink';
 
-export function FbProfileLink({ currentUserState = null }) {
+export function FbProfileLink({ i18n, currentUserState = null }) {
   const { data: user = null, loading = false, error = null } = currentUserState ?? {};
   const { username = null } = user ?? {};
-  let ariaLabel = 'Sign in', appLinkLabel = 'Sign in', appLinkUrl = '/info/sign-in', iconName = 'sign-in', iconColour = 'purple';
+  let ariaLabel = i18n.account_sign_in();
+  let appLinkLabel = ariaLabel;
+  let appLinkUrl = '/info/sign-in', iconName = 'sign-in', iconColour = 'purple';
   if (loading) {
     appLinkLabel = '...';
     iconName = 'spinner';

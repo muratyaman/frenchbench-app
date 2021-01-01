@@ -12,7 +12,7 @@ export function FbCardHelpProvided({ i18n }) {
           <Card.Header>I Can Help</Card.Header>
           <Card.Description>
             <div>
-              <span>&#9733; I am &nbsp;</span>
+              <span>⭐️ I am &nbsp;</span>
               <TextLoop>
                 <span>a doctor</span>
                 <span>a nurse</span>
@@ -25,6 +25,7 @@ export function FbCardHelpProvided({ i18n }) {
                 <span>a cook</span>
                 <span>selling a bicycle</span>
                 <span>selling a lawn mower</span>
+                <span>renting a generator</span>
               </TextLoop>
               <span>&nbsp;.</span>
             </div>

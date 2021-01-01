@@ -14,7 +14,7 @@ import { App } from './App';
 import { FbApiContextProvider, FbI18nContextProvider } from './contexts';
 import { makeRoutes } from './makeRoutes.js';
 
-console.log('FrenchBench API starting...', process.env);
+console.log('FrenchBench API starting...');
 
 const serverConfig = {
   title: 'FrenchBench',
@@ -49,7 +49,8 @@ const indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
 // Nginx replacement - START
 console.log('proxy middleware ...');
-server.use(serverConfig.api.baseUrl, createProxyMiddleware({ target: serverConfig.api.host, changeOrigin: true, ws: true }));
+const apiProxy = createProxyMiddleware({ target: serverConfig.api.host, changeOrigin: true, ws: true });
+server.use(serverConfig.api.baseUrl, apiProxy);
 console.log('proxy middleware ... ready');
 // Nginx replacement - END ===================================================
 
@@ -78,32 +79,37 @@ function noSsr(req, res) {
 async function sendPage(req, res) { // server-side rendering of all pages
   console.log(new Date().toISOString(), 'req.path', req.path);
 
-  const staticRouterProps = {
-    location: req.url,
-    context: {},
-  };
+  try {
+    const staticRouterProps = {
+      location: req.url,
+      context: {},
+    };
 
-  const appConfig = newAppConfig(process.env);
-  const localeCode = defaultLocaleCode(); // TODO: detect locale code
-  
-  const ssrDataProvider = makeSsrDataProvider();
-  
-  const { initialState, content } = await ssrHtml({
-    req, res, initialState, staticRouterProps, routes, appConfig, api, localeCode, ssrDataProvider,
-  });
+    const appConfig = newAppConfig(process.env);
+    const localeCode = defaultLocaleCode(); // TODO: detect locale code
+    
+    const ssrDataProvider = makeSsrDataProvider();
+    
+    const { initialState, content } = await ssrHtml({
+      req, res, initialState, staticRouterProps, routes, appConfig, api, localeCode, ssrDataProvider,
+    });
 
-  const initialStateJson = JSON.stringify(initialState);
-  const find1 = `</head>`;
-  const replace1 = `<script>/* SSR */ window.__INITIAL_STATE__=${initialStateJson}</script></head>`;
+    const initialStateJson = JSON.stringify(initialState);
+    const find1 = `</head>`;
+    const replace1 = `<script>/* SSR */ window.__INITIAL_STATE__=${initialStateJson}</script></head>`;
 
-  const find2 = '<div id="root"></div>';
-  const replace2 = `<div id="root">${content}</div><!-- SSR -->`;
-  const html = indexHtml.toString().replace(find1, replace1).replace(find2, replace2);
+    const find2 = '<div id="root"></div>';
+    const replace2 = `<div id="root">${content}</div><!-- SSR -->`;
+    const html = indexHtml.toString().replace(find1, replace1).replace(find2, replace2);
 
-  // TODO: consider dealing with instances of <Redirect /> via context{}
+    // TODO: consider dealing with instances of <Redirect /> via context{}
 
-  res.setHeader('Cache-Control', 'assets, max-age=604800');
-  res.send(html);
+    res.setHeader('Cache-Control', 'assets, max-age=604800');
+    res.send(html);
+  } catch (err) {
+    console.error('sendPage error', err);
+    noSsr(req, res);
+  }
 }
 
 async function ssrHtml({

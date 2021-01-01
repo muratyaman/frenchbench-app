@@ -1,22 +1,28 @@
 import React from 'react';
 import { Button, Form, Icon, Message } from 'semantic-ui-react';
 
-export function SignUpForm({ onSubmit, onChange, errorMessage = null, successMessage = null, ...otherProps }) {
+export function SignUpForm({ i18n, onSubmit, onChange, errorMessage = null, successMessage = null, ...otherProps }) {
+  const usernameLabel = i18n.account_username();
+  const passwordLabel = i18n.account_password();
+  const confirmPasswordLabel = i18n.account_confirm_password();
+  const signUpLabel = i18n.account_sign_up();
+  const passwordRules = i18n.account_password_rules()
+    .split('\n').map((line, idx) => (<span key={`${line}-${idx}`}>{line}<br /></span>));
   return (
     <Form onSubmit={onSubmit} {...otherProps} warning={!!errorMessage} success={!!successMessage}>
       <Form.Input
         icon='user'
         iconPosition='left'
         name='username'
-        label='Username'
-        placeholder='Username'
+        label={usernameLabel}
+        placeholder={usernameLabel}
         onChange={(e, { name, value }) => onChange(name, value)}
       />
       <Form.Input
         icon='lock'
         iconPosition='left'
         name='password'
-        label='Password'
+        label={passwordLabel}
         type='password'
         onChange={(e, { name, value }) => onChange(name, value)}
       />
@@ -24,23 +30,14 @@ export function SignUpForm({ onSubmit, onChange, errorMessage = null, successMes
         icon='lock'
         iconPosition='left'
         name='password_confirm'
-        label='Confirm Password'
+        label={confirmPasswordLabel}
         type='password'
         onChange={(e, { name, value }) => onChange(name, value)}
       />
-      <Message info>
-        <p>
-          Password should have at least 8 characters<br />
-          Use at least one lower case letter: a...z<br />
-          Use at least one upper case letter: A...Z<br />
-          Use at least one number: 0...9<br />
-          Use at least one special character:<br />
-          . , - _ &lt; &gt; ? ! @ $ ; : ( ) & % + - * / \
-        </p>
-      </Message>
+      <Message info><p>{passwordRules}</p></Message>
       {errorMessage && ( <Message warning header='Error' list={[ errorMessage ]} />)}
       {successMessage && ( <Message warning header='Success' list={[ successMessage ]} />)}
-      <Button color='black' icon labelPosition='left' type='submit'><Icon name='signup' /> Sign up</Button>
+      <Button color='black' icon labelPosition='left' type='submit'><Icon name='signup' /> {signUpLabel}</Button>
     </Form>
   )
 }

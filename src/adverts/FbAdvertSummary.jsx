@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Label } from 'semantic-ui-react';
-import { makeAdvertLink } from '../utils/makeAdvertLink';
+import { makeAdvertLink } from '../makeRoutes';
 import { FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
 

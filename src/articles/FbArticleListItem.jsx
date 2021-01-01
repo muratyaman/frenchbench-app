@@ -2,7 +2,7 @@ import React from 'react';
 import { formatDistance } from 'date-fns';
 import { Label } from 'semantic-ui-react';
 import { FbLink } from '../components';
-import { makeArticleLink } from '../utils/makeArticleLink';
+import { makeArticleLink } from '../makeRoutes';
 
 export function FbArticleListItem({ id, title, slug, keywords, created_at, updated_at, assets = [] }) {
   const dt_created = formatDistance(new Date(created_at), new Date());

@@ -3,8 +3,8 @@ import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { FbHashTagLinkList, FbLink } from '../components';
 import { randomImgSrc } from '../utils/randomImgSrc';
-import { makeAdvertLink } from '../utils/makeAdvertLink';
-import { makeHashTagList } from '../utils/makeHashTagLinkList';
+import { makeAdvertLink, makeUserProfileLink } from '../makeRoutes';
+import { makeHashTagList } from '../utils/makeHashTagList';
 
 export function FbAdvertDetails({ api, advert, username }) {
   const { title = '', content = '', tags = '', is_buying, is_service, price, currency, created_at = null, advert_ref, assets = [] } = advert;
@@ -21,11 +21,12 @@ export function FbAdvertDetails({ api, advert, username }) {
   const serviceOption = api.options.serviceOptionList().find(({ id }) => id == is_service);
   const currencyOption = api.options.currencyOptionList().find(({ id }) => id == currency);
   const priceDesc = `${currencyOption.symbol}${price}`;
+  const userProfileLink = makeUserProfileLink({ username });
   return (
     <div className='fb-advert-list-item'>
       <Card>
         <Card.Content>
-          <FbLink to={`/app/user/${username}`}><Image floated='right' size='mini' src={avatarSrc} /></FbLink>
+          <FbLink to={userProfileLink}><Image floated='right' size='mini' src={avatarSrc} /></FbLink>
           <Card.Header>{title}</Card.Header>
           <Card.Meta>{username} advertised {dt} ago</Card.Meta>
           <Card.Description>

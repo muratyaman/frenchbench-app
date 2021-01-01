@@ -50,12 +50,12 @@ export function InfoSignUpPage({ api, i18n }) {
   }
 
   const formProps = {
+    i18n,
     onSubmit,
     onChange,
     loading,
     errorMessage,
     successMessage,
-    i18n,
   };
 
   const layoutProps = { title: 'Sign Up', currentUserState };
@@ -69,7 +69,7 @@ export function InfoSignUpPage({ api, i18n }) {
       </Header>
 
       <Message info>
-        <Message.Header>Please read</Message.Header>
+        <Message.Header>{i18n.common_please_read()}</Message.Header>
         <div>
           <Icon name='sticky note outline' />
           &nbsp;<FbLink to='/terms'>{i18n.common_terms()}</FbLink>
@@ -100,7 +100,7 @@ export function InfoSignUpPage({ api, i18n }) {
         </Grid.Column>
 
         <Grid.Column mobile={16} tablet={8} computer={8}>
-          <FbGreatYouHere />
+          <FbGreatYouHere i18n={i18n} />
         </Grid.Column>
         
       </Grid>

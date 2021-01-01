@@ -3,25 +3,46 @@
   "home_loneliness": "Yalnızlık",
   "home_loneliness_quote": "Mutluyken veya üzgünken hiç kimse yalnız kalmamalı",
 
+  "common_error": "Hata",
   "common_and": "ve",
-  "common_need": "Yok",
-  "common_can": "Var",
+  "common_need": "Ne Yok",
+  "common_can": "Ne Var",
   "common_i_need_help": "Yardım lazım",
   "common_i_can_help": "Yardım edebilirim",
   "common_terms": "Kullanım Koşulları",
   "common_privacy": "Kişisel Veriler Koşulları",
   "common_redirecting": "Yönlendiriliyor",
   "common_loading": "Yükleniyor",
+  "common_please_read": "Lütfen oku",
+
+  "common_relevant": "alakalı",
+  "common_local": "yakında",
+  "common_keep_helping_with_your": "yardıma devam",
+  "common_time": "zaman",
+  "common_knowledge": "bilgi",
+  "common_products": "ürün",
+  "common_services": "hizmet",
+  "common_find_receive_help_in_your": "yardım ara ve bul",
+  "common_in_neighbourhood": "mahallede",
+  "common_happy": "kutlu",
+  "common_exchanging": "pazarlıklar",
 
   "account_sign_in": "Giriş Yap",
   "account_signin_prompt": "Mahallede neler oluyor öğren",
   "account_if_account": "Eğer bir hesabın varsa",
+  "account_you_have_an_account": "Bir hesabın varsa",
+  "account_have_one_in_a_minute": "Birkaç dakikada kaydol",
 
   "account_sign_up": "Üye Ol",
   "account_signup_prompt": "Hesabını sonra düzenleyebilirsin",
   "account_if_no_account": "Eğer bir hesabın yoksa",
   
   "account_great_you_here": "Burada olduğuna sevindik!",
+
+  "account_username": "Kullanıcı Adı",
+  "account_password": "Şifre",
+  "account_confirm_password": "Şifre Yinele",
+  "account_password_rules": "Şifre en az 8 karakterli olmalı\nEn az bir küçük harf içermeli: a...z\nEn az bir büyük harf içermeli: A...Z\nEn az bir sayı içermeli: 0...9\nEn az bir özel karakter içermeli:\n. , - _ < > ? ! @ $ ; : ( ) & % + - * / \\",
 
   "article_not_found": "makale bulunamadı"
 }

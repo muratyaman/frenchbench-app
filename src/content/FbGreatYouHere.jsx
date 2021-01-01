@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Segment } from 'semantic-ui-react';
 import { RandomImage } from '../components';
-import { FbI18nContext } from '../contexts';
+//import { FbI18nContext } from '../contexts';
 
-export const FbGreatYouHere = () => {
-  const { i18n } = useContext(FbI18nContext);
+export const FbGreatYouHere = ({ i18n }) => {
+  //const { i18n } = useContext(FbI18nContext);
   return (
     <Segment className='fb-rand-img'>
       <RandomImage keywords='welcome' />
