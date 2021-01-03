@@ -1,9 +1,9 @@
 import React from 'react';
 import { FbLoadingParagraph } from '../components';
-import { FbPostDetails } from '../posts/FbPostDetails';
+import { FbPostDetails } from './FbPostDetails';
 import { usePostByUserAndRef } from '../hooks/usePostByUserAndRef';
 
-export function FbSectionUserPost({ api, username, post_ref }) {
+export function FbLoadUserPost({ api, username, post_ref }) {
   const { data: post = null, loading = false, error = null } = usePostByUserAndRef(api, { username, post_ref, with_assets: true });
   return (
     <div className='fb-post-details'>

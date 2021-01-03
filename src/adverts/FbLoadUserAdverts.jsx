@@ -1,9 +1,9 @@
 import React from 'react';
 import { FbLoadingParagraph } from '../components';
-import { FbAdvertList } from '../adverts/FbAdvertList';
+import { FbAdvertList } from './FbAdvertList';
 import { useAdvertsOfUser } from '../hooks/useAdvertsOfUser';
 
-export function FbSectionUserAdverts({ api, username }) {
+export function FbLoadUserAdverts({ api, username }) {
   const { data: adverts = [], loading = false, error = null } = useAdvertsOfUser(api, { username, with_assets: true });
   return (
     <div className='fb-advert-search'>

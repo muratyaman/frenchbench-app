@@ -1,9 +1,9 @@
 import React from 'react';
 import { FbLoadingParagraph } from '../components';
-import { FbArticleList } from '../articles/FbArticleList';
+import { FbArticleList } from './FbArticleList';
 import { useArticleSearch } from '../hooks/useArticleSearch';
 
-export function FbSectionArticles({ api, currentUserState }) {
+export function FbLoadArticles({ api, currentUserState }) {
   const { data: user = null } = currentUserState ?? {};
   const { id: user_id = null } = user ?? {};
   const { data: articles = [], loading = false, error = null } = useArticleSearch(api, { user_id, with_assets: true });

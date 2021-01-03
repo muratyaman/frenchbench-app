@@ -22,7 +22,7 @@ const content = {
       <Card.Description>
         <div className='fb-desc-row'>⭐️ relevant and <Label as='span' color='red' size='small'>local</Label></div>
         <div className='fb-desc-row'>
-          <span>⭐️ keep_helping_with_your&nbsp;</span>
+          <span>⭐️ keep helping with your&nbsp;</span>
           <TextLoop>
             <span><Label as='span' size='small' color='orange'>time</Label></span>
             <span><Label as='span' size='small' color='yellow'>knowledge</Label></span>
@@ -30,7 +30,7 @@ const content = {
             <span><Label as='span' size='small' color='blue'>services</Label></span>
           </TextLoop>
         </div>
-        <div className='fb-desc-row'>⭐️ find_receive_help_in_your<Label as='span' color='violet' size='small'>neighbourhood</Label></div>
+        <div className='fb-desc-row'>⭐️ find/receive help in your<Label as='span' color='violet' size='small'>neighbourhood</Label></div>
         <div className='fb-desc-row'>⭐️ happy <Label as='span' size='small' color='olive'>exchanging</Label></div>
       </Card.Description>
     </Card.Content>

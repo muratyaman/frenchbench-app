@@ -1,15 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { FbProtectedUserMenu, Loading } from '../components';
-import { FbSectionUserAdverts } from '../sections/FbSectionUserAdverts';
+import { Loading } from '../components';
+import { FbAppUserMenu } from '../menus/FbAppUserMenu';
+import { FbLoadUserAdverts } from '../adverts/FbLoadUserAdverts';
 import { useMounted } from '../hooks/useMounted';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useUser } from '../hooks/useUser';
 
 export function AppUserAdvertsPage({ appConfig, api, i18n }) {
   const { username } = useParams();
-  const section = 'adverts';
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);
   const userState = useUser(api, { username });
@@ -17,11 +17,12 @@ export function AppUserAdvertsPage({ appConfig, api, i18n }) {
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
   const layoutProps = { appConfig, title: 'Adverts', currentUserState, i18n };
-  const userMenuProps = { username, section, api, userState, currentUserState, i18n };
+  const userMenuProps = { username, activeItem: 'adverts', api, userState, currentUserState, i18n };
+  const advertProps = { username, api, userState, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
-      <FbProtectedUserMenu {...userMenuProps} />
-      <FbSectionUserAdverts {...userMenuProps} />
+      <FbAppUserMenu {...userMenuProps} />
+      <FbLoadUserAdverts {...advertProps} />
     </ProtectedLayout>
   );
 }

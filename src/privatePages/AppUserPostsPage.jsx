@@ -1,15 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { FbProtectedUserMenu, Loading } from '../components';
-import { FbSectionUserPosts } from '../sections/FbSectionUserPosts';
+import { Loading } from '../components';
+import { FbAppUserMenu } from '../menus/FbAppUserMenu';
+import { FbLoadUserPosts } from '../posts/FbLoadUserPosts';
 import { useMounted } from '../hooks/useMounted';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { useUser } from '../hooks/useUser';
 
 export function AppUserPostsPage({ appConfig, api, i18n }) {
   const { username } = useParams();
-  const section = 'posts';
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);
   const userState = useUser(api, { username });
@@ -17,11 +17,12 @@ export function AppUserPostsPage({ appConfig, api, i18n }) {
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
   const layoutProps = { appConfig, title: 'Posts', currentUserState, i18n };
-  const userMenuProps = { username, section, api, userState, currentUserState, i18n };
+  const userMenuProps = { activeItem: 'posts', api, userState, currentUserState, i18n };
+  const postsProps = { username, api, userState, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
-      <FbProtectedUserMenu {...userMenuProps} />
-      <FbSectionUserPosts {...userMenuProps} />
+      <FbAppUserMenu {...userMenuProps} />
+      <FbLoadUserPosts {...postsProps} />
     </ProtectedLayout>
   );
 }

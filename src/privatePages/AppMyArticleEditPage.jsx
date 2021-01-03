@@ -1,23 +1,23 @@
 import React from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { Loading } from '../components';
-import { FbAppMyMenu } from '../menus/FbAppMyMenu';
-import { FbLoadMyNewAdvert } from '../adverts/FbLoadMyNewAdvert';
+import { FbLoadArticleEditor } from '../articles/FbLoadArticleEditor';
 import { useMounted } from '../hooks/useMounted';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { FbAppMyMenu } from '../menus/FbAppMyMenu';
 
-export function AppMyNewAdvertPage({ appConfig, api, i18n }) {
+export function AppMyArticleEditPage({ appConfig, api, i18n }) {
   const isMounted = useMounted();
   const currentUserState = useCurrentUser(api);
-  
+
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
-  
-  const layoutProps = { appConfig, title: 'Home', currentUserState };
-  const myMenuProps = { activeItem: 'adverts', api, currentUserState, i18n };
+
+  const layoutProps = { appConfig, title: 'Articles', currentUserState, i18n };
+  const myMenuProps = { activeItem: 'articles', api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadMyNewAdvert {...myMenuProps} />
+      <FbLoadArticleEditor {...myMenuProps} />
     </ProtectedLayout>
   );
 }

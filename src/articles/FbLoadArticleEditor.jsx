@@ -1,9 +1,9 @@
 import React from 'react';
 import { FbLoadingParagraph } from '../components';
-import { FbArticleEditor } from '../articles/FbArticleEditor';
+import { FbArticleEditor } from './FbArticleEditor';
 import { useArticleByIdToEdit } from '../hooks/useArticleByIdToEdit';
 
-export function FbSectionArticleEdit({ api, i18n, slug, articleId }) {
+export function FbLoadArticleEditor({ api, i18n, articleId }) {
   const { data: article = null, loading = false, error = null } = useArticleByIdToEdit(api, articleId);
   return (
     <div className='fb-article-editor'>

@@ -1,9 +1,10 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { Comment, Form, Header, Input } from 'semantic-ui-react';
 import { MSG_KIND_CHAT, FbWebSocketContext } from '../webSockets/FbWebSocketContext';
 import { randomImg } from '../utils/randomImg';
 
-export class FbChat extends React.Component {
+export class FbChatWithNeighbours extends React.Component {
   
   static contextType = FbWebSocketContext;
 
@@ -21,7 +22,7 @@ export class FbChat extends React.Component {
     const { msg } = this.state;
     if (send) {
       try {
-        this.setState({ msg: null, error: null }); // reset
+        this.setState({ msg: '', error: null }); // reset
         const msgObj = {
           kind: MSG_KIND_CHAT,
           msg,
@@ -63,7 +64,7 @@ export class FbChat extends React.Component {
               <Comment.Content>
                 <Comment.Author as='a'>{msgObj.by}</Comment.Author>
                 <Comment.Metadata>
-                  <div>{msgObj.ts}</div>
+                  <div>{format(new Date(msgObj.ts), 'HH:mm')}</div>
                 </Comment.Metadata>
                 <Comment.Text>
                   {msgObj.msg.split('\n').map((txt, idx) => <p key={txt+idx}>{txt}</p>)}

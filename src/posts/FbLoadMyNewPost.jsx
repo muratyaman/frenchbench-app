@@ -1,20 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
+import { FbPostCreateForm } from './FbPostCreateForm';
 
-export class FbSectionMyNewAdvert extends React.Component {
+export class FbLoadMyNewPost extends React.Component {
 
   state = {
     title: '',
     content: '',
     tags: '',
-    is_buying: '0',
-    is_service: '0',
-    currency: 'GBP',
-    price: '0.00',
-    lat: 0.0,
-    lon: 0.0,
-    geo_accuracy: 9999,
     asset_id: null, // uuid
     asset_file: null, // uuid.jpg
     loading: false,
@@ -32,9 +26,9 @@ export class FbSectionMyNewAdvert extends React.Component {
     this.setState({ successMessage: null, errorMessage: null, loading: true });
     const { title, content, tags, asset_id } = this.state;
     try {
-      const { data = null, error = null } = await this.props.api.advert_create({ title, content, tags, asset_id });
+      const { data = null, error = null } = await this.props.api.post_create({ title, content, tags, asset_id });
       if (data) { // success
-        this.setState({ successMessage: 'success', loading: false, redirect: '/app/my/adverts' });
+        this.setState({ successMessage: 'success', loading: false, redirect: '/app/my/posts' });
       } else {
         this.setState({ errorMessage: error, loading: false });
       }
@@ -56,12 +50,11 @@ export class FbSectionMyNewAdvert extends React.Component {
       errorMessage,
       successMessage,
       api,
-      formData: this.state,
     };
     return (
       <div className='fb-section'>
         <Segment raised>
-          <FbAdvertCreateForm {...formProps} />
+          <FbPostCreateForm {...formProps} />
         </Segment>
       </div>
     )

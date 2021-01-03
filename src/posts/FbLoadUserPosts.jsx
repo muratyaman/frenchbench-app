@@ -1,9 +1,9 @@
 import React from 'react';
 import { FbLoadingParagraph } from '../components';
-import { FbPostList } from '../posts/FbPostList';
+import { FbPostList } from './FbPostList';
 import { usePostsOfUser } from '../hooks/usePostsOfUser';
 
-export function FbSectionUserPosts({ api, username }) {
+export function FbLoadUserPosts({ api, username }) {
   const { data: posts = [], loading = false, error = null } = usePostsOfUser(api, { username, with_assets: true });
   return (
     <div className='fb-post-search'>

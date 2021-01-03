@@ -1,9 +1,9 @@
 import React from 'react';
 import { FbLoadingParagraph } from '../components';
-import { FbPostSummaryList } from '../posts/FbPostSummaryList';
+import { FbPostSummaryList } from './FbPostSummaryList';
 import { usePostsOfUser } from '../hooks/usePostsOfUser';
 
-export function FbSectionMyPosts({ api, currentUserState }) {
+export function FbLoadMyPosts({ api, currentUserState }) {
   const { data: user = null } = currentUserState ?? {};
   const { id: user_id = null } = user ?? {};
   const { data: posts = [], loading = false, error = null } = usePostsOfUser(api, { user_id, with_assets: true });
