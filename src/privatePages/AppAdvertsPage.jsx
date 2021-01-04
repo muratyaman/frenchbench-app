@@ -12,9 +12,8 @@ export function AppAdvertsPage({ appConfig, api, i18n }) {
   
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
   
-  const activeItem = 'adverts';
   const layoutProps = { appConfig, title: 'Adverts', currentUserState };
-  const myMenuProps = { activeItem, api, currentUserState, i18n };
+  const myMenuProps = { activeItem: 'adverts', api, currentUserState, i18n };
   const searchProps = { api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>

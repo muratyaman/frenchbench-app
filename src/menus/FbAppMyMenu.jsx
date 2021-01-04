@@ -18,7 +18,7 @@ export function FbAppMyMenu({ activeItem = 'home', api, currentUserState }) {
   
   const isFbAdmin = username && (username === 'frenchbench');
   if (isFbAdmin) { // TODO: special case for admin
-    items.push({ name: 'articles', href: '/app/my/articles', label: 'Articles', iconName: 'newspaper' });
+    items.push({ name: 'articles', href: '/app/my/articles', label: 'My Articles', iconName: 'newspaper' });
   }
 
   const signout = async (ev) => {

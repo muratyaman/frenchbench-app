@@ -13,7 +13,7 @@ export function AppPostsPage({ appConfig, api, i18n }) {
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
   
   const layoutProps = { appConfig, title: 'Home', currentUserState };
-  const myMenuProps = { appConfig, activeItem: 'posts', api, currentUserState, i18n };
+  const myMenuProps = { activeItem: 'posts', api, currentUserState, i18n };
   const searchProps = { api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>

@@ -12,7 +12,7 @@ export function AppMyIndexPage({ appConfig, api, i18n }) {
   
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
   
-  const layoutProps = { appConfig, title: 'Home', currentUserState };
+  const layoutProps = { appConfig, title: 'My Profile', currentUserState, activeItemOfTopMenu: 'my' };
   const profileProps = { api, currentUserState };
   const myMenuProps = { activeItem: 'home', api, currentUserState, i18n };
   return (

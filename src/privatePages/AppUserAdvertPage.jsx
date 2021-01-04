@@ -17,7 +17,7 @@ export function AppUserAdvertPage({ appConfig, api, i18n }) {
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
   const layoutProps = { appConfig, title: 'Adverts', currentUserState, i18n };
-  const userMenuProps = { username, advert_ref, activeItem: 'adverts', api, currentUserState, userState, i18n };
+  const userMenuProps = { username, activeItem: 'adverts', api, currentUserState, userState, i18n };
   const advertProps = { username, advert_ref, api, currentUserState, userState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>

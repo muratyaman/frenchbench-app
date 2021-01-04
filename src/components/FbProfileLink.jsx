@@ -14,7 +14,7 @@ export function FbProfileLink({ i18n, currentUserState = null }) {
   }
   if (username) {
     ariaLabel = 'Signed in as ' + username;
-    appLinkLabel = String(username).substring(0, 6) + '...';
+    appLinkLabel = ''; // String(username).substring(0, 6) + '...';
     appLinkUrl = '/app/my/home';
     iconName = 'user circle';
     iconColour = 'purple';

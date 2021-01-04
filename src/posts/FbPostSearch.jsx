@@ -1,47 +1,90 @@
 import React from 'react';
-import { FbLoadingParagraph } from '../components';
+import { FbLoadingParagraph, FbLoadMore } from '../components';
 import { FbPostList } from './FbPostList';
 import { FbPostSearchForm } from './FbPostSearchForm';
 
+const PAGE_LIMIT = 10;
+
 export class FbPostSearch extends React.Component {
   state = {
-    search: {
+    inputParams: {
       q: '',
       tags: '',
       with_assets: true,
+      offset: 0,
     },
     loading: true,
-    posts: [],
+    pagesOfPosts: [],
+    meta: null,
     error: null,
   }
+
   componentDidMount() {
-    this.search();
+    this.search(true);
   }
-  search = async () => {
+
+  getOffset = () => {
+    const { inputParams } = this.state;
+    return (inputParams && inputParams.offset) ?? 0;
+  }
+
+  getRowCount = () => {
+    const { meta } = this.state;
+    return (meta && meta.row_count) ?? 0;
+  }
+
+  search = async (reset = true) => {
     try {
-      this.setState({ loading: true, error: null, posts: [] });
-      const { data = [], error = null } = await this.props.api.post_search(this.state.search);
-      this.setState({ loading: false, error, posts: data });
+      const inputParams = { ...this.state.inputParams }; // shallow clone
+      let { pagesOfPosts } = this.state;
+      if (reset) {
+        pagesOfPosts = [];
+        inputParams.offset = 0;
+      } else {
+        inputParams.offset += PAGE_LIMIT; // TODO: use limit defined by user
+      }
+      this.setState({ loading: true, error: null, pagesOfPosts, meta: null, inputParams });
+      const { data = [], meta = null, error = null } = await this.props.api.post_search(inputParams);
+      if (data && data.length) { // have data
+        pagesOfPosts.push(data);
+      }
+      this.setState({ loading: false, error, pagesOfPosts, meta });
     } catch (err) {
       this.setState({ loading: false, error: err.message });
     }
   }
+
   onChange = ({ name, value }) => {
-    const search = { ...this.state.search }; // shallow clone, avoid side-effects
-    search[name] = value;
-    this.setState({ search });
+    const inputParams = { ...this.state.inputParams }; // shallow clone
+    inputParams[name] = value;
+    this.setState({ inputParams });
   }
+
   onSubmit = () => {
-    this.search();
+    this.search(true);
   }
+
+  loadMore = () => {
+    this.search(false);
+  }
+
   render(){
-    const { loading, error, posts } = this.state;
+    const { loading, error, pagesOfPosts, inputParams } = this.state;
+    const offset = this.getOffset();
+    const rc = this.getRowCount();
     return (
       <div className='fb-post-search'>
-        { !loading && <FbPostSearchForm onSubmit={this.onSubmit} onChange={this.onChange} />}
+        { <FbPostSearchForm loading={loading} onSubmit={this.onSubmit} onChange={this.onChange} />}
+        
+        { pagesOfPosts && pagesOfPosts.length && pagesOfPosts.map((posts, idx) => (
+          <div key={`page-${idx}`}><FbPostList posts={posts} /></div>
+        ))}
+        
         { loading && <FbLoadingParagraph /> }
+        
         { error && <p>Error loading posts</p>}
-        { posts && <FbPostList posts={posts} />}
+        
+        { (offset < rc) && <FbLoadMore onClick={this.loadMore} loading={loading} />}
       </div>
     );
   }

@@ -12,12 +12,13 @@ export function AppMyArticleEditPage({ appConfig, api, i18n }) {
 
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
-  const layoutProps = { appConfig, title: 'Articles', currentUserState, i18n };
+  const layoutProps = { appConfig, title: 'Articles', currentUserState, i18n, activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'articles', api, currentUserState, i18n };
+  const myEditorProps = { api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadArticleEditor {...myMenuProps} />
+      <FbLoadArticleEditor {...myEditorProps} />
     </ProtectedLayout>
   );
 }

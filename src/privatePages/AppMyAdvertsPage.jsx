@@ -12,7 +12,7 @@ export function AppMyAdvertsPage({ appConfig, api, i18n }) {
   
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
   
-  const layoutProps = { appConfig, title: 'My Adverts', currentUserState };
+  const layoutProps = { appConfig, title: 'My Adverts', currentUserState, activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'adverts', api, currentUserState, i18n };
   const myAdvertsProps = { api, currentUserState, i18n };
   return (

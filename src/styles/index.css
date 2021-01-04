@@ -7,6 +7,14 @@ body {
 div#root {
   margin: 2px;
 }
+a,
+a:active,
+a:visited {
+  color: black;
+}
+a:hover {
+  color: purple;
+}
 
 div.fb-page {
   margin: 5em auto;
@@ -118,4 +126,9 @@ div.fb-footer-container div {
 div.fb-tags {
   margin-top: 6px;
   margin-bottom: 6px;
+}
+
+div.fb-load-more {
+  margin: 3px;
+  text-align: center;
 }

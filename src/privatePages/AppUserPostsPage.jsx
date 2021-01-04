@@ -17,7 +17,7 @@ export function AppUserPostsPage({ appConfig, api, i18n }) {
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
   const layoutProps = { appConfig, title: 'Posts', currentUserState, i18n };
-  const userMenuProps = { activeItem: 'posts', api, userState, currentUserState, i18n };
+  const userMenuProps = { username, activeItem: 'posts', api, userState, currentUserState, i18n };
   const postsProps = { username, api, userState, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>

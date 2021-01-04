@@ -12,7 +12,7 @@ export function AppMyPostsPage({ appConfig, api, i18n }) {
   
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
   
-  const layoutProps = { appConfig, title: 'My Posts', currentUserState };
+  const layoutProps = { appConfig, title: 'My Posts', currentUserState, activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'posts', api, currentUserState, i18n };
   const myPostsProps = { api, currentUserState, i18n };
   return (

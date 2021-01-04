@@ -12,7 +12,7 @@ export function AppMyNewPostPage({ appConfig, api, i18n }) {
   
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
   
-  const layoutProps = { appConfig, title: 'New Post', currentUserState };
+  const layoutProps = { appConfig, title: 'My New Post', currentUserState, activeItemOfTopMenu: 'my-new-post' };
   const myMenuProps = { activeItem: 'posts', api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>

@@ -14,6 +14,7 @@ export const I18N_KEYS = {
   common_redirecting: 'common_redirecting',
   common_loading: 'common_loading',
   common_please_read: 'common_please_read',
+  common_please_sign_in: 'common_please_sign_in',
 
   common_relevant: 'common_relevant',
   common_local: 'common_local',

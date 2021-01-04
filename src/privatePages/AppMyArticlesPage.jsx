@@ -12,7 +12,7 @@ export function AppMyArticlesPage({ appConfig, api, i18n }) {
 
   if (!isMounted) return (<Loading content={i18n.common_loading()} />);
 
-  const layoutProps = { appConfig, title: 'Articles', currentUserState, i18n };
+  const layoutProps = { appConfig, title: 'Articles', currentUserState, i18n, activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'articles', api, currentUserState, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
