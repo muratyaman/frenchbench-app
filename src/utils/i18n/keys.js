@@ -1,7 +1,14 @@
 export const I18N_KEYS = {
   home_welcome: 'home_welcome',
-  home_loneliness: 'home_loneliness',
-  home_loneliness_quote: 'home_loneliness_quote',
+
+  ideas_loneliness: 'ideas_loneliness',
+  ideas_loneliness_quote: 'ideas_loneliness_quote',
+  ideas_neighbourless: 'ideas_neighbourless',
+  ideas_neighbourless_quote: 'ideas_neighbourless_quote',
+  ideas_true_neighbour: 'ideas_true_neighbour',
+  ideas_true_neighbour_quote: 'ideas_true_neighbour_quote',
+  ideas_strangers: 'ideas_strangers',
+  ideas_strangers_quote: 'ideas_strangers_quote',
 
   common_error: 'common_error',
   common_and: 'common_and',

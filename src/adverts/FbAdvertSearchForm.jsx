@@ -12,7 +12,7 @@ export function FbAdvertSearchForm({ onSubmit, onChange }) {
         name='q'
         label='Search'
         placeholder='search adverts'
-        onChange={(e, { name, value }) => onChange(name, value)}
+        onChange={onChange}
       />
       <Button content='Search' secondary type='submit' />
       <Divider />

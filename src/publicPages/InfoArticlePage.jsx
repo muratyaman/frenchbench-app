@@ -19,17 +19,15 @@ export function InfoArticlePage(props) {
   const layoutProps = { title, currentUserState };
   return (
     <PublicLayout {...layoutProps}>
-      {error && <p>{i18n.article_not_found()}</p>}
-      
-      {loading && <Loading content={i18n.common_loading()} />}
-      
-      {article && <Grid>
-        <Grid.Column only='computer' computer={2} />
-        <Grid.Column mobile={16} table={16} computer={12}>
-          <FbArticle {...article} />
+      <Grid>
+        <Grid.Column mobile={0} tablet={3} computer={4} />
+        <Grid.Column mobile={16} tablet={10} computer={8}>
+          {loading && <Loading content={i18n.common_loading()} />}
+          {!article && <p>{i18n.article_not_found()}</p>}
+          {article && (<FbArticle {...article} />)}
         </Grid.Column>
-        <Grid.Column only='computer' computer={2} />
-      </Grid>}
+        <Grid.Column mobile={0} tablet={3} computer={4} />
+      </Grid>
       
     </PublicLayout>
   );

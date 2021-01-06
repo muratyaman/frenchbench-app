@@ -1,7 +1,14 @@
 {
   "home_welcome": "Hoşgeldin",
-  "home_loneliness": "Yalnızlık",
-  "home_loneliness_quote": "Mutluyken veya üzgünken hiç kimse yalnız kalmamalı",
+
+  "ideas_loneliness": "Yalnızlık",
+  "ideas_loneliness_quote": "Mutluyken veya üzgünken hiç kimse yalnız kalmamalı",
+  "ideas_neighbourless": "Komşusuz",
+  "ideas_neighbourless_quote": "Hiç kimse komşusuz yaşayacak kadar zengin değildir",
+  "ideas_true_neighbour": "Gerçek Komşu",
+  "ideas_true_neighbour_quote": "Gerçek komşu, başkalarının iyiliği için konumunu, prestijini ve hatta hayatını tehlikeye atar. ~Martin Luther King",
+  "ideas_strangers": "Yabanci Yok",
+  "ideas_strangers_quote": "Burada yabancı yok; sadece henüz tanışmadığın arkadaşlar var. ~William Butler Yeats",
 
   "common_error": "Hata",
   "common_and": "ve",
@@ -45,5 +52,5 @@
   "account_confirm_password": "Şifre Yinele",
   "account_password_rules": "Şifre en az 8 karakterli olmalı\nEn az bir küçük harf içermeli: a...z\nEn az bir büyük harf içermeli: A...Z\nEn az bir sayı içermeli: 0...9\nEn az bir özel karakter içermeli:\n. , - _ < > ? ! @ $ ; : ( ) & % + - * / \\",
 
-  "article_not_found": "makale bulunamadı"
+  "article_not_found": "Makale bulunamadı"
 }

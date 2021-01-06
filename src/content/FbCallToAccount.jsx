@@ -6,6 +6,8 @@ import { FbGreatYouHere } from './FbGreatYouHere';
 export function FbCallToAccount({ i18n }) {
   return (
     <>
+      <FbGreatYouHere i18n={i18n} />
+
       <Segment>
         <Grid columns={2}>
           <Grid.Column textAlign='center'>
@@ -26,7 +28,6 @@ export function FbCallToAccount({ i18n }) {
         <Divider vertical>Or</Divider>
       </Segment>
       
-      <FbGreatYouHere i18n={i18n} />
     </>
   )
 }

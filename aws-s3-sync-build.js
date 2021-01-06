@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { spawn } = require('child_process');
-const package = require('package.json');
+const package = require('./package.json');
 
 const { version } = package;
 
@@ -14,13 +14,17 @@ const options = ['s3', 'sync', source, destination, '--acl', 'public-read'];
 const awsS3Sync = spawn(cmd, options);
 
 awsS3Sync.stdout.on('data', (data) => {
-  console.log(data);
+  console.log(`${data}`);
 });
 
 awsS3Sync.stderr.on('data', (data) => {
-  console.error(`Error: ${data}`);
+  console.error(`aws error: ${data}`);
 });
 
 awsS3Sync.on('close', (code) => {
-  console.log(`aws exited with code ${code}`);
+  if (code) { // error if not 0
+    console.log(`aws exited with error code: ${code}`);
+  } else {
+    console.log('aws exited successfully!');
+  }
 });

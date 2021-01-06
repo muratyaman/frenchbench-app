@@ -1,7 +1,14 @@
 {
   "home_welcome": "Welcome",
-  "home_loneliness": "Loneliness",
-  "home_loneliness_quote": "No one should be alone in happiness or sadness",
+
+  "ideas_loneliness": "Loneliness",
+  "ideas_loneliness_quote": "No one should be alone in happiness or sadness",
+  "ideas_neighbourless": "Neighbourless",
+  "ideas_neighbourless_quote": "No one is rich enough to do without a neighbour",
+  "ideas_true_neighbour": "True Neighbour",
+  "ideas_true_neighbour_quote": "The true neighbour will risk his position, his prestige, and even his life for the welfare of others. ~Martin Luther King",
+  "ideas_strangers": "No Strangers",
+  "ideas_strangers_quote": "There are no strangers here; only friends you haven't yet met. ~William Butler Yeats",
 
   "common_error": "Error",
   "common_and": "and",
@@ -46,5 +53,5 @@
   "account_confirm_password": "Confirm Password",
   "account_password_rules": "Password should have at least 8 characters\nUse at least one lower case letter: a...z\nUse at least one upper case letter: A...Z\nUse at least one number: 0...9\nUse at least one special character:\n. , - _ < > ? ! @ $ ; : ( ) & % + - * / \\",
 
-  "article_not_found": "article not found"
+  "article_not_found": "Article not found"
 }

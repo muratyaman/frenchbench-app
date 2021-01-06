@@ -1,51 +1,90 @@
 import React from 'react';
-import { FbLoadingParagraph } from '../components';
+import { FbLoadingParagraph, FbLoadMore } from '../components';
 import { FbAdvertList } from './FbAdvertList';
 import { FbAdvertSearchForm } from './FbAdvertSearchForm';
 
+const PAGE_LIMIT = 10;
+
 export class FbAdvertSearch extends React.Component {
   state = {
-    search: {
+    inputParams: {
       q: '',
+      tags: '',
       with_assets: true,
-      //tags: '',
-      //min_price: -1,
-      //max_price: -1,
-      //is_buying: -1,
-      //is_service: -1,
+      offset: 0,
     },
     loading: true,
-    adverts: [],
+    pagesOfAdverts: [],
+    meta: null,
     error: null,
   }
+
   componentDidMount() {
-    this.search();
+    this.search(true);
   }
-  search = async () => {
+
+  getOffset = () => {
+    const { inputParams } = this.state;
+    return (inputParams && inputParams.offset) ?? 0;
+  }
+
+  getRowCount = () => {
+    const { meta } = this.state;
+    return (meta && meta.row_count) ?? 0;
+  }
+
+  search = async (reset = true) => {
     try {
-      this.setState({ loading: true, error: null, adverts: [] });
-      const { data = [], error = null } = await this.props.api.advert_search(this.state.search);
-      this.setState({ loading: false, error, adverts: data });
+      const inputParams = { ...this.state.inputParams }; // shallow clone
+      let { pagesOfAdverts } = this.state;
+      if (reset) {
+        pagesOfAdverts = [];
+        inputParams.offset = 0;
+      } else {
+        inputParams.offset += PAGE_LIMIT; // TODO: use limit defined by user
+      }
+      this.setState({ loading: true, error: null, pagesOfAdverts, meta: null, inputParams });
+      const { data = [], meta = null, error = null } = await this.props.api.advert_search(inputParams);
+      if (data && data.length) { // have data
+        pagesOfAdverts.push(data);
+      }
+      this.setState({ loading: false, error, pagesOfAdverts, meta });
     } catch (err) {
       this.setState({ loading: false, error: err.message });
     }
   }
-  onChange = ({ name, value }) => {
-    const search = { ...this.state.search }; // shallow clone, avoid side-effects
-    search[name] = value;
-    this.setState({ search });
+
+  onChange = (ev, { name, value }) => {
+    const inputParams = { ...this.state.inputParams }; // shallow clone
+    inputParams[name] = value;
+    this.setState({ inputParams });
   }
+
   onSubmit = () => {
-    this.search();
+    this.search(true);
   }
+
+  loadMore = () => {
+    this.search(false);
+  }
+
   render(){
-    const { loading, error, adverts } = this.state;
+    const { loading, error, pagesOfAdverts } = this.state;
+    const offset = this.getOffset();
+    const rc = this.getRowCount();
     return (
       <div className='fb-advert-search'>
-        { !loading && <FbAdvertSearchForm onSubmit={this.onSubmit} onChange={this.onChange} />}
+        { <FbAdvertSearchForm loading={loading} onSubmit={this.onSubmit} onChange={this.onChange} />}
+        
+        { pagesOfAdverts && pagesOfAdverts.length && pagesOfAdverts.map((adverts, idx) => (
+          <div key={`page-${idx}`}><FbAdvertList adverts={adverts} /></div>
+        ))}
+        
         { loading && <FbLoadingParagraph /> }
+        
         { error && <p>Error loading adverts</p>}
-        { adverts && <FbAdvertList adverts={adverts} />}
+        
+        { (offset < rc) && <FbLoadMore onClick={this.loadMore} loading={loading} />}
       </div>
     );
   }
