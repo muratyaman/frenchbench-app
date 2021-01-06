@@ -12,14 +12,14 @@ export function FbPostSearchForm({ onSubmit, onChange }) {
         name='q'
         label='Search'
         placeholder='search posts'
-        onChange={(e, { name, value }) => onChange(name, value)}
+        onChange={onChange}
       />
       <Form.Input
         icon='tag'
         iconPosition='left'
         name='tags'
         placeholder='#barber'
-        onChange={(e, { name, value }) => onChange(name, value)}
+        onChange={onChange}
       />
       <Button content='Search' secondary type='submit' />
       <Divider />

@@ -1,6 +1,6 @@
 {
   "name": "frenchbench-app",
-  "version": "1.0.0",
+  "version": "1.3.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
@@ -16,7 +16,8 @@
     "rs:start": "react-scripts start",
     "rs:build": "react-scripts build",
     "rs:test": "react-scripts test",
-    "rs:eject": "react-scripts eject"
+    "rs:eject": "react-scripts eject",
+    "aws:s3:sync:build": "node aws-s3-sync-build.js"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",

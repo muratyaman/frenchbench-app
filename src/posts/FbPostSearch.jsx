@@ -54,7 +54,7 @@ export class FbPostSearch extends React.Component {
     }
   }
 
-  onChange = ({ name, value }) => {
+  onChange = (ev, { name, value }) => {
     const inputParams = { ...this.state.inputParams }; // shallow clone
     inputParams[name] = value;
     this.setState({ inputParams });
@@ -69,7 +69,7 @@ export class FbPostSearch extends React.Component {
   }
 
   render(){
-    const { loading, error, pagesOfPosts, inputParams } = this.state;
+    const { loading, error, pagesOfPosts } = this.state;
     const offset = this.getOffset();
     const rc = this.getRowCount();
     return (

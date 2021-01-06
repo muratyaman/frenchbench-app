@@ -110,11 +110,6 @@ dist
 
 build/
 dist/
-lib/
-
-packages/client/build/
-packages/common/build/
-packages/server/build/
 
 tsconfig.tsbuildinfo
 
