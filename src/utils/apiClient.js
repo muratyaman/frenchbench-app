@@ -95,19 +95,20 @@ export function apiClient({ host, baseUrl, browser = null }) {
   const entity_asset_delete   = async (id)    => _action('entity_asset_delete', {}, id);
 
   const buyingOptionList = () => ([
-    { label: 'Take', id: '0' },
-    { label: 'Give', id: '1' },
+    { label: 'buying_options__0__label',  id: '0' },
+    { label: 'buying_options__1__label', id: '1' },
   ]);
   
   const serviceOptionList = () => ([
-    { label: 'Product', id: '0' },
-    { label: 'Service', id: '1' },
+    { label: 'service_options__0__label', id: '0' },
+    { label: 'service_options__1__label', id: '1' },
   ]);
   
   const currencyOptionList = () => ([
-    { label: 'Pound Sterling', symbol: '£', id: 'GBP' },
-    { label: 'Euro',           symbol: '€', id: 'EUR' },
-    { label: 'US Dollar',      symbol: '$', id: 'USD' },
+    { label: 'currency_options__gbp__label', symbol: '£', id: 'GBP' },
+    { label: 'currency_options__eur__label', symbol: '€', id: 'EUR' },
+    { label: 'currency_options__usd__label', symbol: '$', id: 'USD' },
+    { label: 'currency_options__try__label', symbol: '₺', id: 'TRY' },
   ]);
 
   return {

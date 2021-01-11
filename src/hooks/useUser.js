@@ -1,23 +1,17 @@
 import { useEffect, useState } from 'react';
 
-// input = { id or username }
-export function useUser(api, input) {
-  const { id = null, username = null } = input;
+export function useUser(api, username) {
   const defaultOutput = { loading: true, data: null, error: null };
   const [output, setOutput] = useState(defaultOutput);
   useEffect(() => {
     const callApi = async () => {
       let newOutput;
-      if (id) {
-        newOutput = await api.user_retrieve(id);
-      } else if (username) {
-        newOutput = await api.user_retrieve_by_username(username);
-      } else {
-        newOutput = { error: 'user id or username is required' };
-      }
+      // newOutput = { error: 'user id or username is required' };
+      // newOutput = await api.user_retrieve(id);
+      newOutput = await api.user_retrieve_by_username(username);
       setOutput({ ...newOutput, loading: false });
     };
     callApi();
-  }, []);
+  }, [ username ]);
   return output;
 }

@@ -18,7 +18,7 @@ console.log('FrenchBench API starting...');
 
 const serverConfig = {
   title: 'FrenchBench',
-  version: 'v1.0.0-beta',
+  version: '1.5.0',
   http: {
     port: parseInt(process.env.HTTP_PORT || '3000'),
   },

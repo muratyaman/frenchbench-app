@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Grid, Header, Icon, Message, Segment } from 'semantic-ui-react';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbLink } from '../components';
 import { FbGreatYouHere } from '../content';
 import { SignUpForm } from '../users/SignUpForm';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 
 const defaultPageData = {
   username: '',
@@ -19,9 +19,10 @@ const defaultPageData = {
 export function InfoSignUpPage({ api, i18n }) {
   const history = useHistory();
 
-  const currentUserState = useCurrentUser(api);
+  const currentUserState = useContext(FbCurrentUserContext);
+
   if (currentUserState.data) { // special case
-    history.push('/app/my/home'); // user signed in already, let's go to app
+    history.push('/app'); // user signed in already, let's go to app
   }
 
   const [pageData, setPageData] = useState(defaultPageData);
@@ -40,6 +41,9 @@ export function InfoSignUpPage({ api, i18n }) {
       if (data) { // success
         const { token, id: userId } = data;
         setPageData({ ...pageData, successMessage: 'success', loading: false });
+        
+        await currentUserState.reload(); // reload context, we have new session
+
         history.push('/app');
       } else {
         setPageData({ ...pageData, errorMessage: error, loading: false });
@@ -79,9 +83,7 @@ export function InfoSignUpPage({ api, i18n }) {
       </Message>
 
       <Grid>
-
         <Grid.Column mobile={16} tablet={8} computer={8}>
-
           <Segment>
             <SignUpForm {...formProps} />
           </Segment>
@@ -96,13 +98,11 @@ export function InfoSignUpPage({ api, i18n }) {
               </FbLink>
             </div>
           </Segment>
-
         </Grid.Column>
 
         <Grid.Column mobile={16} tablet={8} computer={8}>
           <FbGreatYouHere i18n={i18n} />
         </Grid.Column>
-        
       </Grid>
     </PublicLayout>
   );

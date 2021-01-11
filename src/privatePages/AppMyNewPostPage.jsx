@@ -1,17 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { Loading } from '../components';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
 import { FbLoadMyNewPost } from '../posts/FbLoadMyNewPost';
-import { useMounted } from '../hooks/useMounted';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 
 export function AppMyNewPostPage({ appConfig, api, i18n }) {
-  const isMounted = useMounted();
-  const currentUserState = useCurrentUser(api);
-  
-  if (!isMounted) return (<Loading content={i18n.common_loading()} />);
-  
+  const currentUserState = useContext(FbCurrentUserContext);
   const layoutProps = { appConfig, title: 'My New Post', currentUserState, activeItemOfTopMenu: 'my-new-post' };
   const myMenuProps = { activeItem: 'posts', api, currentUserState, i18n };
   return (

@@ -14,20 +14,23 @@ import './styles/index.css';
 const initialState = window.__INITIAL_STATE__ || {};
 delete window.__INITIAL_STATE__;
 
-const lang = navigator.language ?? null; // TODO: pick from browser, cookie, etc.
+const lang       = navigator.language ?? null; // TODO: pick from browser, cookie, etc.
 const localeCode = defaultLocaleCode(lang);
-const appConfig = newAppConfig(process.env);
-const appProps = { appConfig, initialState, pageProps: {}, ssr: false };
+const appConfig  = newAppConfig(process.env);
+const appProps   = { appConfig, initialState, pageProps: {}, ssr: false };
 
 const rootElement = document.getElementById('root');
+
 if (rootElement) {
   const contentNode = (appProps) => (
     <React.StrictMode>
       <FbApiContextProvider apiConfig={appConfig.api}>
         <FbI18nContextProvider localeCode={localeCode}>
-          <BrowserRouter>
-            <App {...appProps} />
-          </BrowserRouter>
+          <FbCurrentUserContextProvider>
+            <BrowserRouter>
+              <App {...appProps} />
+            </BrowserRouter>
+          </FbCurrentUserContextProvider>
         </FbI18nContextProvider>
       </FbApiContextProvider>
     </React.StrictMode>

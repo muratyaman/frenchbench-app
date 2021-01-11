@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { makeRoutes } from './makeRoutes.js';
 import { FbApiContext, FbI18nContext } from './contexts';
+import { FbCurrentUserContextProvider } from './users/FbCurrentUserContext.jsx';
 
 export function App(props) {
   const api = useContext(FbApiContext);
@@ -9,15 +10,17 @@ export function App(props) {
   const routes = makeRoutes();
   const { appConfig, ssr = false, hydrating = false, initialState = {}, pageProps = {} } = props;
   return (
-    <Switch>
-      {routes.map((route, idx) => {
-        let newRoute = { ...route, component: null };
-        newRoute.render = renderProps => {
-          const newRenderProps = { ...renderProps, ...pageProps, appConfig, api, i18n, ssr, hydrating, initialState };
-          return (<route.component {...newRenderProps} />);
-        };
-        return (<Route key={idx} {...newRoute} />);
-      })}
-    </Switch>
+    <FbCurrentUserContextProvider api={api}>
+      <Switch>
+        {routes.map((route, idx) => {
+          let newRoute = { ...route, component: null };
+          newRoute.render = renderProps => {
+            const newRenderProps = { ...renderProps, ...pageProps, appConfig, api, i18n, ssr, hydrating, initialState };
+            return (<route.component {...newRenderProps} />);
+          };
+          return (<Route key={idx} {...newRoute} />);
+        })}
+      </Switch>
+    </FbCurrentUserContextProvider>
   );
 }

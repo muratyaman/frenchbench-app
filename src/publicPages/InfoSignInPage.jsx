@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbLink } from '../components';
 import { SignInForm } from '../users/SignInForm';
 import { FbGreatYouHere } from '../content';
-import { useCurrentUser } from '../hooks/useCurrentUser';
+import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 
 const defaultPageData = {
   username: '',
@@ -18,9 +18,10 @@ const defaultPageData = {
 export function InfoSignInPage({ api, i18n }) {
   const history = useHistory();
   
-  const currentUserState = useCurrentUser(api);
+  const currentUserState = useContext(FbCurrentUserContext);
+
   if (currentUserState.data) { // special case
-    history.push('/app/my/home'); // user signed in already, let's go to app
+    history.push('/app'); // user signed in already, let's go to app
   }
   
   const [pageData, setPageData] = useState(defaultPageData);
@@ -39,6 +40,9 @@ export function InfoSignInPage({ api, i18n }) {
       const { data = null, error = null } = await api.signin({ username, password });
       if (data) { // success
         setPageData({ ...pageData, successMessage: 'success', loading: false });
+        
+        currentUserState.setData(data); // update context
+
         history.push('/app');
       } else {
         setPageData({ ...pageData, errorMessage: error, loading: false });
@@ -57,7 +61,7 @@ export function InfoSignInPage({ api, i18n }) {
     successMessage,
   };
 
-  const layoutProps = { title: i18n.account_sign_in(), currentUserState };
+  const layoutProps = { title: i18n.account_sign_in() };
   return (
     <PublicLayout {...layoutProps}>
       <Header as='h2'>
@@ -90,7 +94,6 @@ export function InfoSignInPage({ api, i18n }) {
         <Grid.Column mobile={16} tablet={8} computer={8}>
           <FbGreatYouHere i18n={i18n} />
         </Grid.Column>
-
       </Grid>
     </PublicLayout>
   );

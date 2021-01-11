@@ -1,18 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { Loading } from '../components';
 import { FbLoadArticleEditor } from '../articles/FbLoadArticleEditor';
-import { useMounted } from '../hooks/useMounted';
-import { useCurrentUser } from '../hooks/useCurrentUser';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
+import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 
 export function AppMyArticleEditPage({ appConfig, api, i18n }) {
-  const isMounted = useMounted();
-  const currentUserState = useCurrentUser(api);
-
-  if (!isMounted) return (<Loading content={i18n.common_loading()} />);
-
-  const layoutProps = { appConfig, title: 'Articles', currentUserState, i18n, activeItemOfTopMenu: 'my' };
+  const currentUserState = useContext(FbCurrentUserContext);
+  const layoutProps = { appConfig, title: 'Articles', i18n, activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'articles', api, currentUserState, i18n };
   const myEditorProps = { api, currentUserState, i18n };
   return (

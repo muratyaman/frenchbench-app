@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { randomImgSrc } from '../utils/randomImgSrc';
@@ -6,8 +6,10 @@ import { makeAdvertLink } from '../makeRoutes';
 import { makeHashTagList } from '../utils/makeHashTagList';
 import { FbHashTagLinkList, FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
+import { FbI18nContext } from '../contexts';
 
 export function FbAdvertListItem({ id, title, tags, created_at, username, advert_ref, is_buying, price, currency, assets = [] }) {
+  const { i18n } = useContext(FbI18nContext);
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
   const tag0 = tagArr[0];
@@ -16,7 +18,8 @@ export function FbAdvertListItem({ id, title, tags, created_at, username, advert
   const link = makeAdvertLink({ username, advert_ref });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
-  const priceInfo = is_buying ? 'GIVING' : 'ASKING';
+  const priceInfo = is_buying ? i18n.buying_options__1__label() : i18n.buying_options__0__label();
+  const priceColor = is_buying ? 'green' : 'red';
   return (
     <div className='fb-advert-list-item'>
       <Card>
@@ -28,7 +31,7 @@ export function FbAdvertListItem({ id, title, tags, created_at, username, advert
             <FbLink to={link}>
               <div>
                 <FbAssetImage asset={asset0info} keywords={keywords} link={link} w={240} h={240} wrapped={false} label={null} />
-                <Label color='green' ribbon='right'>{priceInfo} {price} {currency}</Label>
+                <Label color={priceColor} ribbon='right'>{priceInfo} {price} {currency}</Label>
               </div>
             </FbLink>
           </Card.Description>
