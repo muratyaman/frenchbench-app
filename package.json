@@ -1,18 +1,18 @@
 {
   "name": "frenchbench-app",
-  "version": "1.5.0",
+  "version": "1.5.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
   },
   "scripts": {
-    "clean:client": "rm -rf build",
-    "clean:server": "rm -rf build-server",
+    "clean": "rm -rf build",
     "lint": "eslint ./src",
     "type-check": "tsc",
-    "build:client": "yarn run clean:client && yarn run rs:build",
-    "start:server:dev": "ts-node ./start-server-dev.js",
-    "start:server:TODO": "ts-node ./start-server-live.js",
+    "build": "npm run clean && npm run rs:build",
+    "start:ssr:dev": "ts-node ./start-server-dev.js",
+    "start:ssr": "ts-node ./start-server-live.js TODO",
+    "start:dev": "npm run rs:start",
     "rs:start": "react-scripts start",
     "rs:build": "react-scripts build",
     "rs:test": "react-scripts test",
@@ -45,6 +45,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/react": "^17.0.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   },

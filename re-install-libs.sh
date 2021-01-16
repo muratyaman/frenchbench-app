@@ -1,27 +1,27 @@
 #!/bin/sh
 
-yarn add -D ts-node
-yarn add -D typescript
+npm i -D ts-node
+npm i -D typescript
 
-yarn add @babel/core
-yarn add @babel/plugin-proposal-class-properties
-yarn add @babel/plugin-transform-runtime
-yarn add @babel/register
-yarn add axios
-yarn add date-fns
-yarn add dotenv
-yarn add express
-yarn add http-proxy-middleware
-yarn add morgan
-yarn add prop-types
-yarn add react
-yarn add react-dom
-yarn add react-helmet
-yarn add react-mde
-yarn add react-router-dom
-yarn add react-scripts
-yarn add react-text-loop
-yarn add remark
-yarn add remark-html
-yarn add semantic-ui-react semantic-ui-css
-yarn add uuid
+npm i @babel/core
+npm i @babel/plugin-proposal-class-properties
+npm i @babel/plugin-transform-runtime
+npm i @babel/register
+npm i axios
+npm i date-fns
+npm i dotenv
+npm i express
+npm i http-proxy-middleware
+npm i morgan
+npm i prop-types
+npm i react
+npm i react-dom
+npm i react-helmet
+npm i react-mde
+npm i react-router-dom
+npm i react-scripts
+npm i react-text-loop
+npm i remark
+npm i remark-html
+npm i semantic-ui-react semantic-ui-css
+npm i uuid

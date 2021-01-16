@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { FbGeoLocationContext } from './FbGeoLocationContext';
 import { MSG_KIND_GEO, FbWebSocketContext } from '../webSockets/FbWebSocketContext';
+import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 
 export const track = (send, location) => {
   const msgObj = {
@@ -12,15 +13,12 @@ export const track = (send, location) => {
 }
 
 export function FbGeoLocationTracker() {
+  const { data: user } = useContext(FbCurrentUserContext);
   const { location } = useContext(FbGeoLocationContext);
   const { socketStatusFlags, send } = useContext(FbWebSocketContext);
   const { isOpen } = socketStatusFlags();
-
-  if (isOpen && location) {
+  if (isOpen && location && user) {
     track(send, location);
   }
-
-  return (
-    <span />
-  )
+  return (<span />);
 }

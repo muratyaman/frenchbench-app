@@ -30,6 +30,7 @@ export const I18N_KEYS = {
   common_my_adverts: 'common_my_adverts',
   common_my_articles: 'common_my_articles',
   common_sign_out: 'common_sign_out',
+  common_send: 'common_send',
 
   common_relevant: 'common_relevant',
   common_local: 'common_local',
@@ -62,6 +63,8 @@ export const I18N_KEYS = {
   account_password_rules: 'account_password_rules',
 
   article_not_found: 'article_not_found',
+
+  neighbours_chat_room: 'neighbours_chat_room',
 
   // dynamic list below
   buying_options__0__label: 'buying_options__0__label',

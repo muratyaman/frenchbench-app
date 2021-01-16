@@ -9,6 +9,7 @@ export const GL_defaultContext = {
   location: null,
   startWatching: () => {},
   stopWatching: () => {},
+  supported: false,
 };
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
@@ -20,11 +21,13 @@ export const GL_defaultOptions = {
 
 export const FbGeoLocationContext = React.createContext(GL_defaultContext);
 
+export const FbGeoLocationContextConsumer = FbGeoLocationContext.Consumer; // alias
+
 export class FbGeoLocationContextProvider extends React.Component {
 
   constructor(props) {
     super(props);
-    this.geo = navigator.geolocation || null; // localize
+    this.resetGeo();
     this.unmounting = false;
     this.watchId = null;
     this.state = {
@@ -32,11 +35,17 @@ export class FbGeoLocationContextProvider extends React.Component {
       startWatching: this.startWatching,
       stopWatching: this.stopWatching,
       error: this.geo ? null : 'geolocation not supported',
+      supported: !! this.geo,
     };
   }
 
-  startWatching = (ev) => {
-    console.log('FbGeoLocationContextProvider.startWatching', ev);
+  resetGeo = () => {
+    this.geo = navigator.geolocation || null; // localize
+    return this.geo;
+  }
+
+  startWatching = () => {
+    console.log('FbGeoLocationContextProvider.startWatching');
     if (this.geo) {
       const { options = GL_defaultOptions } = this.props;
       try {
@@ -47,11 +56,11 @@ export class FbGeoLocationContextProvider extends React.Component {
     }
   }
 
-  stopWatching = (ev) => {
-    console.log('FbGeoLocationContextProvider.stopWatching', ev);
+  stopWatching = () => {
+    console.log('FbGeoLocationContextProvider.stopWatching');
     if (this.geo && this.watchId) {
       try {
-        this.geo.clearWatch(watchId);
+        this.geo.clearWatch(this.watchId);
       } catch (err) {
         if (!this.unmounting) {
           this.setState({ error: err.message });
@@ -69,6 +78,7 @@ export class FbGeoLocationContextProvider extends React.Component {
       const pos1 = new GeoPos(oldLocation);
       const pos2 = new GeoPos(location);
       const distance = geoDistance(pos1.getLatLon(), pos2.getLatLon());
+      console.log('FbGeoLocationContextProvider.onLocation distance change', distance);
       if (LOCATION_CHANGE_THRESHOLD < distance) {
         this.setState({ location });
       }
@@ -84,7 +94,10 @@ export class FbGeoLocationContextProvider extends React.Component {
   }
 
   componentDidMount() {
-    this.startWatching();
+    this.resetGeo();
+    if (window) { // client-side only
+      this.startWatching();
+    }
   }
 
   componentWillUnmount() {

@@ -33,6 +33,8 @@ export const WS_defaultContext = {
 
 export const FbWebSocketContext = React.createContext(WS_defaultContext);
 
+export const FbWebSocketContextConsumer = FbWebSocketContext.Consumer; // alias
+
 export class FbWebSocketContextProvider extends React.Component {
 
   constructor(props) {
@@ -79,7 +81,7 @@ export class FbWebSocketContextProvider extends React.Component {
   }
 
   onMessage = (ev) => {
-    console.log('FbWebSocketContextProvider.onMessage', ev);
+    console.log('FbWebSocketContextProvider.onMessage event.data', ev.data);
     const { messages } = this.state;
     const msgObj = JSON.parse(ev.data);
     if (msgObj) { // parsed
@@ -105,8 +107,10 @@ export class FbWebSocketContextProvider extends React.Component {
   }
 
   componentDidMount() {
-    this.open();
-    this.timerId = setTimeout(this.retry, 30 * 1000); // every 30 seconds try to reconnect
+    if (window) { // client-side only
+      this.open();
+      this.timerId = setTimeout(this.retry, 30 * 1000); // every 30 seconds try to reconnect
+    }
   }
 
   retry = () => {

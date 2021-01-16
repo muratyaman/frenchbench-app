@@ -11,10 +11,13 @@ import 'semantic-ui-css/semantic.min.css';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import './styles/index.css';
 
-const initialState = window.__INITIAL_STATE__ || {};
-delete window.__INITIAL_STATE__;
+let initialState = {};
+if (window && window.hasOwnProperty('__INITIAL_STATE__')) {
+  initialState = window.__INITIAL_STATE__;
+  delete window.__INITIAL_STATE__;
+}
 
-const lang       = navigator.language ?? null; // TODO: pick from browser, cookie, etc.
+const lang       = window.navigator.language ?? null; // TODO: pick from browser, cookie, etc.
 const localeCode = defaultLocaleCode(lang);
 const appConfig  = newAppConfig(process.env);
 const appProps   = { appConfig, initialState, pageProps: {}, ssr: false };
@@ -26,11 +29,9 @@ if (rootElement) {
     <React.StrictMode>
       <FbApiContextProvider apiConfig={appConfig.api}>
         <FbI18nContextProvider localeCode={localeCode}>
-          <FbCurrentUserContextProvider>
-            <BrowserRouter>
-              <App {...appProps} />
-            </BrowserRouter>
-          </FbCurrentUserContextProvider>
+          <BrowserRouter>
+            <App {...appProps} />
+          </BrowserRouter>
         </FbI18nContextProvider>
       </FbApiContextProvider>
     </React.StrictMode>

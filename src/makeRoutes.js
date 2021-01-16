@@ -35,7 +35,7 @@ export function makeRoutes() {
     { path: makeMyPostsLink(),     component: privatePages.AppMyPostsPage },
     { path: makeMyNewPostLink(),   component: privatePages.AppMyNewPostPage },
     { path: makeMyHomeLink(),      component: privatePages.AppMyIndexPage },
-    { path: makeMyLink(),          component: privatePages.AppMyIndexPage },
+    { path: makeMyLink(),          component: privatePages.AppMyIndexPage, exact: true },
 
     { path: '/app/user/:username/post/:post_ref',     component: privatePages.AppUserPostPage },
     { path: '/app/user/:username/posts',              component: privatePages.AppUserPostsPage },
@@ -48,7 +48,7 @@ export function makeRoutes() {
     { path: makeAppAdvertsLink(),    component: privatePages.AppAdvertsPage },
     { path: makeAppNeighboursLink(), component: privatePages.AppNeighboursPage },
     { path: makeAppHomeLink(),       component: privatePages.AppIndexPage },
-    { path: makeAppLink(),           component: privatePages.AppIndexPage },
+    { path: makeAppLink(),           component: privatePages.AppIndexPage, exact: true },
 
     { path: '/info/article/:slug', component: publicPages.InfoArticlePage, ssr: 'InfoArticlePage' },
     { path: '/info/i-can-help',    component: publicPages.InfoICanHelpPage },
@@ -56,8 +56,8 @@ export function makeRoutes() {
     { path: '/info/sign-in',       component: publicPages.InfoSignInPage },
     { path: '/info/sign-up',       component: publicPages.InfoSignUpPage },
 
-    { path: '/info', component: publicPages.IndexPage, ssr: 'IndexPage' },
-    { path: '/',     component: publicPages.IndexPage, ssr: 'IndexPage' },
+    { path: '/info', component: publicPages.IndexPage, ssr: 'IndexPage', exact: true },
+    { path: '/',     component: publicPages.IndexPage, ssr: 'IndexPage', exact: true },
     { path: '*',     component: publicPages.ErrorPage },
   ];
 }

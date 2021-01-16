@@ -36,5 +36,5 @@ export function FbWebSocketStatus() {
     <Popup on={['hover', 'click']} trigger={icon}>
       {message}
     </Popup>
-  )
+  );
 }

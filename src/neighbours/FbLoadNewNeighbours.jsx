@@ -1,5 +1,5 @@
 import React from 'react';
-import { FbNewNeighbours } from '../components';
+import { FbNewNeighbours } from './FbNewNeighbours';
 
 // NOTE: use only after mounting on client side
 export function FbLoadNewNeighbours(props) {

@@ -22,13 +22,13 @@ export function FbNewNeighbours({ api, currentUserState, socketCtx }) {
     <div>
       <Header>Recently...</Header>
       <Feed>
-        {neighbours.map(neighbours => (
-          <Feed.Event key={neighbours.id}>
+        {neighbours.map(neighbour => (
+          <Feed.Event key={neighbour.id}>
             <Feed.Label image={randomImg('person', 'small')} />
             <Feed.Content>
               <Feed.Summary>
-                <a>{neighbours.username}</a> signed up
-                <Feed.Date>{neighbours.created_at}</Feed.Date>
+                <a>{neighbour.username}</a> signed up
+                <Feed.Date>{neighbour.created_at}</Feed.Date>
               </Feed.Summary>
             </Feed.Content>
           </Feed.Event>

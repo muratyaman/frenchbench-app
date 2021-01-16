@@ -98,20 +98,10 @@ export const sortItemsByDistance = (items) => {
   });
 };
 
-export const sortPlacesByDistance = (places, position) => {
+export const addDistanceToItems = (items, position) => {
   const pos = new GeoPos(position);
-  const itemsWithDistance = places.map(place => {
-    const { lat, lon } = place;
-    return { place, distance: geoDistance(pos.getLatLon(), {lat, lon}) };
+  return items.map(item => {
+    const { lat, lon } = item;
+    return { ...item, distance: geoDistance(pos.getLatLon(), {lat, lon}) };
   });
-  return sortItemsByDistance(itemsWithDistance);
-};
-
-export const sortAudiosByDistance = (audios, position) => {
-  const pos = new GeoPos(position);
-  const itemsWithDistance = audios.map(audio => {
-    const { lat, lon } = audio;
-    return { audio, distance: geoDistance(pos.getLatLon(), {lat, lon}) };
-  });
-  return sortItemsByDistance(itemsWithDistance);
 };

@@ -22,6 +22,7 @@
   "common_loading": "Yükleniyor",
   "common_please_read": "Lütfen oku",
   "common_please_sign_in": "Lütfen giriş yap",
+  "common_send": "Gönder",
   
   "common_posts": "Paylaşımlar",
   "common_adverts": "Reklamlar",
@@ -61,6 +62,8 @@
   "account_password_rules": "Şifre en az 8 karakterli olmalı\nEn az bir küçük harf içermeli: a...z\nEn az bir büyük harf içermeli: A...Z\nEn az bir sayı içermeli: 0...9\nEn az bir özel karakter içermeli:\n. , - _ < > ? ! @ $ ; : ( ) & % + - * / \\",
 
   "article_not_found": "Makale bulunamadı",
+
+  "neighbours_chat_room": "Komşularla Sohbet",
 
   "buying_options__0__label": "Satıyor",
   "buying_options__1__label": "Alıyor",

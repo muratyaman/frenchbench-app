@@ -10,6 +10,7 @@ const formatFloat = f => Math.round(f * factor) / factor;
 export function FbGeoLocationStatus() {
   const { location } = useContext(FbGeoLocationContext);
   const { coords, timestamp } = location  ?? {};
+  
   const { prompt, granted, denied, error } = usePermissions(PERM_NAME_GEOLOCATION);
   const name = 'map marker alternate';
   let message = 'unknown', color = 'grey', accuracyInfo, latInfo, lonInfo, locTime;

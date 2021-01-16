@@ -30,6 +30,7 @@
   "common_my_adverts": "My Adverts",
   "common_my_articles": "My Articles",
   "common_sign_out": "Sign Out",
+  "common_send": "Send",
 
   "common_relevant": "relevant",
   "common_local": "local",
@@ -62,6 +63,8 @@
   "account_password_rules": "Password should have at least 8 characters\nUse at least one lower case letter: a...z\nUse at least one upper case letter: A...Z\nUse at least one number: 0...9\nUse at least one special character:\n. , - _ < > ? ! @ $ ; : ( ) & % + - * / \\",
 
   "article_not_found": "Article not found",
+
+  "neighbours_chat_room": "Neighbourhood Chat Room",
 
   "buying_options__0__label": "Asking",
   "buying_options__1__label": "Bidding",
