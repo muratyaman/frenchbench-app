@@ -9,7 +9,7 @@ export function AppIndexPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMenu {...myMenuProps} />
       <div>
-        TODO: display all events happenning around me
+        TODO: display all events happening around me
       </div>
     </ProtectedLayout>
   );

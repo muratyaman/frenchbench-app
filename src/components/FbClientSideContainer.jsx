@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * render children only on client-side
  * @param {*} param0 
