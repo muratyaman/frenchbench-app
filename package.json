@@ -1,6 +1,6 @@
 {
   "name": "frenchbench-app",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
@@ -42,10 +42,14 @@
     "remark-html": "^13.0.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
+    "traduire": "^1.0.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.31",
     "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
   },

@@ -22,6 +22,7 @@
   "common_loading": "Loading",
   "common_please_read": "Please read",
   "common_please_sign_in": "Please sign in",
+  "common_send": "Send",
   
   "common_posts": "Posts",
   "common_adverts": "Adverts",
@@ -30,7 +31,6 @@
   "common_my_adverts": "My Adverts",
   "common_my_articles": "My Articles",
   "common_sign_out": "Sign Out",
-  "common_send": "Send",
 
   "common_relevant": "relevant",
   "common_local": "local",

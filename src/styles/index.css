@@ -132,3 +132,7 @@ div.fb-load-more {
   margin: 3px;
   text-align: center;
 }
+
+.fb-rand-img p {
+  text-align: center;
+}
