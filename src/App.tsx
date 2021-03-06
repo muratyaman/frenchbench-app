@@ -10,8 +10,8 @@ export interface AppProps {
   appConfig: any;
   ssr: boolean;
   hydrating: boolean;
-  initialState: any;
-  pageProps: any;
+  initialState?: any;
+  pageProps?: any;
 }
 
 export const App: FC<AppProps> = (props: PropsWithChildren<AppProps>) => {

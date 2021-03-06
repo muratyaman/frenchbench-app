@@ -9,5 +9,5 @@ export interface CountryOptionType {
 }
 
 export const countryOptions: CountryOptionType[] = localeCodes.map(({ code, name, flag }) => (
-  { key: code, value: code, flag, text: '', content: name }
+  { key: code, value: code, flag, text: name, content: name }
 ));

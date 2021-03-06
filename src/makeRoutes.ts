@@ -7,12 +7,18 @@ export const makeAppPostsLink      = () => '/app/posts';
 export const makeAppAdvertsLink    = () => '/app/adverts';
 export const makeAppNeighboursLink = () => '/app/neighbours';
 
-export const makeMyLink           = () => '/app/my';
-export const makeMyHomeLink       = () => '/app/my/home';
-export const makeMyAdvertsLink    = () => '/app/my/adverts';
-export const makeMyNewAdvertLink  = () => '/app/my/new-advert';
-export const makeMyPostsLink      = () => '/app/my/posts';
-export const makeMyNewPostLink    = () => '/app/my/new-post';
+export const makeInfoLink          = () => '/info';
+export const makeInfoSignInLink    = () => '/info/sign-in';
+export const makeInfoSignUpLink    = () => '/info/sign-up';
+export const makeInfoICanHelpLink  = () => '/info/i-can-help';
+export const makeInfoINeedHelpLink = () => '/info/i-need-help';
+
+export const makeMyLink          = () => '/app/my';
+export const makeMyHomeLink      = () => '/app/my/home';
+export const makeMyAdvertsLink   = () => '/app/my/adverts';
+export const makeMyNewAdvertLink = () => '/app/my/new-advert';
+export const makeMyPostsLink     = () => '/app/my/posts';
+export const makeMyNewPostLink   = () => '/app/my/new-post';
 
 export const makeMyArticlesLink    = ()         => '/app/my/articles';
 export const makeMyArticleEditLink = ({ id })   => id ? `/app/my/article/${id}` : null;
@@ -50,14 +56,14 @@ export function makeRoutes() {
     { path: makeAppHomeLink(),       component: privatePages.AppIndexPage },
     { path: makeAppLink(),           component: privatePages.AppIndexPage, exact: true },
 
-    { path: '/info/article/:slug', component: publicPages.InfoArticlePage, ssr: 'InfoArticlePage' },
-    { path: '/info/i-can-help',    component: publicPages.InfoICanHelpPage },
-    { path: '/info/i-need-help',   component: publicPages.InfoINeedHelpPage },
-    { path: '/info/sign-in',       component: publicPages.InfoSignInPage },
-    { path: '/info/sign-up',       component: publicPages.InfoSignUpPage },
+    { path: '/info/article/:slug',   component: publicPages.InfoArticlePage, ssr: 'InfoArticlePage' },
+    { path: makeInfoICanHelpLink(),  component: publicPages.InfoICanHelpPage },
+    { path: makeInfoINeedHelpLink(), component: publicPages.InfoINeedHelpPage },
+    { path: makeInfoSignInLink(),    component: publicPages.InfoSignInPage },
+    { path: makeInfoSignUpLink(),    component: publicPages.InfoSignUpPage },
 
-    { path: '/info', component: publicPages.IndexPage, ssr: 'IndexPage', exact: true },
-    { path: '/',     component: publicPages.IndexPage, ssr: 'IndexPage', exact: true },
-    { path: '*',     component: publicPages.ErrorPage },
+    { path: makeInfoLink(), component: publicPages.IndexPage, ssr: 'IndexPage', exact: true },
+    { path: '/',            component: publicPages.IndexPage, ssr: 'IndexPage', exact: true },
+    { path: '*',            component: publicPages.ErrorPage },
   ];
 }

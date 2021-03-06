@@ -1,25 +1,25 @@
 import React from 'react';
-import { Icon, SemanticCOLORS, SemanticICONS } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { FbLink } from './FbLink';
-
-const PURPLE: SemanticCOLORS = 'purple';
+import * as c from '../constants';
+import { makeMyHomeLink } from '../makeRoutes';
 
 export function FbProfileLink({ i18n, currentUserState = null }) {
   const { data: user = null, loading = false, error = null } = currentUserState ?? {};
   const { username = null } = user ?? {};
   let ariaLabel = i18n._('account_sign_in');
   let appLinkLabel = ariaLabel;
-  let appLinkUrl = '/info/sign-in', iconName: SemanticICONS = 'sign-in', iconColour = PURPLE;
+  let appLinkUrl = '/info/sign-in', iconName = c.iconSignIn, iconColour = c.PURPLE;
   if (loading) {
     appLinkLabel = '...';
-    iconName = 'spinner';
+    iconName = c.iconSpinner;
   }
   if (username) {
     ariaLabel = 'Signed in as ' + username;
     appLinkLabel = ''; // String(username).substring(0, 6) + '...';
-    appLinkUrl = '/app/my/home';
-    iconName = 'user circle';
-    iconColour = PURPLE;
+    appLinkUrl = makeMyHomeLink();
+    iconName = c.iconUserCircle;
+    iconColour = c.PURPLE;
   }
 
   return (

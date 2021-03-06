@@ -71,7 +71,7 @@ export function InfoSignInPage({ api, i18n }) {
         </Header.Subheader>
       </Header>
 
-      <Grid>
+      <Grid container>
         <Grid.Column mobile={16} tablet={8} computer={8}>
           
           <Segment>

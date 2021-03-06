@@ -7,8 +7,8 @@ export function FbLocaleSwitch(props) {
   const { i18n, setLocale } = useContext<FbI18nContextType>(FbI18nContext);
   return (
     <Dropdown
+      item
       selection
-      compact
       defaultValue={i18n._code}
       options={countryOptions}
       onChange={(e, { value }) => setLocale(String(value))}

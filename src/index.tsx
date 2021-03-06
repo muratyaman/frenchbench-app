@@ -20,17 +20,17 @@ if (window && window.hasOwnProperty('__INITIAL_STATE__')) {
 const lang       = window.navigator.language ?? null; // TODO: pick from browser, cookie, etc.
 const localeCode = defaultLocaleCode(lang);
 const appConfig  = newAppConfig(process.env);
-const appProps   = { appConfig, initialState, pageProps: {}, ssr: false, hydrating: false };
+const appProps   = { appConfig, localeCode, initialState, pageProps: {}, ssr: false, hydrating: false };
 
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
-  const contentNode = (appProps) => (
+  const Root = (props) => (
     <React.StrictMode>
-      <FbApiContextProvider apiConfig={appConfig.api}>
-        <FbI18nContextProvider localeCode={localeCode}>
+      <FbApiContextProvider apiConfig={props.appConfig.api}>
+        <FbI18nContextProvider localeCode={props.localeCode}>
           <BrowserRouter>
-            <App {...appProps} />
+            <App {...props} />
           </BrowserRouter>
         </FbI18nContextProvider>
       </FbApiContextProvider>
@@ -40,11 +40,11 @@ if (rootElement) {
     // HTML has server-side rendered code. hydrate() faster than render()
     console.info('client-side hydrate due to SSR');
     appProps.hydrating = true;
-    ReactDOM.hydrate(contentNode(appProps), rootElement);
+    ReactDOM.hydrate(Root(appProps), rootElement);
   } else {
     // client-side rendering without SSR
     console.info('client-side render');
-    ReactDOM.render(contentNode(appProps), rootElement);
+    ReactDOM.render(Root(appProps), rootElement);
   }
 } else {
   console.error('root element not found');

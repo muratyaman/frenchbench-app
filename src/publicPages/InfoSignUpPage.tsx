@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Grid, Header, Icon, Message, Segment } from 'semantic-ui-react';
+import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbLink } from '../components';
 import { FbGreatYouHere } from '../content';
@@ -72,17 +72,7 @@ export function InfoSignUpPage({ api, i18n }) {
         </Header.Subheader>
       </Header>
 
-      <Message info>
-        <Message.Header>{i18n._('common_please_read')}</Message.Header>
-        <div>
-          <Icon name='sticky note outline' />
-          &nbsp;<FbLink to='/terms'>{i18n._('common_terms')}</FbLink>
-          &nbsp;{i18n._('common_and')}
-          &nbsp;<FbLink to='/privacy'>{i18n._('common_privacy')}</FbLink>
-        </div>
-      </Message>
-
-      <Grid>
+      <Grid container>
         <Grid.Column mobile={16} tablet={8} computer={8}>
           <Segment>
             <FbSignUpForm {...formProps} />

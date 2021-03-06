@@ -21,6 +21,11 @@ div.fb-page {
   width: 100%;
 }
 
+.ui.segment a {
+  text-decoration: underline;
+  color: purple;
+}
+
 .fb-card-community .ui.card,
 .fb-card-community .ui.cards > .ui.card,
 .fb-card-help-needed .ui.card,

@@ -57,6 +57,7 @@ export const I18N_TranslationObj = {
 
   account_sign_up: '',
   account_signup_prompt: '',
+  account_sign_up_i_agree: '',
   account_if_no_account: '',
   
   account_great_you_here: '',
