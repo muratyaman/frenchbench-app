@@ -154,6 +154,9 @@ export type PostSummaryModel = WithAuditCreated<{
   user_id: string;
   username: string;
   assets?: AssetRelation[];
+  lat?: number | null;
+  lon?: number | null;
+  geo_accuracy?: number;
 }>;
 export type PostDetailsModel = WithAuditUpdated<WithGeoLocation<PostSummaryModel>> & {
   content: string;
@@ -229,6 +232,9 @@ export interface AdvertSummaryModel {
   user_id: string;
   username: string;
   assets?: AssetRelation[];
+  lat?: number | null;
+  lon?: number | null;
+  geo_accuracy?: number;
 }
 export interface AdvertDetailsModel extends AdvertSummaryModel {
   content: string;

@@ -1,6 +1,6 @@
 {
   "name": "frenchbench-app",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
@@ -34,6 +34,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
+    "react-map-gl": "^6.1.10",
     "react-mde": "^11.0.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.2",

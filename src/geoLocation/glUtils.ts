@@ -2,12 +2,19 @@ export const LOCATION_CHANGE_THRESHOLD = 10; // metres
 
 export const EARTH_RADIUS = 6372.8; // in km
 
+export interface FbSimpleCoords {
+  latitude: number;
+  longitude: number;
+}
+
 // @see https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions
 export const GL_defaultOptions = {
   enableHighAccuracy: true,
   timeout: 60 * 1000,
   maximumAge: 60 * 1000,
 };
+
+
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/GeolocationCoordinates
 export interface FbGeoLocationCoords {
@@ -134,6 +141,6 @@ export function addDistanceToItems(items, position: FbGeoLocation) {
   });
 };
 
-export const geoLondonEye: GeoPoint  = { lat: 51.5010499, lon: -0.1216957 };
+export const geoLondonEye: FbSimpleCoords  = { latitude: 51.5010499, longitude: -0.1216957 };
 
-export const geoSevenKings: GeoPoint = { lat: 51.5664333, lon: 0.0916753 };
+export const geoSevenKings: FbSimpleCoords = { latitude: 51.5664333, longitude: 0.0916753 };

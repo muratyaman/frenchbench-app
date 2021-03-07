@@ -26,6 +26,7 @@ div.fb-page {
   color: purple;
 }
 
+/*
 .fb-card-community .ui.card,
 .fb-card-community .ui.cards > .ui.card,
 .fb-card-help-needed .ui.card,
@@ -39,8 +40,9 @@ div.fb-page {
 .fb-card-idea .ui.card,
 .fb-card-idea .ui.cards > .ui.card
 {
-  /*width: 100%;*/
+  width: 100%;
 }
+*/
 
 .fb-card-community .content .description .fb-desc-row {
   margin-bottom: 4px;
@@ -140,4 +142,38 @@ div.fb-load-more {
 
 .fb-rand-img p {
   text-align: center;
+}
+
+div.fb-map-container {
+  width: 100%;
+  min-width: 350px;
+  height: 400px;
+  min-height: 400px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /*top: 1px;*/
+}
+
+div.fb-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+div.fb-map svg circle {
+  stroke-width: 0.17em;
+}
+
+div.fb-map svg circle.small {
+  fill: red;
+  stroke: white;
+}
+
+div.fb-map svg circle.big {
+  fill: blue;
+  stroke: #0F1C3F;
 }

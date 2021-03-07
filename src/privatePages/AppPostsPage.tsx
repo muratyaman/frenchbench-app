@@ -1,4 +1,3 @@
-import React from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMenu } from '../menus/FbAppMenu';
 import { FbPostSearch } from '../posts/FbPostSearch';
