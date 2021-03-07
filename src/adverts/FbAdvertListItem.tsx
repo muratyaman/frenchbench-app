@@ -14,14 +14,14 @@ export interface FbAdvertListItemProps {
 }
 
 export const FbAdvertListItem: FC<FbAdvertListItemProps> = (props: PropsWithChildren<FbAdvertListItemProps>) => {
-  const { id, title, tags, created_at, username, advert_ref, is_buying, price, currency, assets = [] } = props.advert;
+  const { id, title, tags, created_at, username, slug, is_buying, price, currency, assets = [] } = props.advert;
   const { i18n } = useContext(FbI18nContext);
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
   const tag0 = tagArr[0];
   const keywords = tag0 !== '' ? tag0 : 'community';
   const avatarSrc = randomImgSrc('silhouette', 96, 96);
-  const link = makeAdvertLink({ username, advert_ref });
+  const link = makeAdvertLink({ username, slug });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   const priceInfo = is_buying ? i18n._('buying_options__1__label') : i18n._('buying_options__0__label');

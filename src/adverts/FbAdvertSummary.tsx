@@ -1,13 +1,12 @@
-import React from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Label } from 'semantic-ui-react';
 import { makeAdvertLink } from '../makeRoutes';
 import { FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
 
-export function FbAdvertSummary({ id, title, summary, keywords, price, currency, created_at, username, advert_ref, assets = [] }) {
+export function FbAdvertSummary({ id, title, summary, keywords, price, currency, created_at, username, slug, assets = [] }) {
   const dt = formatDistance(new Date(created_at), new Date());
-  const link = makeAdvertLink({ username, advert_ref });
+  const link = makeAdvertLink({ username, slug });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   return (

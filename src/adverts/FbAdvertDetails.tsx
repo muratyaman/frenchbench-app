@@ -10,13 +10,13 @@ import { FbI18nContext } from '../contexts';
 
 export function FbAdvertDetails({ api, advert, username }) {
   const{ i18n } = useContext(FbI18nContext);
-  const { title = '', content = '', tags = '', is_buying, is_service, price, currency, created_at = null, advert_ref, assets = [] } = advert;
+  const { title = '', content = '', tags = '', is_buying, is_service, price, currency, created_at = null, slug, assets = [] } = advert;
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
   const tag0 = tagArr[0];
   const keywords = tag0;
   const avatarSrc = randomImgSrc('silhouette', 96, 96);
-  const link = makeAdvertLink({ username, advert_ref });
+  const link = makeAdvertLink({ username, slug });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   const contentLines = content.split('\n').map((line, idx) => (<p key={`${idx}-${line}`}>{line}</p>))

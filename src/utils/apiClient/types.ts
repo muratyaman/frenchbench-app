@@ -148,7 +148,7 @@ export type UserSearchMeta = MetaBase;
 
 export type PostSummaryModel = WithAuditCreated<{
   id: string;
-  post_ref: string;
+  slug: string;
   title: string;
   tags: string;
   user_id: string;
@@ -160,7 +160,7 @@ export type PostDetailsModel = WithAuditUpdated<WithGeoLocation<PostSummaryModel
 }
 
 export interface PostCreateInput {
-  post_ref?: string;
+  slug?: string;
   title: string;
   content: string;
   tags: string;
@@ -218,7 +218,7 @@ export type ArticleSearchMeta = MetaBase;
 
 export interface AdvertSummaryModel {
   id: string;
-  advert_ref: string;
+  slug: string;
   title: string;
   tags: string;
   is_buying: number;
@@ -238,7 +238,7 @@ export interface AdvertDetailsModel extends AdvertSummaryModel {
 }
 
 export interface AdvertCreateInput {
-  advert_ref?: string;
+  slug?: string;
   title: string;
   content: string;
   tags?: string;

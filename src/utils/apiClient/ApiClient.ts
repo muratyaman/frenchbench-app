@@ -98,8 +98,8 @@ export class ApiClient {
   }
 
   // POSTS ====================================================================
-  async post_retrieve_by_username_and_post_ref(input) {
-    return this._action<t.PostRetrieveData, t.PostSearchMeta>('post_retrieve_by_username_and_post_ref', input);
+  async post_retrieve_by_username_and_slug(input) {
+    return this._action<t.PostRetrieveData, t.PostSearchMeta>('post_retrieve_by_username_and_slug', input);
   }
   // pass { user_id } or { username }
   async post_search_by_user(input) {
@@ -122,8 +122,8 @@ export class ApiClient {
   }
 
   // ADVERTS ==================================================================
-  async advert_retrieve_by_username_and_advert_ref(input) {
-    return this._action('advert_retrieve_by_username_and_advert_ref', input);
+  async advert_retrieve_by_username_and_slug(input) {
+    return this._action('advert_retrieve_by_username_and_slug', input);
   }
   // pass { user_id } or { username }
   async advert_search_by_user(input) {

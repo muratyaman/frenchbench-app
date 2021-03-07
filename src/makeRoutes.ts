@@ -22,15 +22,14 @@ export const makeMyNewPostLink   = () => '/app/my/new-post';
 
 export const makeMyArticlesLink    = ()         => '/app/my/articles';
 export const makeMyArticleEditLink = ({ id })   => id ? `/app/my/article/${id}` : null;
-
-export const makeArticleLink     = ({ slug }) => slug ? `/info/article/${slug}` : null;
+export const makeArticleLink       = ({ slug }) => slug ? `/info/article/${slug}` : null;
 
 export const makeUserProfileLink = ({ username }) => username ? `/app/user/${username}` : null;
 export const makeUserAdvertsLink = ({ username }) => username ? `/app/user/${username}/adverts` : null;
 export const makeUserPostsLink   = ({ username }) => username ? `/app/user/${username}/posts` : null;
 
-export const makeAdvertLink      = ({ username, advert_ref }) => username && advert_ref ? `/app/user/${username}/advert/${advert_ref}` : null;
-export const makePostLink        = ({ username, post_ref })   => username && post_ref ? `/app/user/${username}/post/${post_ref}` : null;
+export const makeAdvertLink      = ({ username, slug }) => username && slug ? `/app/user/${username}/advert/${slug}` : null;
+export const makePostLink        = ({ username, slug }) => username && slug ? `/app/user/${username}/post/${slug}` : null;
 
 export function makeRoutes() {
   return [
@@ -43,11 +42,11 @@ export function makeRoutes() {
     { path: makeMyHomeLink(),      component: privatePages.AppMyIndexPage },
     { path: makeMyLink(),          component: privatePages.AppMyIndexPage, exact: true },
 
-    { path: '/app/user/:username/post/:post_ref',     component: privatePages.AppUserPostPage },
-    { path: '/app/user/:username/posts',              component: privatePages.AppUserPostsPage },
-    { path: '/app/user/:username/advert/:advert_ref', component: privatePages.AppUserAdvertPage },
-    { path: '/app/user/:username/adverts',            component: privatePages.AppUserAdvertsPage },
-    { path: '/app/user/:username',                    component: privatePages.AppUserIndexPage },
+    { path: '/app/user/:username/post/:slug',   component: privatePages.AppUserPostPage },
+    { path: '/app/user/:username/posts',        component: privatePages.AppUserPostsPage },
+    { path: '/app/user/:username/advert/:slug', component: privatePages.AppUserAdvertPage },
+    { path: '/app/user/:username/adverts',      component: privatePages.AppUserAdvertsPage },
+    { path: '/app/user/:username',              component: privatePages.AppUserIndexPage },
 
     { path: '/app/posts/tag/:tag',   component: privatePages.AppPostsByTagPage },
     { path: makeAppPostsLink(),      component: privatePages.AppPostsPage },

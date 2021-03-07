@@ -7,13 +7,13 @@ import { randomImgSrc } from '../utils/randomImgSrc';
 import { makePostLink } from '../makeRoutes';
 import { makeHashTagList } from '../utils/makeHashTagList';
 
-export function FbPostListItem({ id, title, tags, created_at, username, post_ref, assets = [] }) {
+export function FbPostListItem({ id, title, tags, created_at, username, slug, assets = [] }) {
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
   const tag0 = tagArr[0];
   const keywords = tag0 !== '' ? tag0 : 'community';
   const avatarSrc = randomImgSrc('silhouette', 96, 96);
-  const link = makePostLink({ username, post_ref });
+  const link = makePostLink({ username, slug });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   return (
