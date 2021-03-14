@@ -1,20 +1,17 @@
 import { FC, PropsWithChildren } from 'react';
+import { FbAdvertListItem } from '../adverts/FbAdvertListItem';
 import { AdvertSummaryModel } from '../utils/apiClient';
 
 export interface FbMapAdvertInfoProps {
-  info: AdvertSummaryModel;
+  advert: AdvertSummaryModel;
 }
 
 export const FbMapAdvertInfo: FC<FbMapAdvertInfoProps> = (props: PropsWithChildren<FbMapAdvertInfoProps>) => {
-  const { info } = props;
-  const displayName = `${info.created_at}`;
-  const asset0 = info.assets[0].asset;
+  const { advert } = props;
+  const adProps = { advert, summary: '', keywords: '', assetImgProps: { w: 240, h: 240 } };
   return (
-    <div>
-      <div>
-        {displayName}
-      </div>
-      {asset0 && <img width={240} src={asset0.url} alt='info here' />}
+    <div className='map-advert-info'>
+      <FbAdvertListItem {...adProps} />
     </div>
   );
 }

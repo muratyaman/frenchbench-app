@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Helmet from 'react-helmet';
 import { FbFooter } from '../components';
 import { FbI18nContext } from '../contexts';
@@ -10,7 +10,7 @@ import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 export function PublicLayout(props) {
   const currentUserState = useContext(FbCurrentUserContext);
   const { i18n } = useContext(FbI18nContext);
-  const { title = '', containerClassName = 'fb-page', children } = props;
+  const { title = '', containerClassName = '', children } = props;
   const menuProps = { currentUserState, i18n };
   return (
     <div className='fb-layout fb-layout-public'>

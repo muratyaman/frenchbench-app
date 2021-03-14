@@ -12,7 +12,9 @@ export function AppMyIndexPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadMyUserProfile {...profileProps} />
+      <div className='fb-content'>
+        <FbLoadMyUserProfile {...profileProps} />
+      </div>
     </ProtectedLayout>
   );
 }

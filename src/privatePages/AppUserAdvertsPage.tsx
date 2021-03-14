@@ -14,7 +14,9 @@ export function AppUserAdvertsPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppUserMenu {...userMenuProps} />
-      <FbLoadUserAdverts {...advertProps} />
+      <div className='fb-content'>
+        <FbLoadUserAdverts {...advertProps} />
+      </div>
     </ProtectedLayout>
   );
 }

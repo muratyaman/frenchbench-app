@@ -3,13 +3,15 @@ import { FbAppMenu } from '../menus/FbAppMenu';
 import { FbPostSearch } from '../posts/FbPostSearch';
 
 export function AppPostsPage({ appConfig, api, i18n }) {
-  const layoutProps = { appConfig, title: 'Home' };
+  const layoutProps = { appConfig, title: 'Home', containerClassName: 'fb-page-app-posts' };
   const myMenuProps = { activeItem: 'posts', api, i18n };
   const searchProps = { api, i18n };
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMenu {...myMenuProps} />
-      <FbPostSearch {...searchProps} />
+      <div className='fb-content'>
+        <FbPostSearch {...searchProps} />
+      </div>
     </ProtectedLayout>
   );
 }

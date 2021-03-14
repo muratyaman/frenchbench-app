@@ -14,7 +14,9 @@ export function AppMyArticleEditPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadArticleEditor {...myEditorProps} />
+      <div className='fb-content'>
+        <FbLoadArticleEditor {...myEditorProps} />
+      </div>
     </ProtectedLayout>
   );
 }

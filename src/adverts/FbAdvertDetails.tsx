@@ -7,6 +7,7 @@ import { makeAdvertLink, makeUserProfileLink } from '../makeRoutes';
 import { makeHashTagList } from '../utils/makeHashTagList';
 import { FbAssetImage } from '../assets/FbAssetImage';
 import { FbI18nContext } from '../contexts';
+import { formatMoney } from '../utils';
 
 export function FbAdvertDetails({ api, advert, username }) {
   const{ i18n } = useContext(FbI18nContext);
@@ -20,13 +21,13 @@ export function FbAdvertDetails({ api, advert, username }) {
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   const contentLines = content.split('\n').map((line, idx) => (<p key={`${idx}-${line}`}>{line}</p>))
-  const buyingOption = api.options.buyingOptionList().find(({ id }) => id == is_buying);
+  const buyingOption = api.buyingOptionList().find(({ id }) => id == is_buying);
   const buyingOptionLabel = i18n._(buyingOption.label);
-  const serviceOption = api.options.serviceOptionList().find(({ id }) => id == is_service);
+  const serviceOption = api.serviceOptionList().find(({ id }) => id == is_service);
   const serviceOptionLabel = i18n._(serviceOption.label);
-  const currencyOption = api.options.currencyOptionList().find(({ id }) => id == currency);
+  //const currencyOption = api.currencyOptionList().find(({ id }) => id == currency);
   //const currencyOptionLabel = i18n[currencyOption.label]();
-  const priceDesc = `${price}${currency}`;
+  const priceDesc = formatMoney(price, i18n._code, currency);
   const userProfileLink = makeUserProfileLink({ username });
   return (
     <div className='fb-advert-list-item'>

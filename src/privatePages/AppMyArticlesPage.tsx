@@ -11,7 +11,9 @@ export function AppMyArticlesPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadArticles {...myMenuProps} />
+      <div className='fb-content'>
+        <FbLoadArticles {...myMenuProps} />
+      </div>
     </ProtectedLayout>
   );
 }

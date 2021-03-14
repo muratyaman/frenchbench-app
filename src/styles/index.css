@@ -1,11 +1,18 @@
-/* good old fashion CSS: it just works !!! */
 body {
   max-width: 100%;
   margin: 0;
   padding: 0;
+  position: relative;
+}
+.hidden {
+  display: none;
+}
+.z1 {
+  z-index: 1;
 }
 div#root {
-  margin: 2px;
+  margin: 0;
+  padding: 0;
 }
 a,
 a:active,
@@ -16,33 +23,63 @@ a:hover {
   color: purple;
 }
 
-div.fb-page {
-  margin: 5em auto;
-  width: 100%;
-}
-
+/* semantic UI custom styles ------------------------------------- */
 .ui.segment a {
   text-decoration: underline;
   color: purple;
 }
-
-/*
-.fb-card-community .ui.card,
-.fb-card-community .ui.cards > .ui.card,
-.fb-card-help-needed .ui.card,
-.fb-card-help-needed .ui.cards > .ui.card,
-.fb-card-help-provided .ui.card,
-.fb-card-help-provided .ui.cards > .ui.card,
-.fb-post-summary .ui.card,
-.fb-post-summary .ui.cards > .ui.card,
-.fb-advert-summary .ui.card,
-.fb-advert-summary .ui.cards > .ui.card,
-.fb-card-idea .ui.card,
-.fb-card-idea .ui.cards > .ui.card
-{
-  width: 100%;
+.ui.secondary.menu {
+  margin-bottom: 2px;
 }
-*/
+.ui.segment.fb-rand-img {
+  padding: 0;
+  margin: 0;
+}
+.ui.segment.fb-rand-img .image img {
+  width: 100%;
+  margin: 0;
+  padding: 0
+}
+
+
+/* FB custom styles ------------------------------------- */
+
+div.fb-layout {
+  margin: 0;
+  padding: 0;
+}
+
+div.fb-page {
+  padding-top: 4em;
+  width: 100%;
+  height: 100%;
+}
+
+div.fb-layout-public div.fb-page {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+/* avoid padding around secondary app menu */
+div.fb-layout-protected div.fb-page div.fb-content {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+div.fb-layout-protected div.fb-page-app-index div.fb-content { /* contains map */
+  padding-left: 0;  /* undo padding */
+  padding-right: 0; /* undo padding */
+  width: 100%;
+  min-width: 350px;
+  height: calc(100vh - 100px);
+  min-height: 350px;
+  margin: 0;
+  position: relative;
+}
+
+div.fb-layout-protected div.fb-page-app-posts form {
+  margin-bottom: 1em;
+}
 
 .fb-card-community .content .description .fb-desc-row {
   margin-bottom: 4px;
@@ -62,16 +99,6 @@ div.fb-page {
 .fb-page .ui.cards > .ui.card
 {
   width: 100%;
-}
-
-.ui.segment.fb-rand-img {
-  padding: 0;
-  margin: 0;
-}
-.ui.segment.fb-rand-img .image img {
-  width: 100%;
-  margin: 0;
-  padding: 0
 }
 
 div.fb-loading {
@@ -144,17 +171,7 @@ div.fb-load-more {
   text-align: center;
 }
 
-div.fb-map-container {
-  width: 100%;
-  min-width: 350px;
-  height: 400px;
-  min-height: 400px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  /*top: 1px;*/
-}
-
+/* contained by div.fb-page-app-index */
 div.fb-map {
   position: absolute;
   top: 0;
@@ -176,4 +193,18 @@ div.fb-map svg circle.small {
 div.fb-map svg circle.big {
   fill: blue;
   stroke: #0F1C3F;
+}
+
+div.fb-map .mapboxgl-marker .map-marker-icon-advert {
+  cursor: pointer;
+}
+
+div.map-advert-info {
+  max-width: 300px;
+  padding-top: 5px;
+}
+div.map-advert-info div.fb-advert-list-item .ui.card {
+  border: 0;
+  border-radius: 0%;
+  box-shadow: none;
 }

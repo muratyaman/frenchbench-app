@@ -12,7 +12,9 @@ export function AppMyPostsPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadMyPosts {...myPostsProps} />
+      <div className='fb-content'>
+        <FbLoadMyPosts {...myPostsProps} />
+      </div>
     </ProtectedLayout>
   );
 }

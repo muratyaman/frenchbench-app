@@ -13,7 +13,9 @@ export function AppUserPostPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppUserMenu {...userMenuProps} />
-      <FbLoadUserPost {...postProps} />
+      <div className='fb-content'>
+        <FbLoadUserPost {...postProps} />
+      </div>
     </ProtectedLayout>
   );
 }

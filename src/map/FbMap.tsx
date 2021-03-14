@@ -1,18 +1,14 @@
 import { Component } from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import { Icon } from 'semantic-ui-react';
 import { FbMapCentreSvg } from './FbMapCentreSvg';
-//import { FbMapPostInfo } from './FbMapPostInfo';
-//import { FbMapAdvertInfo } from './FbMapAdvertInfo';
+import { FbMapPostInfo } from './FbMapPostInfo';
+import { FbMapAdvertInfo } from './FbMapAdvertInfo';
 import { IMapViewportConfig, IMapFixedSettingsConfig } from '../appConfig';
 import { AdvertSummaryModel, PostSummaryModel } from '../utils';
 import { FbSimpleCoords } from '../geoLocation/glUtils';
+import * as c from '../constants';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
-enum MapMarkerTypeEnum {
-  POST   = 0,
-  ADVERT = 1,
-}
 
 /*
 MAP properties {
@@ -43,7 +39,7 @@ const coreSettings = {
   touchRotate: true,
   keyboard: true,
   doubleClickZoom: true,
-  minZoom: 14,
+  minZoom: 11,
   maxZoom: 18,
   minPitch: 0,
   maxPitch: 0,
@@ -62,8 +58,8 @@ export interface FbMapProps {
 
 export interface FbMapState {
   viewport: IMapViewportConfig;
-  popupInfo: PostSummaryModel | AdvertSummaryModel;
-  popupType: MapMarkerTypeEnum | null;
+  selectedPost: PostSummaryModel | null;
+  selectedAdvert: AdvertSummaryModel | null;
 }
 
 export class FbMap extends Component<FbMapProps, FbMapState> {
@@ -71,22 +67,26 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
     super(props);
     this.state = {
       viewport: props.defaultViewport,
-      popupInfo: null,
-      popupType: null,
+      selectedPost: null,
+      selectedAdvert: null,
     };
   }
   
   _updateViewport = viewport => {
     this.setState({ viewport });
-  };
+  }
 
-  onClickPostMarker = (ev, place) => {
-    this.setState({ popupInfo: place, popupType: MapMarkerTypeEnum.POST });
-  };
+  onClickPostMarker = (ev, selectedPost: PostSummaryModel) => {
+    this.setState({ selectedPost, selectedAdvert: null });
+  }
 
-  onClickAdvertMarker = (ev, audio) => {
-    this.setState({ popupInfo: audio, popupType: MapMarkerTypeEnum.ADVERT });
-  };
+  onClickAdvertMarker = (ev, selectedAdvert: AdvertSummaryModel) => {
+    this.setState({ selectedAdvert, selectedPost: null });
+  }
+
+  onClosePopup = () => {
+    this.setState({ selectedAdvert: null, selectedPost: null });
+  }
 
   _renderCentre = (centre) => {
     if (!centre) return null;
@@ -118,8 +118,8 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
         key: 'post-' + row.id,
         latitude: parseFloat(row.lat),
         longitude: parseFloat(row.lon),
-        offsetLeft: -20,
-        offsetTop: -10,
+        offsetLeft: 0,
+        offsetTop: 0,
       };
       const hasWiki = true;// TODO: find out
       return (
@@ -129,7 +129,7 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
             name="sun"
             size="small"
             color={hasWiki ? 'blue' : 'grey'}
-            className="ball-place"
+            className="map-marker-icon-post"
           />
         </Marker>
       );
@@ -142,49 +142,51 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
         key: 'advert-' + row.id,
         latitude: parseFloat(row.lat),
         longitude: parseFloat(row.lon),
-        offsetLeft: -20,
-        offsetTop: -10,
+        offsetLeft: -10,
+        offsetTop: -20,
       };
       return (
         <Marker {...props}>
           <Icon
             onClick={ev => this.onClickAdvertMarker(ev, row)}
-            name="play circle"
-            size="small"
-            color="blue"
-            className="ball-audio"
+            name={c.advertIcon}
+            color={row.is_buying ? c.buyingColour : c.sellingColour}
+            className="map-marker-icon-advert"
+            size="large"
           />
         </Marker>
       );
     });
   };
   
-  onClosePopup = () => {
-    this.setState({ popupInfo: null })
-  };
-  
-  // _renderPopup() {
-  //   const { popupInfo, popupType } = this.state;
-  //   const contentDom = !popupInfo ? null : (
-  //     popupType === MapMarkerTypeEnum.POST
-  //     ? <FbMapPostInfo info={{ popupInfo as PostSummaryModel }} />
-  //     : <FbMapAdvertInfo info={{ popupInfo as AdvertSummaryModel }} />
-  //   );
-  //   return (
-  //     popupInfo && (
-  //       <Popup
-  //         tipSize={5}
-  //         anchor='top'
-  //         longitude={popupInfo.lon}
-  //         latitude={popupInfo.lat}
-  //         closeOnClick={false}
-  //         onClose={this.onClosePopup}
-  //       >
-  //         {contentDom}
-  //       </Popup>
-  //     )
-  //   );
-  // }
+  _renderPopup() {
+    const { selectedAdvert, selectedPost } = this.state;
+    let contentDom = null, lat = 0, lon = 0;
+    if (selectedAdvert) {
+      contentDom = <FbMapAdvertInfo advert={selectedAdvert} />;
+      lat = selectedAdvert.lat;
+      lon = selectedAdvert.lon;
+    }
+    if (selectedPost) {
+      contentDom = <FbMapPostInfo post={selectedPost} />;
+      lat = selectedPost.lat;
+      lon = selectedPost.lon;
+    }
+    return (
+      contentDom && (
+        <Popup
+          tipSize={5}
+          anchor='top'
+          latitude={lat}
+          longitude={lon}
+          closeOnClick={false}
+          onClose={this.onClosePopup}
+        >
+          {contentDom}
+        </Popup>
+      )
+    );
+  }
   
   render() {
     let { viewport } = this.state;
@@ -212,9 +214,9 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
       <div className='fb-map'>
         <ReactMapGL {...mapProps} onViewportChange={this._updateViewport}>
           {this._renderCentre(centre)}
-          {this._renderPosts(posts)}
           {this._renderAdverts(adverts)}
-          {/*this._renderPopup()*/}
+          {this._renderPosts(posts)}
+          {this._renderPopup()}
         </ReactMapGL>
       </div>
     );

@@ -1,10 +1,20 @@
+import { ElementType, FC, PropsWithChildren, ReactNode } from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Label } from 'semantic-ui-react';
 import { makeAdvertLink } from '../makeRoutes';
 import { FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
+import { AdvertSummaryModel } from '../utils';
 
-export function FbAdvertSummary({ id, title, summary, keywords, price, currency, created_at, username, slug, assets = [] }) {
+export interface FbAdvertSummaryProps {
+  advert: AdvertSummaryModel;
+  keywords?: string | null;
+  summary?: string | ElementType | ReactNode | null;
+}
+
+export const FbAdvertSummary: FC<FbAdvertSummaryProps> = (props: PropsWithChildren<FbAdvertSummaryProps>) => {
+  const { advert, summary, keywords } = props;
+  const { id, title, price, currency, created_at, username, slug, assets = [] } = advert;
   const dt = formatDistance(new Date(created_at), new Date());
   const link = makeAdvertLink({ username, slug });
   const asset0 = assets[0] ?? null;
@@ -16,7 +26,7 @@ export function FbAdvertSummary({ id, title, summary, keywords, price, currency,
         <Card.Content>
           <Card.Header>{title}</Card.Header>
           <Card.Meta><span className='date'>{dt} ago</span></Card.Meta>
-          <Card.Description>{summary}</Card.Description>
+          {summary && <Card.Description>{summary}</Card.Description>}
           <Card.Description extra>
             <Label color='green' ribbon='right'>{price} {currency}</Label>
           </Card.Description>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAdvertSearch } from '../adverts/FbAdvertSearch';
 import { FbAppMenu } from '../menus/FbAppMenu';
@@ -10,7 +9,9 @@ export function AppAdvertsPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMenu {...myMenuProps} />
-      <FbAdvertSearch {...searchProps} />
+      <div className='fb-content'>
+        <FbAdvertSearch {...searchProps} />
+      </div>
     </ProtectedLayout>
   );
 }

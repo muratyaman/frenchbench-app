@@ -1,6 +1,11 @@
-import { FbImageLoader } from '../components';
+import { FbImageLoader, FbImageLoaderProps } from '../components';
 import { randomImg } from '../utils/randomImg';
-import { assetImgSrc } from '../utils/assetImgSrc';
+import { assetImgSrc, AssetWithUrl } from '../utils/assetImgSrc';
+
+export interface FbAssetImageProps extends FbImageLoaderProps {
+  asset?: AssetWithUrl | null;
+  keywords?: string | null;
+}
 
 export function FbAssetImage({ asset = null, keywords = '', w = 320, h = 240, ...overrides }) {
   let src, alt;

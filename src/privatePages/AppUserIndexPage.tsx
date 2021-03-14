@@ -14,7 +14,9 @@ export function AppUserIndexPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppUserMenu {...userMenuProps} />
-      <FbLoadUserProfile {...profileProps} />
+      <div className='fb-content'>
+        <FbLoadUserProfile {...profileProps} />
+      </div>
     </ProtectedLayout>
   );
 }

@@ -2,13 +2,13 @@ import { FC, PropsWithChildren } from 'react';
 import { PostSummaryModel } from '../utils/apiClient';
 
 export interface FbMapPostInfoProps {
-  info: PostSummaryModel;
+  post: PostSummaryModel;
 }
 
 export const FbMapPostInfo: FC<FbMapPostInfoProps> = (props: PropsWithChildren<FbMapPostInfoProps>) => {
-  const { info } = props;
-  const displayName = `${info.title}`;
-  const asset0 = info.assets[0].asset;
+  const { post: { title, assets } } = props;
+  const displayName = `${title}`;
+  const asset0 = assets[0].asset;
   return (
     <div>
       <div>

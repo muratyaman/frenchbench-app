@@ -12,7 +12,9 @@ export function AppPostsByTagPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMenu {...myMenuProps} />
-      <FbLoadPostsByTag {...postsProps} />
+      <div className='fb-content'>
+        <FbLoadPostsByTag {...postsProps} />
+      </div>
     </ProtectedLayout>
   );
 }

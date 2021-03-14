@@ -11,7 +11,9 @@ export function AppMyNewAdvertPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadMyNewAdvert {...myMenuProps} />
+      <div className='fb-content'>
+        <FbLoadMyNewAdvert {...myMenuProps} />
+      </div>
     </ProtectedLayout>
   );
 }

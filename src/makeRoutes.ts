@@ -31,6 +31,8 @@ export const makeUserPostsLink   = ({ username }) => username ? `/app/user/${use
 export const makeAdvertLink      = ({ username, slug }) => username && slug ? `/app/user/${username}/advert/${slug}` : null;
 export const makePostLink        = ({ username, slug }) => username && slug ? `/app/user/${username}/post/${slug}` : null;
 
+export const makeBlogLink = (slug = 'about-us') => `https://frenchbench.com/${slug}`;
+
 export function makeRoutes() {
   return [
     { path: '/app/my/article/:articleId', component: privatePages.AppMyArticleEditPage },

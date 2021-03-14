@@ -4,9 +4,10 @@ import { FbMap } from '../map';
 import { geoLondonEye } from '../geoLocation/glUtils';
 import { FbGeoLocationContext } from '../geoLocation';
 import { useContext } from 'react';
+import { useAdvertSearch } from '../hooks/useAdvertSearch';
 
 export function AppIndexPage({ appConfig, api, i18n }) {  
-  const layoutProps = { appConfig, title: 'Home' };
+  const layoutProps = { appConfig, title: 'Home', containerClassName: 'fb-page-app-index' };
   const myMenuProps = { activeItem: 'home', api, i18n };
 
   const { location } = useContext(FbGeoLocationContext);
@@ -16,15 +17,14 @@ export function AppIndexPage({ appConfig, api, i18n }) {
   const bearing = 360 - heading;
   const centre = coords ? coords : geoLondonEye;
   const { defaultViewport, fixedSettings } = appConfig.map;
-  const mapProps = { centre, bearing, defaultViewport, fixedSettings }
+
+  const { data: adverts = []} = useAdvertSearch(api);
+  const mapProps = { centre, bearing, defaultViewport, fixedSettings, adverts };
   
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMenu {...myMenuProps} />
-      <div>
-        TODO: display all events happening around me
-      </div>
-      <div className="fb-map-container">
+      <div className='fb-content'>
         <FbMap {...mapProps} />
       </div>
     </ProtectedLayout>

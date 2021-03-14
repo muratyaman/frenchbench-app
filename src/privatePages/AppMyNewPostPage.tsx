@@ -11,7 +11,9 @@ export function AppMyNewPostPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
-      <FbLoadMyNewPost {...myMenuProps} />
+      <div className='fb-content'>
+        <FbLoadMyNewPost {...myMenuProps} />
+      </div>
     </ProtectedLayout>
   );
 }

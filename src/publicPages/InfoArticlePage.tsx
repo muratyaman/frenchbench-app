@@ -1,15 +1,13 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbGridCardContainer, FbLoading } from '../components';
 import { FbArticle } from '../articles/FbArticle';
 import { useArticleBySlug } from '../hooks/useArticleBySlug';
 
+// TODO deprecated
 export function InfoArticlePage(props) {
-  console.log('InfoArticlePage props', props);
   const { api, i18n, ssr = false, hydrating = false, ssrData = {}, initialState = {} } = props;
   const params = useParams();
-  console.log('InfoArticlePage params', params);
   const { InfoArticlePage: initialData = {}, slug: initialSlug } = initialState ?? {};
   const slug = initialSlug ? initialSlug : (ssr ? ssrData.slug : params.slug);
   const data = { ...ssrData, ...initialData };

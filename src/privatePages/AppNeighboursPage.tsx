@@ -12,7 +12,9 @@ export function AppNeighboursPage({ appConfig, api, i18n }) {
   return (
     <ProtectedLayout {...layoutProps}>
       <FbAppMenu {...myMenuProps} />
-      <FbChatWithNeighbours {...chatProps} />
+      <div className='fb-content'>
+        <FbChatWithNeighbours {...chatProps} />
+      </div>
     </ProtectedLayout>
   );
 }

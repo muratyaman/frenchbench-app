@@ -22,5 +22,5 @@ export function FbGeoLocationTracker() {
   if (isOpen && location && user) {
     track(send, location);
   }
-  return (<span />);
+  return (<span className='hidden z1' />);
 }

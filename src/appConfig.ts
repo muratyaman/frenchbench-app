@@ -13,7 +13,7 @@ export function newAppConfig(penv: IProcessEnv): IAppConfig {
         height: '100%',
         latitude: geoLondonEye.latitude,
         longitude: geoLondonEye.longitude,
-        zoom: 16,
+        zoom: 15,
       },
       fixedSettings: {
         width: '100%',

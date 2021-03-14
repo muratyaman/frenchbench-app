@@ -1,13 +1,15 @@
-import React from 'react';
-import { FbLink } from './FbLink';
+import { useContext } from 'react';
 import { Container, Divider, Grid, Image, List } from 'semantic-ui-react';
+import { FbFooterLinks } from '../content/FbFooterLinks';
+import { FbI18nContext } from '../contexts';
 
 export function FbFooter() {
+  const { i18n } = useContext(FbI18nContext);
   return (
     <>
       <Container text textAlign='center' className='fb-footer-container'>
         <Image centered size='small' src='/assets/frenchbench-logo-small.png' />
-        <p>Love your neighbours.</p>
+        <p>{i18n._('common_love_your_neighbours')}</p>
         <div>&copy;{(new Date().getFullYear())} FrenchBench.org</div>
       </Container>
       
@@ -16,11 +18,7 @@ export function FbFooter() {
       <Grid inverted divided stackable textAlign='center'>
         <Grid.Column only='computer' computer={2}>&nbsp;</Grid.Column>
         <Grid.Column mobile={16} tablet={8} computer={8}>
-          <FbLink to='/info/article/about'>About Us</FbLink>&nbsp;-&nbsp;
-          <FbLink to='/info/article/contact'>Contact Us</FbLink>&nbsp;-&nbsp;
-          <FbLink to='/info/article/terms'>Terms of Service</FbLink>&nbsp;-&nbsp;
-          <FbLink to='/info/article/privacy'>Privacy Policy</FbLink>&nbsp;-&nbsp;
-          <FbLink to='/info/article/safety'>Safety</FbLink>
+          <FbFooterLinks />
         </Grid.Column>
         <Grid.Column only='computer' computer={2}>&nbsp;</Grid.Column>
       </Grid>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Helmet from 'react-helmet';
 import { FbClientSideContainer, FbLoading } from '../components';
 import { FbI18nContext } from '../contexts';
@@ -9,7 +9,7 @@ import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 export function ProtectedLayout(props) {
   const currentUserState = useContext(FbCurrentUserContext);
   const { i18n } = useContext(FbI18nContext);
-  const { title = '', containerClassName = 'fb-page', activeItemOfTopMenu = 'home', children } = props;
+  const { title = '', containerClassName = '', activeItemOfTopMenu = 'home', children } = props;
   const { data: user = null, loading = false, error: userError = null } = currentUserState ?? {};
   const menuProps = { activeItem: activeItemOfTopMenu, currentUserState, i18n };
   return (
@@ -20,7 +20,7 @@ export function ProtectedLayout(props) {
       
       <FbAppTopMenu {...menuProps} />
 
-      <div className={containerClassName}>
+      <div className={`fb-page ${containerClassName}`}>
         {loading && <FbLoading />}
         {!loading && !user && <p>{i18n._('common_please_sign_in')}</p>}
         {user && children}

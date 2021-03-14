@@ -1,7 +1,7 @@
-import React from 'react';
 import { Menu, Icon, SemanticICONS } from 'semantic-ui-react';
 import { FbLink } from '../components';
 import { makeUserProfileLink, makeUserPostsLink, makeUserAdvertsLink } from '../makeRoutes';
+import * as c from '../constants';
 
 interface AppUserMenuItem {
   name: string;
@@ -12,10 +12,11 @@ interface AppUserMenuItem {
 
 // NOTE: use only after mounting on client side
 export function FbAppUserMenu({ username, activeItem = 'home' }) {
+  //TODO: use i18n
   const items: AppUserMenuItem[] = [
-    { name: 'home',    href: makeUserProfileLink({ username }), label: username,  iconName: 'user circle' },
-    { name: 'posts',   href: makeUserPostsLink({ username }),   label: 'Posts',   iconName: 'write square' },
-    { name: 'adverts', href: makeUserAdvertsLink({ username }), label: 'Adverts', iconName: 'newspaper' },
+    { name: 'home',    href: makeUserProfileLink({ username }), label: username,  iconName: c.userHomeIcon },
+    { name: 'posts',   href: makeUserPostsLink({ username }),   label: 'Posts',   iconName: c.postIcon },
+    { name: 'adverts', href: makeUserAdvertsLink({ username }), label: 'Adverts', iconName: c.advertIcon },
   ];
   
   return (

@@ -45,6 +45,8 @@
   "common_happy": "happy",
   "common_exchanging": "exchanging",
 
+  "common_love_your_neighbours": "Love your neighbours.",
+
   "account_sign_in": "Sign In",
   "account_signin_prompt": "Check what's happening in your neighbourhood",
   "account_if_account": "If you have an account",
@@ -76,5 +78,11 @@
   "currency_options__eur__label": "Euro",
   "currency_options__gbp__label": "Pound Sterling",
   "currency_options__usd__label": "US Dollar",
-  "currency_options__try__label": "Turkish Lira"
+  "currency_options__try__label": "Turkish Lira",
+
+  "link_about_us": "About Us",
+  "link_contact_us": "Contact Us",
+  "link_terms_of_service": "Terms of Service",
+  "link_privacy_policy": "Privacy Policy",
+  "link_safety": "Safety"
 }

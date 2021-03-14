@@ -164,21 +164,21 @@ export class ApiClient {
   async entity_asset_delete (id)   { return this._action('entity_asset_delete', {}, id); }
 
   // OPTIONS ==================================================================
-  async buyingOptionList(): Promise<t.OptionList> {
+  buyingOptionList(): t.OptionList {
     return ([
-      { label: 'buying_options__0__label',  id: '0' },
+      { label: 'buying_options__0__label', id: '0' },
       { label: 'buying_options__1__label', id: '1' },
     ]);
   }
   
-  async serviceOptionList(): Promise<t.OptionList> {
+  serviceOptionList(): t.OptionList {
     return ([
       { label: 'service_options__0__label', id: '0' },
       { label: 'service_options__1__label', id: '1' },
     ]);
   }
   
-  async currencyOptionList(): Promise<t.OptionListCurrency> {
+  currencyOptionList(): t.OptionListCurrency {
     return  ([
       { label: 'currency_options__gbp__label', symbol: '£', id: 'GBP' },
       { label: 'currency_options__eur__label', symbol: '€', id: 'EUR' },

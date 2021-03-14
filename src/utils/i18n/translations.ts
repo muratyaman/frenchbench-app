@@ -48,6 +48,8 @@ export const I18N_TranslationObj = {
   common_neighbourhood: '',
   common_happy: '',
   common_exchanging: '',
+
+  common_love_your_neighbours: '',
   
   account_sign_in: '',
   account_signin_prompt: '',
@@ -82,6 +84,12 @@ export const I18N_TranslationObj = {
   currency_options__gbp__label: '',
   currency_options__usd__label: '',
   currency_options__try__label: '',
+
+  link_about_us: '',
+  link_contact_us: '',
+  link_terms_of_service: '',
+  link_privacy_policy: '',
+  link_safety: '',
 };
 
 export const I18N_Keys = Object.getOwnPropertyNames(I18N_TranslationObj);

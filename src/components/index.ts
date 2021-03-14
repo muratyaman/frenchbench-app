@@ -5,6 +5,7 @@ export * from './FbGridCardContainer';
 export * from './FbHashTagLinkList';
 export * from './FbIcon';
 export * from './FbLink';
+export * from './FbLinkExt';
 export * from './FbLoadingParagraph';
 export * from './FbLoadMore';
 export * from './FbLocaleSwitch';

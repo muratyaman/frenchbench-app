@@ -45,6 +45,8 @@
   "common_happy": "kutlu",
   "common_exchanging": "pazarlıklar",
 
+  "common_love_your_neighbours": "Komşunu sev.",
+
   "account_sign_in": "Giriş Yap",
   "account_signin_prompt": "Mahallende neler oluyor öğren",
   "account_if_account": "Eğer bir hesabın varsa",
@@ -76,5 +78,11 @@
   "currency_options__eur__label": "Euro",
   "currency_options__gbp__label": "Sterlin",
   "currency_options__usd__label": "Dolar",
-  "currency_options__try__label": "Türk Lirası"
+  "currency_options__try__label": "Türk Lirası",
+
+  "link_about_us": "Hakkımızda",
+  "link_contact_us": "Bize Ulaşın",
+  "link_terms_of_service": "Kullanım Koşulları",
+  "link_privacy_policy": "Kişisel Veriler",
+  "link_safety": "Güvenlik"
 }
