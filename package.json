@@ -1,6 +1,6 @@
 {
   "name": "frenchbench-app",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
@@ -29,6 +29,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
+    "mapbox-gl": "^2.1.1",
     "morgan": "^1.10.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

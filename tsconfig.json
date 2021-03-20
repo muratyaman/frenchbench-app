@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -20,7 +20,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "sourceMap": false   /* Generates corresponding '.map' file. */
+    "sourceMap": false,   /* Generates corresponding '.map' file. */
+    "declaration": false,
+    "declarationMap": false
   },
   "include": [
     "src"

@@ -8,7 +8,6 @@ import { defaultLocaleCode } from './utils/i18n';
 
 // TODO: for now, include all CSS here; SSR does not work with CSS imported by a component
 import 'semantic-ui-css/semantic.min.css';
-import 'react-mde/lib/styles/css/react-mde-all.css';
 import './styles/index.css';
 
 let initialState = {};

@@ -5,6 +5,7 @@ import { FbLoadingParagraph } from '../components';
 import { FbPropsWithApi } from '../types';
 import { I18N_TYPE } from '../utils';
 import { md2Html } from '../utils/md2html';
+import 'react-mde/lib/styles/css/react-mde-all.css';
 
 const STAGE_LOADING = 'loading';
 const STAGE_READY   = 'ready';
