@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { FbHashTagLinkList, FbLink } from '../components';
@@ -10,7 +10,7 @@ import { FbI18nContext } from '../contexts';
 import { formatMoney } from '../utils';
 
 export function FbAdvertDetails({ api, advert, username }) {
-  const{ i18n } = useContext(FbI18nContext);
+  const { i18n } = useContext(FbI18nContext);
   const { title = '', content = '', tags = '', is_buying, is_service, price, currency, created_at = null, slug, assets = [] } = advert;
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
@@ -21,12 +21,9 @@ export function FbAdvertDetails({ api, advert, username }) {
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
   const contentLines = content.split('\n').map((line, idx) => (<p key={`${idx}-${line}`}>{line}</p>))
-  const buyingOption = api.buyingOptionList().find(({ id }) => id == is_buying);
-  const buyingOptionLabel = i18n._(buyingOption.label);
-  const serviceOption = api.serviceOptionList().find(({ id }) => id == is_service);
-  const serviceOptionLabel = i18n._(serviceOption.label);
-  //const currencyOption = api.currencyOptionList().find(({ id }) => id == currency);
-  //const currencyOptionLabel = i18n[currencyOption.label]();
+  const buyingOption = api.buyingOptionList(i18n).find(({ id }) => id == is_buying);
+  const serviceOption = api.serviceOptionList(i18n).find(({ id }) => id == is_service);
+  const currencyOption = api.currencyOptionList(i18n).find(({ id }) => id == currency);
   const priceDesc = formatMoney(price, i18n._code, currency);
   const userProfileLink = makeUserProfileLink({ username });
   return (
@@ -44,7 +41,7 @@ export function FbAdvertDetails({ api, advert, username }) {
             <FbHashTagLinkList tags={tags} />
           </Card.Description>
           <Card.Description extra>
-            <Label color='purple' ribbon='right'>{buyingOptionLabel} {priceDesc} for this {serviceOptionLabel}</Label>
+            <Label color='purple' ribbon='right'>{buyingOption.label} {priceDesc} for this {serviceOption.label}</Label>
             {contentLines}
           </Card.Description>
         </Card.Content>
