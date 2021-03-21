@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
+import { FbLink } from '../components';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
 import { FbLoadMyAdverts } from '../adverts/FbLoadMyAdverts';
@@ -13,6 +14,9 @@ export function AppMyAdvertsPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
       <div className='fb-content'>
+        <p>
+          <FbLink to='/app/my/new-advert'><span>NEW ADVERT</span></FbLink>
+        </p>
         <FbLoadMyAdverts {...myAdvertsProps} />
       </div>
     </ProtectedLayout>

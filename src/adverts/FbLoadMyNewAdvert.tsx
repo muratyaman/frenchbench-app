@@ -1,10 +1,10 @@
 import { Component, PropsWithChildren } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
-import { FbPropsWithApi } from '../types';
+import { FbPropsWithApiAndI18n } from '../types';
 import { FbAdvertCreateForm } from './FbAdvertCreateForm';
 
-export interface FbLoadMyNewAdvertPropsBase extends FbPropsWithApi {
+export interface FbLoadMyNewAdvertPropsBase extends FbPropsWithApiAndI18n {
 
 }
 
@@ -52,7 +52,7 @@ export class FbLoadMyNewAdvert extends Component<FbLoadMyNewAdvertProps> {
   }
 
   render(){
-    const { api } = this.props;
+    const { api, i18n } = this.props;
     const { loading, errorMessage, successMessage, redirect } = this.state;
     if (redirect) {
       return <Redirect to={redirect} />
@@ -64,6 +64,7 @@ export class FbLoadMyNewAdvert extends Component<FbLoadMyNewAdvertProps> {
       errorMessage,
       successMessage,
       api,
+      i18n,
       formData: this.state,
     };
     return (

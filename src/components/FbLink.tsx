@@ -1,3 +1,3 @@
 import { Link } from 'react-router-dom';
 
-export const FbLink = (props) => <Link {...props} />;
+export const FbLink = ({ children, ...rest }) => <Link {...rest}>{children}</Link>;

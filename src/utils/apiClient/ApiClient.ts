@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { v4 as newUuid } from 'uuid';
+import { I18N_TYPE } from '../i18n';
 import * as t from './types';
 
 export class ApiClient {
@@ -164,26 +165,26 @@ export class ApiClient {
   async entity_asset_delete (id)   { return this._action('entity_asset_delete', {}, id); }
 
   // OPTIONS ==================================================================
-  buyingOptionList(): t.OptionList {
+  buyingOptionList(i18n: I18N_TYPE): t.OptionList {
     return ([
-      { label: 'buying_options__0__label', id: '0' },
-      { label: 'buying_options__1__label', id: '1' },
+      { label: i18n._('buying_options__0__label'), id: '0' },
+      { label: i18n._('buying_options__1__label'), id: '1' },
     ]);
   }
   
-  serviceOptionList(): t.OptionList {
+  serviceOptionList(i18n: I18N_TYPE): t.OptionList {
     return ([
-      { label: 'service_options__0__label', id: '0' },
-      { label: 'service_options__1__label', id: '1' },
+      { label: i18n._('service_options__0__label'), id: '0' },
+      { label: i18n._('service_options__1__label'), id: '1' },
     ]);
   }
   
-  currencyOptionList(): t.OptionListCurrency {
+  currencyOptionList(i18n: I18N_TYPE): t.OptionListCurrency {
     return  ([
-      { label: 'currency_options__gbp__label', symbol: '£', id: 'GBP' },
-      { label: 'currency_options__eur__label', symbol: '€', id: 'EUR' },
-      { label: 'currency_options__usd__label', symbol: '$', id: 'USD' },
-      { label: 'currency_options__try__label', symbol: '₺', id: 'TRY' },
+      { label: i18n._('currency_options__gbp__label'), symbol: '£', id: 'GBP' },
+      { label: i18n._('currency_options__eur__label'), symbol: '€', id: 'EUR' },
+      { label: i18n._('currency_options__usd__label'), symbol: '$', id: 'USD' },
+      { label: i18n._('currency_options__try__label'), symbol: '₺', id: 'TRY' },
     ]);
   }
 }

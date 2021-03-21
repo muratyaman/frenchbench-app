@@ -6,6 +6,7 @@ export * from './FbHashTagLinkList';
 export * from './FbIcon';
 export * from './FbLink';
 export * from './FbLinkExt';
+export * from './FbLinkNav';
 export * from './FbLoadingParagraph';
 export * from './FbLoadMore';
 export * from './FbLocaleSwitch';

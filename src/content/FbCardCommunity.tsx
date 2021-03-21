@@ -33,12 +33,14 @@ const content = {
         <div className='fb-desc-row'>⭐️ find/receive help in your<Label as='span' color='violet' size='small'>neighbourhood</Label></div>
         <div className='fb-desc-row'>⭐️ happy <Label as='span' size='small' color='olive'>exchanging</Label></div>
         <div>
+          {/* TODO: replace TextLoop after adding animation to slide up/down etc.
           <ReactChildrenAnimated delay={5000}>
             <span><Label as='span' size='small' color='orange'>time</Label></span>
             <span><Label as='span' size='small' color='yellow'>knowledge</Label></span>
             <span><Label as='span' size='small' color='green'>products</Label></span>
             <span><Label as='span' size='small' color='blue'>services</Label></span>
           </ReactChildrenAnimated>
+          */}
         </div>
       </Card.Description>
     </Card.Content>

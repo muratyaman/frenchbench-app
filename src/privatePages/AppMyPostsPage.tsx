@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
+import { FbLink } from '../components';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
 import { FbLoadMyPosts } from '../posts/FbLoadMyPosts';
@@ -13,6 +14,9 @@ export function AppMyPostsPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
       <div className='fb-content'>
+        <p>
+          <FbLink to='/app/my/new-post'><span>NEW POST</span></FbLink>
+        </p>
         <FbLoadMyPosts {...myPostsProps} />
       </div>
     </ProtectedLayout>
