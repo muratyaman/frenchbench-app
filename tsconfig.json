@@ -22,9 +22,16 @@
     "jsx": "react-jsx",
     "sourceMap": false,   /* Generates corresponding '.map' file. */
     "declaration": false,
-    "declarationMap": false
+    "declarationMap": false,
+    "rootDir": "./src"
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "./src/setupProxy.js",
+    "./src/setupTests.ts",
+    "./src/**/*.test.tsx",
+    "./src/**/*.test.ts"
   ]
 }

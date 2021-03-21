@@ -1,5 +1,6 @@
 import { Card, Label } from 'semantic-ui-react';
 import TextLoop from 'react-text-loop';
+import ReactChildrenAnimated from 'react-children-animated';
 import { FbRandomImage } from '../components';
 import { localeCodeEn, localeCodeTr } from '../utils/i18n';
 
@@ -31,6 +32,14 @@ const content = {
         </div>
         <div className='fb-desc-row'>⭐️ find/receive help in your<Label as='span' color='violet' size='small'>neighbourhood</Label></div>
         <div className='fb-desc-row'>⭐️ happy <Label as='span' size='small' color='olive'>exchanging</Label></div>
+        <div>
+          <ReactChildrenAnimated delay={5000}>
+            <span><Label as='span' size='small' color='orange'>time</Label></span>
+            <span><Label as='span' size='small' color='yellow'>knowledge</Label></span>
+            <span><Label as='span' size='small' color='green'>products</Label></span>
+            <span><Label as='span' size='small' color='blue'>services</Label></span>
+          </ReactChildrenAnimated>
+        </div>
       </Card.Description>
     </Card.Content>
   ),

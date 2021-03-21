@@ -7,14 +7,17 @@ import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { matchPath, StaticRouter } from 'react-router-dom';
-import { newAppConfig } from './appConfig';
-import { ApiClient } from './utils/apiClient';
-import { defaultLocaleCode } from './utils/i18n';
-import { App } from './App';
-import { FbApiContextProvider, FbI18nContextProvider } from './contexts';
-import { makeRoutes } from './makeRoutes.js';
+import { newAppConfig } from '../src/appConfig';
+import { ApiClient } from '../src/utils/apiClient';
+import { defaultLocaleCode } from '../src/utils/i18n';
+import { App } from '../src/App';
+import { FbApiContextProvider, FbI18nContextProvider } from '../src/contexts';
+import { makeRoutes } from '../src/makeRoutes.js';
 
 console.log('FrenchBench API starting...');
+
+const indexHtmlPath = path.join(__dirname, '..', 'build', 'index.html');
+const indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
 const serverConfig = {
   title: 'FrenchBench',
@@ -43,9 +46,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs', 
 
 // setup the logger
 server.use(morgan('combined', { stream: accessLogStream }));
-
-const indexHtmlPath = path.join(__dirname, '..', 'build', 'index.html');
-const indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
 // Nginx replacement - START
 console.log('proxy middleware ...');

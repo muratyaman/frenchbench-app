@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO: update this list
+
 npm i -D ts-node
 npm i -D typescript
 
@@ -13,7 +15,6 @@ npm i dotenv
 npm i express
 npm i http-proxy-middleware
 npm i morgan
-npm i prop-types
 npm i react
 npm i react-dom
 npm i react-helmet

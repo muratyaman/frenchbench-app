@@ -1,5 +1,3 @@
-import { number } from "prop-types";
-
 export interface CookieContainer {
   cookies: {
     remove: ({ name: string }) => void;
