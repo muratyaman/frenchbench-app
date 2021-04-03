@@ -7,7 +7,7 @@ import { useUser } from '../hooks/useUser';
 export function AppUserPostPage({ appConfig, api, i18n }) {
   const { username, slug } = useParams();
   const userState = useUser(api, username);
-  const layoutProps = { appConfig, title: 'Post', i18n };
+  const layoutProps = { appConfig, title: 'User Post', i18n };
   const userMenuProps = { username, activeItem: 'posts', api, userState, i18n };
   const postProps = { username, slug, api, userState, i18n };
   return (

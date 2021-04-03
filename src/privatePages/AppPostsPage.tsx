@@ -3,7 +3,7 @@ import { FbAppMenu } from '../menus/FbAppMenu';
 import { FbPostSearch } from '../posts/FbPostSearch';
 
 export function AppPostsPage({ appConfig, api, i18n }) {
-  const layoutProps = { appConfig, title: 'Home', containerClassName: 'fb-page-app-posts' };
+  const layoutProps = { appConfig, title: 'Posts', containerClassName: 'fb-page-app-posts' };
   const myMenuProps = { activeItem: 'posts', api, i18n };
   const searchProps = { api, i18n };
   return (

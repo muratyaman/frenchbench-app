@@ -8,7 +8,7 @@ import { useUser } from '../hooks/useUser';
 export function AppUserIndexPage({ appConfig, api, i18n }) {
   const { username } = useParams();
   const userState = useUser(api, username);
-  const layoutProps = { appConfig, title: 'Home', i18n };
+  const layoutProps = { appConfig, title: 'User Profile', i18n };
   const userMenuProps = { username, activeItem: 'home', api, userState, i18n };
   const profileProps = { username, api, userState, i18n };
   return (

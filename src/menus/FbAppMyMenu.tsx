@@ -4,6 +4,7 @@ import { Menu, Icon } from 'semantic-ui-react';
 import { FbIcon, FbLink } from '../components';
 import { FbI18nContext } from '../contexts';
 import * as c from '../constants';
+import { makeMyAdvertsLink, makeMyArticlesLink, makeMyHomeLink, makeMyPostsLink } from '../makeRoutes';
 
 // NOTE: use only after mounting on client side
 export function FbAppMyMenu({ activeItem = 'home', api, currentUserState }) {
@@ -11,9 +12,9 @@ export function FbAppMyMenu({ activeItem = 'home', api, currentUserState }) {
   const { i18n } = useContext(FbI18nContext);
 
   const items = [
-    { name: 'home',    href: '/app/my/home',    label: ' ',                         iconName: c.userHomeIcon },
-    { name: 'posts',   href: '/app/my/posts',   label: i18n._('common_my_posts'),   iconName: c.postIcon },
-    { name: 'adverts', href: '/app/my/adverts', label: i18n._('common_my_adverts'), iconName: c.advertIcon },
+    { name: 'home',    href: makeMyHomeLink(),    label: ' ',                         iconName: c.userHomeIcon },
+    { name: 'posts',   href: makeMyPostsLink(),   label: i18n._('common_my_posts'),   iconName: c.postIcon },
+    { name: 'adverts', href: makeMyAdvertsLink(), label: i18n._('common_my_adverts'), iconName: c.advertIcon },
   ];
 
   const { data: user = null } = currentUserState ?? {};
@@ -21,7 +22,7 @@ export function FbAppMyMenu({ activeItem = 'home', api, currentUserState }) {
   
   const isFbAdmin = username && (username === 'frenchbench');
   if (isFbAdmin) { // TODO: special case for admin
-    items.push({ name: 'articles', href: '/app/my/articles', label: i18n._('common_my_articles'), iconName: c.articleIcon });
+    items.push({ name: 'articles', href: makeMyArticlesLink(), label: i18n._('common_my_articles'), iconName: c.articleIcon });
   }
 
   const signout = async (ev) => {

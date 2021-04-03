@@ -4,7 +4,7 @@ import { FbFileUploadModal } from '../assets/FbFileUploadModal';
 export function FbAdvertCreateForm({ api, i18n, formData, onSubmit, onChange, errorMessage = null, successMessage = null, ...otherProps }) {
   const buyingOptions = api.buyingOptionList(i18n).map(({ id, label }) => ({ key: id, text: label, value: id }));
   const serviceOptions = api.serviceOptionList(i18n).map(({ id, label }) => ({ key: id, text: label, value: id }));
-  const currencyOptions = api.currencyOptionList(i18n).map(({ id, symbol }) => ({ key: id, text: symbol, value: id }));
+  const currencyOptions = api.currencyOptionList(i18n).map(({ id, label }) => ({ key: id, text: label, value: id }));
   
   const onUploadSuccess = ({ asset_id, file_name }) => {
     onChange('asset_id', asset_id);
@@ -14,51 +14,22 @@ export function FbAdvertCreateForm({ api, i18n, formData, onSubmit, onChange, er
   return (
     <Form onSubmit={onSubmit} {...otherProps} warning={!!errorMessage} success={!!successMessage}>
       <Form.Group>
-        <Form.Select
-          fluid
-          label='I am'
-          options={buyingOptions}
-          defaultValue={formData.is_buying}
-          placeholder=''
-        />
-        <Form.Select
-          fluid
-          label='...'
-          options={currencyOptions}
-          defaultValue={formData.currency}
-          placeholder=''
-        />
         <Form.Input
-          icon='money'
-          iconPosition='left'
-          name='price'
-          label='...'
-          placeholder='0.00'
-          onChange={(e, { name, value }) => onChange(name, value)}
-          type='number'
-        />
-        <Form.Select
           fluid
-          label='for'
-          options={serviceOptions}
-          defaultValue={formData.is_service}
-          placeholder=''
-        />
-      </Form.Group>
-      <Form.Group>
-        <Form.Input
-          name='title'
           label='Title'
-          placeholder='title of your advert'
+          name='title'
+          placeholder=''
           onChange={(e, { name, value }) => onChange(name, value)}
+          width={16}
         />
       </Form.Group>
       <Form.Group>
         <Form.TextArea
           name='content'
           label='Description'
-          placeholder='type something'
+          placeholder=''
           onChange={(e, { name, value }) => onChange(name, value)}
+          width={16}
         />
       </Form.Group>
       <Form.Group>
@@ -67,8 +38,44 @@ export function FbAdvertCreateForm({ api, i18n, formData, onSubmit, onChange, er
           iconPosition='left'
           name='tags'
           label='Tags'
-          placeholder='#barber'
+          placeholder=''
           onChange={(e, { name, value }) => onChange(name, value)}
+          width={16}
+        />
+      </Form.Group>
+      <Form.Group inline>
+        <label>I want to </label>
+        <Form.Select
+          fluid
+          name='is_buying'
+          options={buyingOptions}
+          defaultValue={formData.is_buying}
+          onChange={onChange}
+        />
+        <label> a </label>
+        <Form.Select
+          fluid
+          name='is_service'
+          options={serviceOptions}
+          defaultValue={formData.is_service}
+          onChange={onChange}
+        />
+      </Form.Group>
+      <Form.Group inline>
+        <label>Value</label>
+        <Form.Input
+          icon='money'
+          iconPosition='left'
+          name='price'
+          placeholder=''
+          onChange={(e, { name, value }) => onChange(name, value)}
+          type='number'
+        />
+        <Form.Select
+          fluid
+          options={currencyOptions}
+          defaultValue={formData.currency}
+          onChange={onChange}
         />
       </Form.Group>
       <Form.Group>

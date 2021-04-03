@@ -23,7 +23,7 @@ export function FbAdvertDetails({ api, advert, username }) {
   const contentLines = content.split('\n').map((line, idx) => (<p key={`${idx}-${line}`}>{line}</p>))
   const buyingOption = api.buyingOptionList(i18n).find(({ id }) => id == is_buying);
   const serviceOption = api.serviceOptionList(i18n).find(({ id }) => id == is_service);
-  const currencyOption = api.currencyOptionList(i18n).find(({ id }) => id == currency);
+  //const currencyOption = api.currencyOptionList(i18n).find(({ id }) => id == currency);
   const priceDesc = formatMoney(price, i18n._code, currency);
   const userProfileLink = makeUserProfileLink({ username });
   return (

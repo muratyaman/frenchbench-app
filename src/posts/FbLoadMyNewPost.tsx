@@ -1,42 +1,79 @@
 import { Component, PropsWithChildren } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
-import { ApiClient } from '../utils';
+import { defaultLocationFormData, FbGeoLocation } from '../geoLocation/glUtils';
+import { makeMyPostsLink } from '../makeRoutes';
+import { FbPropsWithApiAndI18n } from '../types';
 import { FbPostCreateForm } from './FbPostCreateForm';
 
-export interface FbLoadMyNewPostPropsBase {
-  api: ApiClient;
+export interface FbLoadMyNewPostPropsBase extends FbPropsWithApiAndI18n {
+  location?: FbGeoLocation | null;
 }
 
 export type FbLoadMyNewPostProps = PropsWithChildren<FbLoadMyNewPostPropsBase>;
 
-export class FbLoadMyNewPost extends Component<FbLoadMyNewPostProps> {
+export interface FbLoadMyNewPostState extends Record<string, any> {
+  // form data
+  title: string;
+  content: string;
+  tags: string;
+  asset_id: string | null;
+  asset_file: string | null;
+  lat: number;
+  lon: number;
+  geo_accuracy: number;
+  // other props
+  loading: boolean;
+  errorMessage: string | null;
+  successMessage: string | null;
+  redirect: string | null;
+}
 
-  state = {
-    title: '',
-    content: '',
-    tags: '',
-    asset_id: null, // uuid
-    asset_file: null, // uuid.jpg
-    loading: false,
-    errorMessage: null,
-    successMessage: null,
-    redirect: null,
-  };
+const defaultState: FbLoadMyNewPostState = {
+  // form data
+  title: '',
+  content: '',
+  tags: '',
+  asset_id: null, // uuid
+  asset_file: null, // uuid.jpg
+  ...defaultLocationFormData,
+  // other props
+  loading: false,
+  errorMessage: null,
+  successMessage: null,
+  redirect: null,
+}
 
-  onChange = (name, value) => {
+export class FbLoadMyNewPost extends Component<FbLoadMyNewPostProps, FbLoadMyNewPostState> {
+
+  constructor(props) {
+    super(props);
+    this.state = defaultState;
+    const { location } = props;
+    if (location) {
+      const { latitude, longitude, accuracy } = location.coords;
+      this.state = {
+        ...defaultState,
+        lat: latitude,
+        lon: longitude,
+        geo_accuracy: accuracy,
+      };
+    }
+  }
+
+  onChange = (name: string, value: string | null) => {
     this.setState({ [name]: value });
   }
   
   onSubmit = async (ev) => {
     ev.preventDefault();
     this.setState({ successMessage: null, errorMessage: null, loading: true });
-    const { title, content, tags, asset_id } = this.state;
+    const { title, content, tags, asset_id, lat, loading, geo } = this.state;
     try {
-      const newPost = { title, content, tags, asset_id };
+      const newPost = { title, content, tags, asset_id, lat, loading, geo };
       const { data = null, error = null } = await this.props.api.post_create(newPost);
       if (data) { // success
-        this.setState({ successMessage: 'success', loading: false, redirect: '/app/my/posts' });
+        this.setState({ successMessage: 'success', loading: false, redirect: makeMyPostsLink() });
       } else {
         this.setState({ errorMessage: error, loading: false });
       }

@@ -99,7 +99,6 @@ export class FbWebSocketContextProvider extends Component<FbWebSocketContextProv
   }
 
   onClose = (ev) => {
-    console.log('FbWebSocketContextProvider.onClose', ev);
     this.setState({ socketStatus: this.getSocketStatus() });
   }
 
@@ -120,7 +119,6 @@ export class FbWebSocketContextProvider extends Component<FbWebSocketContextProv
 
   // command to open websocket
   open = () => {
-    console.log('FbWebSocketContextProvider.open');
     try {
       const { url } = this.props; // e.g. 'ws://localhost:3000/ws'
       this.ws = new WebSocket(url);
@@ -150,7 +148,6 @@ export class FbWebSocketContextProvider extends Component<FbWebSocketContextProv
 
   // command to close websocket
   close = () => {
-    console.log('FbWebSocketContextProvider.close');
     if (this.ws) {
       try {
         this.ws.close();

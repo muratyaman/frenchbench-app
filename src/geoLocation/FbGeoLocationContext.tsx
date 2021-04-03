@@ -56,7 +56,6 @@ export class FbGeoLocationContextProvider extends Component<FbGeoLocationContext
   }
 
   startWatching = () => {
-    console.log('FbGeoLocationContextProvider.startWatching');
     if (this.geo) {
       const { options = glUtils.GL_defaultOptions } = this.props;
       try {
@@ -68,7 +67,6 @@ export class FbGeoLocationContextProvider extends Component<FbGeoLocationContext
   }
 
   stopWatching = () => {
-    console.log('FbGeoLocationContextProvider.stopWatching');
     if (this.geo && this.watchId) {
       try {
         this.geo.clearWatch(this.watchId);
@@ -82,15 +80,14 @@ export class FbGeoLocationContextProvider extends Component<FbGeoLocationContext
 
   // @see https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPosition
   onLocation = (location) => {
-    console.log('FbGeoLocationContextProvider.onLocation', location);
     const oldLocation = this.state.location;
 
     if (oldLocation) {// not first time
       const pos1 = new glUtils.GeoPos(oldLocation);
       const pos2 = new glUtils.GeoPos(location);
       const distance = glUtils.geoDistance(pos1.getLatLon(), pos2.getLatLon());
-      console.log('FbGeoLocationContextProvider.onLocation distance change', distance);
       if (glUtils.LOCATION_CHANGE_THRESHOLD < distance) {
+        console.log('FbGeoLocationContextProvider.onLocation enough distance change', distance);
         this.setState({ location });
       }
     } else { // first time

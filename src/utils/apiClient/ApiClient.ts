@@ -169,6 +169,8 @@ export class ApiClient {
     return ([
       { label: i18n._('buying_options__0__label'), id: '0' },
       { label: i18n._('buying_options__1__label'), id: '1' },
+      { label: i18n._('buying_options__2__label'), id: '2' },
+      { label: i18n._('buying_options__3__label'), id: '3' },
     ]);
   }
   

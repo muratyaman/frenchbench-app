@@ -5,20 +5,23 @@ import { makeAdvertLink } from '../makeRoutes';
 import { FbLink } from '../components';
 import { FbAssetImage } from '../assets/FbAssetImage';
 import { AdvertSummaryModel } from '../utils';
+import { FbPropsWithApiAndI18n } from '../types';
 
-export interface FbAdvertSummaryProps {
+export interface FbAdvertSummaryProps extends FbPropsWithApiAndI18n {
   advert: AdvertSummaryModel;
   keywords?: string | null;
   summary?: string | ElementType | ReactNode | null;
 }
 
 export const FbAdvertSummary: FC<FbAdvertSummaryProps> = (props: PropsWithChildren<FbAdvertSummaryProps>) => {
-  const { advert, summary, keywords } = props;
-  const { id, title, price, currency, created_at, username, slug, assets = [] } = advert;
+  const { api, i18n, advert, summary, keywords } = props;
+  const { id, title, price, currency, is_buying, is_service, created_at, username, slug, assets = [] } = advert;
   const dt = formatDistance(new Date(created_at), new Date());
   const link = makeAdvertLink({ username, slug });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
+  const buyingOption = api.buyingOptionList(i18n).find(({ id }) => id == is_buying);
+  const serviceOption = api.serviceOptionList(i18n).find(({ id }) => id == is_service);
   return (
     <div className='fb-advert-summary'>
       <Card fluid>

@@ -12,6 +12,7 @@ export * from './FbLoadMore';
 export * from './FbLocaleSwitch';
 export * from './FbLogo';
 export * from './FbProfileLink';
+export * from './FbRadioList';
 export * from './FbImageLoader';
 export * from './FbLoading';
 export * from './FbRandomImage';

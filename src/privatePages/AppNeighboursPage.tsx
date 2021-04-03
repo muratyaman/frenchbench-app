@@ -6,7 +6,7 @@ import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 
 export function AppNeighboursPage({ appConfig, api, i18n }) {
   const currentUserState = useContext(FbCurrentUserContext);
-  const layoutProps = { appConfig, title: 'Neighbours' };
+  const layoutProps = { appConfig, title: 'My Neighbours' };
   const myMenuProps = { activeItem: 'neighbours', api, currentUserState, i18n };
   const chatProps = { api, currentUserState, i18n };
   return (

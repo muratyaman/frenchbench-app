@@ -19,7 +19,7 @@ export function AppIndexPage({ appConfig, api, i18n }) {
   const { defaultViewport, fixedSettings } = appConfig.map;
 
   const { data: adverts = []} = useAdvertSearch(api);
-  const mapProps = { centre, bearing, defaultViewport, fixedSettings, adverts };
+  const mapProps = { api, i18n, centre, bearing, defaultViewport, fixedSettings, adverts };
   
   return (
     <ProtectedLayout {...layoutProps}>

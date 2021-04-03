@@ -14,7 +14,11 @@ export const GL_defaultOptions = {
   maximumAge: 60 * 1000,
 };
 
-
+export const defaultLocationFormData = {
+  lat: 0.0,
+  lon: 0.0,
+  geo_accuracy: 9999,
+}
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/GeolocationCoordinates
 export interface FbGeoLocationCoords {
@@ -142,5 +146,3 @@ export function addDistanceToItems(items, position: FbGeoLocation) {
 };
 
 export const geoLondonEye: FbSimpleCoords  = { latitude: 51.5010499, longitude: -0.1216957 };
-
-export const geoSevenKings: FbSimpleCoords = { latitude: 51.5664333, longitude: 0.0916753 };

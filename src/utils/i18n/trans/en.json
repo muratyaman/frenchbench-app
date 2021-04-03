@@ -69,8 +69,10 @@
 
   "neighbours_chat_room": "Neighbourhood Chat Room",
 
-  "buying_options__0__label": "Asking",
-  "buying_options__1__label": "Bidding",
+  "buying_options__0__label": "Buy",
+  "buying_options__1__label": "Sell",
+  "buying_options__2__label": "Let",
+  "buying_options__3__label": "Rent",
 
   "service_options__0__label": "Product",
   "service_options__1__label": "Service",
@@ -84,5 +86,17 @@
   "link_contact_us": "Contact Us",
   "link_terms_of_service": "Terms of Service",
   "link_privacy_policy": "Privacy Policy",
-  "link_safety": "Safety"
+  "link_safety": "Safety",
+
+  "geo_status_prompt": "We need to track your location.",
+  "geo_status_granted": "Thanks, we can track your location.",
+  "geo_status_denied": "Sorry, you did not want us to track your location.",
+  "geo_status_error": "There was an error: ",
+
+  "ws_status_unknown": "Connection status is unknown.",
+  "ws_status_connecting": "We are connecting.",
+  "ws_status_open": "We are connected.",
+  "ws_status_closing": "We are disconnecting.",
+  "ws_status_closed": "We are disconnected.",
+  "ws_status_error": "There was an error: "
 }

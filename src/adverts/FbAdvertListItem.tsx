@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useContext } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { randomImgSrc } from '../utils/randomImgSrc';
@@ -6,19 +6,18 @@ import { makeAdvertLink } from '../makeRoutes';
 import { makeHashTagList } from '../utils/makeHashTagList';
 import { FbHashTagLinkList, FbLink } from '../components';
 import { FbAssetImage, FbAssetImageProps } from '../assets/FbAssetImage';
-import { FbI18nContext } from '../contexts';
 import { AdvertSummaryModel } from '../utils';
 import * as c from '../constants';
+import { FbPropsWithApiAndI18n } from '../types';
 
-export interface FbAdvertListItemProps {
+export interface FbAdvertListItemProps extends FbPropsWithApiAndI18n {
   advert: AdvertSummaryModel;
   assetImgProps?: FbAssetImageProps;
 }
 
 export const FbAdvertListItem: FC<FbAdvertListItemProps> = (props: PropsWithChildren<FbAdvertListItemProps>) => {
-  const { advert, assetImgProps = {} } = props;
-  const { id, title, tags, created_at, username, slug, is_buying, price, currency, assets = [] } = advert;
-  const { i18n } = useContext(FbI18nContext);
+  const { api, i18n , advert, assetImgProps = {} } = props;
+  const { id, title, tags, created_at, username, slug, is_buying, is_service, price, currency, assets = [] } = advert;
   const dt = formatDistance(new Date(created_at), new Date());
   const tagArr = makeHashTagList(tags);
   const tag0 = tagArr[0];
@@ -27,7 +26,9 @@ export const FbAdvertListItem: FC<FbAdvertListItemProps> = (props: PropsWithChil
   const link = makeAdvertLink({ username, slug });
   const asset0 = assets[0] ?? null;
   const asset0info = asset0?.asset ?? null;
-  const priceInfo = is_buying ? i18n._('buying_options__1__label') : i18n._('buying_options__0__label');
+  const buyingOption = api.buyingOptionList(i18n).find(({ id }) => id == is_buying);
+  const serviceOption = api.serviceOptionList(i18n).find(({ id }) => id == is_service);
+  const priceInfo = buyingOption ? buyingOption.label : '';
   const priceColor = is_buying ? c.buyingColour : c.sellingColour;
   return (
     <div className='fb-advert-list-item'>

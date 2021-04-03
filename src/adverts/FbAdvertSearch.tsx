@@ -1,12 +1,12 @@
 import { Component, PropsWithChildren } from 'react';
 import { FbLoadingParagraph, FbLoadMore } from '../components';
-import { FbPropsWithApi } from '../types';
+import { FbPropsWithApi, FbPropsWithApiAndI18n } from '../types';
 import { FbAdvertList } from './FbAdvertList';
 import { FbAdvertSearchForm } from './FbAdvertSearchForm';
 
 const PAGE_LIMIT = 10;
 
-export interface FbAdvertSearchPropsBase extends FbPropsWithApi {
+export interface FbAdvertSearchPropsBase extends FbPropsWithApiAndI18n {
   
 }
 export type FbAdvertSearchProps = PropsWithChildren<FbAdvertSearchPropsBase>;
@@ -74,7 +74,8 @@ export class FbAdvertSearch extends Component<FbAdvertSearchProps> {
     this.search(false);
   }
 
-  render(){
+  render() {
+    const { api, i18n } = this.props;
     const { loading, error, pagesOfAdverts } = this.state;
     const offset = this.getOffset();
     const rc = this.getRowCount();
@@ -83,7 +84,7 @@ export class FbAdvertSearch extends Component<FbAdvertSearchProps> {
         { <FbAdvertSearchForm loading={loading} onSubmit={this.onSubmit} onChange={this.onChange} />}
         
         { pagesOfAdverts && pagesOfAdverts.length && pagesOfAdverts.map((adverts, idx) => (
-          <div key={`page-${idx}`}><FbAdvertList adverts={adverts} /></div>
+          <div key={`page-${idx}`}><FbAdvertList api={api} i18n={i18n} adverts={adverts} /></div>
         ))}
         
         { loading && <FbLoadingParagraph /> }

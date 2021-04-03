@@ -9,6 +9,7 @@ import { AdvertSummaryModel, PostSummaryModel } from '../utils';
 import { FbSimpleCoords } from '../geoLocation/glUtils';
 import * as c from '../constants';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { FbPropsWithApiAndI18n } from '../types';
 
 /*
 MAP properties {
@@ -47,7 +48,7 @@ const coreSettings = {
   //bearing: 7, // view direction/heading
 };
 
-export interface FbMapProps {
+export interface FbMapProps extends FbPropsWithApiAndI18n {
   centre: FbSimpleCoords;
   bearing: number;
   posts?: PostSummaryModel[];
@@ -160,10 +161,11 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
   };
   
   _renderPopup() {
+    const { api, i18n } = this.props;
     const { selectedAdvert, selectedPost } = this.state;
     let contentDom = null, lat = 0, lon = 0;
     if (selectedAdvert) {
-      contentDom = <FbMapAdvertInfo advert={selectedAdvert} />;
+      contentDom = <FbMapAdvertInfo api={api} i18n={i18n} advert={selectedAdvert} />;
       lat = selectedAdvert.lat;
       lon = selectedAdvert.lon;
     }

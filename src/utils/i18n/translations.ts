@@ -76,6 +76,8 @@ export const I18N_TranslationObj = {
   // dynamic list below
   buying_options__0__label: '',
   buying_options__1__label: '',
+  buying_options__2__label: '',
+  buying_options__3__label: '',
 
   service_options__0__label: '',
   service_options__1__label: '',
@@ -90,6 +92,18 @@ export const I18N_TranslationObj = {
   link_terms_of_service: '',
   link_privacy_policy: '',
   link_safety: '',
+
+  geo_status_prompt: '',
+  geo_status_granted: '',
+  geo_status_denied: '',
+  geo_status_error: '',
+
+  ws_status_unknown: '',
+  ws_status_connecting: '',
+  ws_status_open: '',
+  ws_status_closing: '',
+  ws_status_closed: '',
+  ws_status_error: '',
 };
 
 export const I18N_Keys = Object.getOwnPropertyNames(I18N_TranslationObj);

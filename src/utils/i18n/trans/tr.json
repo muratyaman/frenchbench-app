@@ -69,8 +69,10 @@
 
   "neighbours_chat_room": "Komşularla Sohbet",
 
-  "buying_options__0__label": "Satıyor",
-  "buying_options__1__label": "Alıyor",
+  "buying_options__0__label": "Satmak",
+  "buying_options__1__label": "Almak",
+  "buying_options__2__label": "Kiraya vermek",
+  "buying_options__3__label": "Kiralamak",
 
   "service_options__0__label": "Ürün",
   "service_options__1__label": "Hizmet",
@@ -84,5 +86,17 @@
   "link_contact_us": "Bize Ulaşın",
   "link_terms_of_service": "Kullanım Koşulları",
   "link_privacy_policy": "Kişisel Veriler",
-  "link_safety": "Güvenlik"
+  "link_safety": "Güvenlik",
+
+  "geo_status_prompt": "Konum verinizi kullanmalıyız.",
+  "geo_status_granted": "Teşekkürler, konum verinizi kullanabiliyoruz.",
+  "geo_status_denied": "Konum verinizi kullanmamıza izin vermediniz.",
+  "geo_status_error": "Bir hata oluştu: ",
+
+  "ws_status_unknown": "Bağlantı durumu bilinmiyor.",
+  "ws_status_connecting": "Bağlantı kuruluyor.",
+  "ws_status_open": "Bağlantı kuruldu.",
+  "ws_status_closing": "Bağlantı koparılıyor.",
+  "ws_status_closed": "Bağlantı koptu.",
+  "ws_status_error": "Bir hata oluştu: "
 }

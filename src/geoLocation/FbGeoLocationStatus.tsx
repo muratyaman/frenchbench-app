@@ -3,12 +3,14 @@ import { Icon, Popup, SemanticCOLORS, SemanticICONS } from 'semantic-ui-react';
 import { formatDistanceToNow } from 'date-fns';
 import { usePermissions, PERM_NAME_GEOLOCATION } from '../hooks/usePermissions';
 import { FbGeoLocationContext } from './FbGeoLocationContext';
+import { FbI18nContext } from '../contexts';
 
 const factor = 1000000;
 const formatFloat = f => Math.round(f * factor) / factor;
 
 export function FbGeoLocationStatus() {
   const { location } = useContext(FbGeoLocationContext);
+  const { i18n } = useContext(FbI18nContext);
   const { coords, timestamp } = location  ?? {};
   
   const { prompt, granted, denied, error } = usePermissions(PERM_NAME_GEOLOCATION);
@@ -16,19 +18,19 @@ export function FbGeoLocationStatus() {
   let message = 'unknown', color: SemanticCOLORS = 'grey', accuracyInfo, latInfo, lonInfo, locTime;
 
   if (prompt) {
-    message = 'We need to track your location.';
+    message = i18n._('geo_status_prompt');
     color = 'yellow';
   }
   if (granted) {
-    message = 'Thanks, we can track your location.';
+    message = i18n._('geo_status_granted');
     color = 'green';
   }
   if (denied) {
-    message = 'Sorry, you did not want us to track your location.';
+    message = i18n._('geo_status_denied');
     color = 'red';
   }
   if (error) {
-    message += ' There was an error: ' + error;
+    message += i18n._('geo_status_error') + ' ' + error;
   }
 
   if (coords) {
