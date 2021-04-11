@@ -1,6 +1,6 @@
 {
   "name": "frenchbench-app",
-  "version": "1.7.3",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/frenchbench/frenchbench-app"
@@ -24,6 +24,7 @@
     "refresh": "npm run clean && rm -rf package-lock.json node_modules && npm install"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.13",
     "@babel/core": "^7.12.16",
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.12.15",
@@ -32,6 +33,7 @@
     "axios": "^0.21.1",
     "date-fns": "^2.17.0",
     "dotenv": "^8.2.0",
+    "graphql": "^15.5.0",
     "http-proxy-middleware": "^1.0.6",
     "mapbox-gl": "^2.1.1",
     "react": "^17.0.1",

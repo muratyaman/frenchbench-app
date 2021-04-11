@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
 import { makeRoutes } from './makeRoutes';
 import { FbApiContext, FbI18nContext } from './contexts';
 import { FbCurrentUserContextProvider } from './users/FbCurrentUserContext';
@@ -33,13 +34,15 @@ export const App: FC<AppProps> = (props: PropsWithChildren<AppProps>) => {
     </Switch>
   );
   return (
-    <FbCurrentUserContextProvider api={api}>
-      <FbWebSocketContextProvider url={appConfig.ws.fullUrl}>
-        <FbGeoLocationContextProvider>
-          {routerSwitch}
-          <FbGeoLocationTracker />
-        </FbGeoLocationContextProvider>
-      </FbWebSocketContextProvider>
-    </FbCurrentUserContextProvider>
+    <ApolloProvider client={api._gqlClient}>
+      <FbCurrentUserContextProvider api={api}>
+        <FbWebSocketContextProvider url={appConfig.ws.fullUrl}>
+          <FbGeoLocationContextProvider>
+            {routerSwitch}
+            <FbGeoLocationTracker />
+          </FbGeoLocationContextProvider>
+        </FbWebSocketContextProvider>
+      </FbCurrentUserContextProvider>
+    </ApolloProvider>
   );
 }
