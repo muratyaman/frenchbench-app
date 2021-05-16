@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { FC, PropsWithChildren, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { PublicLayout } from '../layouts/PublicLayout';
@@ -6,6 +6,7 @@ import { FbLink } from '../components';
 import { FbGreatYouHere } from '../content';
 import { FbSignUpForm } from '../users/FbSignUpForm';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
+import { AppPageProps } from '../types';
 
 const defaultPageData = {
   username: '',
@@ -16,7 +17,10 @@ const defaultPageData = {
   successMessage: null,
 };
 
-export function InfoSignUpPage({ api, i18n }) {
+export type InfoSignUpPageProps = AppPageProps;
+
+export const InfoSignUpPage: FC<InfoSignUpPageProps> = (props: PropsWithChildren<InfoSignUpPageProps>) => {
+  const { api, i18n } = props;
   const history = useHistory();
 
   const currentUserState = useContext(FbCurrentUserContext);

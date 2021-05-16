@@ -2,9 +2,7 @@ import { createContext, Component, PropsWithChildren } from 'react';
 import { FbPropsWithApi } from '../types';
 import { UserRetrieveData } from '../utils/apiClient';
 
-export interface FbCurrentUserContextProviderPropsBase extends FbPropsWithApi {
-
-}
+export type FbCurrentUserContextProviderPropsBase = FbPropsWithApi;
 export type FbCurrentUserContextProviderProps = PropsWithChildren<FbCurrentUserContextProviderPropsBase>;
 
 type OptionalUserData = UserRetrieveData | null;
@@ -21,8 +19,8 @@ const defaultContext: FbCurrentUserContextType = {
   loading: true,
   data: null,
   error: null,
-  reload: async () => {},
-  setData: (data: OptionalUserData) => {},
+  reload: async () => { return; },
+  setData: (data: OptionalUserData) => { return; },
 }
 
 export const FbCurrentUserContext = createContext<FbCurrentUserContextType>(defaultContext);
@@ -31,7 +29,7 @@ export type FbCurrentUserContextProviderState = FbCurrentUserContextType;
 
 export class FbCurrentUserContextProvider extends Component<FbCurrentUserContextProviderProps, FbCurrentUserContextProviderState> {
   
-  constructor(props) {
+  constructor(props: FbCurrentUserContextProviderProps) {
     super(props);
     this.state = {
       ...defaultContext,
@@ -40,11 +38,11 @@ export class FbCurrentUserContextProvider extends Component<FbCurrentUserContext
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount(): Promise<void> {
     this.reload();
   }
 
-  reload = async () => {
+  reload = async (): Promise<void> => {
     try {
       this.setState({ data: null, error: null, loading: true });
       const { data = null, error = null } = await this.props.api.me();

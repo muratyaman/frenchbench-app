@@ -1,10 +1,14 @@
-import React from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbCallToAccount, FbCardCommunity, FbCardIdea } from '../content';
 import { FbGridCardContainer } from '../components';
 import { FbCurrentUserNotRequired } from '../users/FbCurrentUserNotRequired';
+import { AppPageProps } from '../types';
 
-export function IndexPage({ api, i18n }) {
+export type IndexPageProps = AppPageProps;
+
+export const IndexPage: FC<IndexPageProps> = (props: PropsWithChildren<IndexPageProps>) => {
+  const { i18n } = props;
   const layoutProps = { title: 'Home' };
   return (
     <PublicLayout {...layoutProps}>

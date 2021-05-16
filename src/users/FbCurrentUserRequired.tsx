@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { FbCurrentUserContext } from './FbCurrentUserContext';
 
 export function FbCurrentUserRequired({ render = null, children }) {
@@ -8,7 +8,7 @@ export function FbCurrentUserRequired({ render = null, children }) {
       <>
         {render ? render(currentUserState) : children}
       </>
-    )
+    );
   }
   return null;
 }

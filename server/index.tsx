@@ -1,6 +1,6 @@
-require('dotenv').config();
-import express from 'express';
-import morgan from 'morgan';
+import './config';
+import express, { Request, Response } from 'express';
+//import morgan from 'morgan'; // TODO
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'path';
 import fs from 'fs';
@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { matchPath, StaticRouter } from 'react-router-dom';
 import { newAppConfig } from '../src/appConfig';
-import { ApiClient } from '../src/utils/apiClient';
+import { ApiClient, ApiResponse, ArticleDetailsModel } from '../src/utils/apiClient';
 import { defaultLocaleCode } from '../src/utils/i18n';
 import { App } from '../src/App';
 import { FbApiContextProvider, FbI18nContextProvider } from '../src/contexts';
@@ -42,10 +42,10 @@ const server = express();
 server.disable('x-powered-by');
 
 // create a write stream (in append mode)
-const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs', 'access.log'), { flags: 'a' })
+//const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs', 'access.log'), { flags: 'a' })
 
 // setup the logger
-server.use(morgan('combined', { stream: accessLogStream }));
+//server.use(morgan('combined', { stream: accessLogStream }));
 
 // Nginx replacement - START
 console.log('proxy middleware ...');
@@ -121,7 +121,7 @@ async function ssrHtml({
   let func = async (args: any) => Promise.resolve({});
 
   // imitate `<Switch>` behaviour of selecting only the first to match
-  for (let route of routes) {
+  for (const route of routes) {
     const match = matchPath(path, route);
     if (match) {
       const { ssr = ''} = route;
@@ -157,33 +157,55 @@ async function ssrHtml({
   return { content, initialState };
 }
 
-function makeSsrDataProvider() {
-  return {
-    IndexPage: async ({ req, api }) => {
-      console.log('IndexPage SSR', req.path);
-      const slug = 'home';
-      let ssrData = { slug, data: null, error: null };
+interface SsrInput {
+  req: Request;
+  res: Response;
+  api: ApiClient;
+}
+interface SsrData<TData> {
+  ssrData: ApiResponse<TData>;
+}
+
+interface SsrDataProviderFn<TSsrData> {
+  (input: SsrInput): Promise<SsrData<TSsrData>>;
+}
+interface SsrDataProvider {
+  IndexPage: SsrDataProviderFn<ArticleDetailsModel>;
+  InfoArticlePage: SsrDataProviderFn<ArticleDetailsModel>;
+}
+
+function makeSsrDataProvider(): SsrDataProvider {
+
+  const IndexPage: SsrDataProviderFn<ArticleDetailsModel> = async ({ req, api }: SsrInput) => {
+    console.log('IndexPage SSR', req.path);
+    const slug = 'home';
+    let ssrData = { slug, data: null, error: null };
+    try {
+      const output = await api.article_retrieve({ slug });
+      ssrData = { ...ssrData, ...output };
+    } catch (err) {
+      ssrData.error = err.message;
+    }
+    return { ssrData };
+  };
+
+  const InfoArticlePage: SsrDataProviderFn<ArticleDetailsModel> = async ({ req, api }: SsrInput) => {
+    console.log('InfoArticlePage SSR', req.path);
+    const { slug = null } = req.params;
+    let ssrData = { slug, data: null, error: null };
+    if (slug) {
       try {
         const output = await api.article_retrieve({ slug });
         ssrData = { ...ssrData, ...output };
       } catch (err) {
         ssrData.error = err.message;
       }
-      return { ssrData };
-    },
-    InfoArticlePage: async ({ req, api }) => {
-      console.log('InfoArticlePage SSR', req.path);
-      const { slug = null } = req.params;
-      let ssrData = { slug, data: null, error: null };
-      if (slug) {
-        try {
-          const output = await api.article_retrieve({ slug });
-          ssrData = { ...ssrData, ...output };
-        } catch (err) {
-          ssrData.error = err.message;
-        }
-      }
-      return { ssrData };
-    },
+    }
+    return { ssrData };
+  };
+  
+  return {
+    IndexPage,
+    InfoArticlePage,
   };
 }

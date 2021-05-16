@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon, SemanticCOLORS } from 'semantic-ui-react';
 
 const RED: SemanticCOLORS = 'red';

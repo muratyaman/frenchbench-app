@@ -1,8 +1,7 @@
-import React from 'react';
 import { FbLoadingParagraph } from '../components';
 import { FbUserProfile } from './FbUserProfile';
 
-export function FbLoadUserProfile({ userState = null }) {
+export function FbUserProfileLoader({ userState = null }) {
   const { data: user, loading = false, error = null } = userState ?? {};
   return (
     <div className='fb-user-profile'>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { FbLink } from './FbLink';
 import { Icon, Label } from 'semantic-ui-react';
 import { makeHashTagList } from '../utils/makeHashTagList';

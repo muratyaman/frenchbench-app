@@ -6,13 +6,13 @@ import { makeMyPostsLink } from '../makeRoutes';
 import { FbPropsWithApiAndI18n } from '../types';
 import { FbPostCreateForm } from './FbPostCreateForm';
 
-export interface FbLoadMyNewPostPropsBase extends FbPropsWithApiAndI18n {
+export interface FbMyNewPostLoaderPropsBase extends FbPropsWithApiAndI18n {
   location?: FbGeoLocation | null;
 }
 
-export type FbLoadMyNewPostProps = PropsWithChildren<FbLoadMyNewPostPropsBase>;
+export type FbMyNewPostLoaderProps = PropsWithChildren<FbMyNewPostLoaderPropsBase>;
 
-export interface FbLoadMyNewPostState extends Record<string, any> {
+export interface FbMyNewPostLoaderState extends Record<string, any> {
   // form data
   title: string;
   content: string;
@@ -29,7 +29,7 @@ export interface FbLoadMyNewPostState extends Record<string, any> {
   redirect: string | null;
 }
 
-const defaultState: FbLoadMyNewPostState = {
+const defaultState: FbMyNewPostLoaderState = {
   // form data
   title: '',
   content: '',
@@ -44,7 +44,7 @@ const defaultState: FbLoadMyNewPostState = {
   redirect: null,
 }
 
-export class FbLoadMyNewPost extends Component<FbLoadMyNewPostProps, FbLoadMyNewPostState> {
+export class FbMyNewPostLoader extends Component<FbMyNewPostLoaderProps, FbMyNewPostLoaderState> {
 
   constructor(props) {
     super(props);

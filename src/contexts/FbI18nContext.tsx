@@ -14,14 +14,14 @@ export interface FbI18nContextType {
 const defaultContext: FbI18nContextType = {
   localeCode: localeCodeEn,
   i18n: newI18N(localeCodeEn),
-  setLocale: async (code: string) => {},
+  setLocale: async (code: string) => { return; },
 }
 
 export const FbI18nContext = createContext<FbI18nContextType>(defaultContext);
 
 export class FbI18nContextProvider extends Component<FbI18nContextProviderProps, FbI18nContextType> {
   
-  constructor(props) {
+  constructor(props: FbI18nContextProviderProps) {
     super(props);
     const { localeCode } = props;
     this.state = {
@@ -31,7 +31,7 @@ export class FbI18nContextProvider extends Component<FbI18nContextProviderProps,
     }
   }
 
-  setLocale = async (localeCode: string) => {
+  setLocale = async (localeCode: string): Promise<void> => {
     try {
       // TODO: load translations from server
       const i18n = newI18N(localeCode);

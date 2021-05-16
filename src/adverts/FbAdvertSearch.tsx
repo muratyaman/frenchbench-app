@@ -1,14 +1,12 @@
 import { Component, PropsWithChildren } from 'react';
 import { FbLoadingParagraph, FbLoadMore } from '../components';
-import { FbPropsWithApi, FbPropsWithApiAndI18n } from '../types';
+import { FbPropsWithApiAndI18n } from '../types';
 import { FbAdvertList } from './FbAdvertList';
 import { FbAdvertSearchForm } from './FbAdvertSearchForm';
 
 const PAGE_LIMIT = 10;
 
-export interface FbAdvertSearchPropsBase extends FbPropsWithApiAndI18n {
-  
-}
+export type FbAdvertSearchPropsBase = FbPropsWithApiAndI18n;
 export type FbAdvertSearchProps = PropsWithChildren<FbAdvertSearchPropsBase>;
 
 export class FbAdvertSearch extends Component<FbAdvertSearchProps> {
@@ -25,21 +23,21 @@ export class FbAdvertSearch extends Component<FbAdvertSearchProps> {
     error: null,
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.search(true);
   }
 
-  getOffset = () => {
+  getOffset = (): number => {
     const { inputParams } = this.state;
-    return (inputParams && inputParams.offset) ?? 0;
+    return inputParams?.offset ?? 0;
   }
 
-  getRowCount = () => {
+  getRowCount = (): number => {
     const { meta } = this.state;
-    return (meta && meta.row_count) ?? 0;
+    return meta?.row_count ?? 0;
   }
 
-  search = async (reset = true) => {
+  search = async (reset = true): Promise<void> => {
     try {
       const inputParams = { ...this.state.inputParams }; // shallow clone
       let { pagesOfAdverts } = this.state;

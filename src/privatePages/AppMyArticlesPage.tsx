@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import { FC, PropsWithChildren, useContext } from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { FbLoadArticles } from '../articles/FbLoadArticles';
+import { FbArticlesLoader } from '../articles/FbArticlesLoader';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
+import { AppPageProps } from '../types';
 
-export function AppMyArticlesPage({ appConfig, api, i18n }) {
+export type AppMyArticlesPageProps = AppPageProps;
+
+export const AppMyArticlesPage: FC<AppMyArticlesPageProps> = (props: PropsWithChildren<AppMyArticlesPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const currentUserState = useContext(FbCurrentUserContext);
   const layoutProps = { appConfig, title: 'Articles', i18n, activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'articles', api, currentUserState, i18n };
@@ -12,7 +16,7 @@ export function AppMyArticlesPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
       <div className='fb-content'>
-        <FbLoadArticles {...myMenuProps} />
+        <FbArticlesLoader {...myMenuProps} />
       </div>
     </ProtectedLayout>
   );

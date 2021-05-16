@@ -6,14 +6,7 @@ import { FbApiContext, FbI18nContext } from './contexts';
 import { FbCurrentUserContextProvider } from './users/FbCurrentUserContext';
 import { FbWebSocketContextProvider } from './webSockets';
 import { FbGeoLocationContextProvider, FbGeoLocationTracker } from './geoLocation';
-
-export interface AppProps {
-  appConfig: any;
-  ssr: boolean;
-  hydrating: boolean;
-  initialState?: any;
-  pageProps?: any;
-}
+import { AppProps } from './types';
 
 export const App: FC<AppProps> = (props: PropsWithChildren<AppProps>) => {
   const { api } = useContext(FbApiContext);
@@ -23,7 +16,7 @@ export const App: FC<AppProps> = (props: PropsWithChildren<AppProps>) => {
   const routerSwitch = (
     <Switch>
       {routes.map((route, idx) => {
-        let newRoute = { ...route, component: null };
+        const newRoute = { ...route, component: null };
         const newRenderProps = { ...pageProps, appConfig, api, i18n, ssr, hydrating, initialState };
         return (
           <Route key={idx} {...newRoute}>

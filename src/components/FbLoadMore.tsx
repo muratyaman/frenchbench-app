@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 export function FbLoadMore({ content = 'Load More', onClick, loading = false, ...overrides }) {

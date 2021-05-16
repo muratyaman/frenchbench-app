@@ -1,4 +1,3 @@
-import React from 'react';
 import { formatDistance } from 'date-fns';
 import { Card, Image, Label } from 'semantic-ui-react';
 import { FbAssetImage } from '../assets/FbAssetImage';

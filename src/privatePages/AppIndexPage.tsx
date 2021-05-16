@@ -1,3 +1,4 @@
+import { FC, PropsWithChildren } from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMenu } from '../menus/FbAppMenu';
 import { FbMap } from '../map';
@@ -5,8 +6,12 @@ import { geoLondonEye } from '../geoLocation/glUtils';
 import { FbGeoLocationContext } from '../geoLocation';
 import { useContext } from 'react';
 import { useAdvertSearch } from '../hooks/useAdvertSearch';
+import { AppPageProps } from '../types';
 
-export function AppIndexPage({ appConfig, api, i18n }) {  
+export type AppIndexPageProps = AppPageProps;
+
+export const AppIndexPage: FC<AppIndexPageProps> = (props: PropsWithChildren<AppIndexPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const layoutProps = { appConfig, title: 'Home', containerClassName: 'fb-page-app-index' };
   const myMenuProps = { activeItem: 'home', api, i18n };
 

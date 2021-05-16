@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Form, Icon, Message } from 'semantic-ui-react';
 
 export function FbSignInForm({ i18n, onSubmit, onChange, errorMessage = null, successMessage = null, ...otherProps }) {
@@ -27,5 +26,5 @@ export function FbSignInForm({ i18n, onSubmit, onChange, errorMessage = null, su
       {errorMessage && ( <Message warning header='Error' list={[ errorMessage ]} />)}
       {successMessage && ( <Message warning header='Success' list={[ successMessage ]} />)}
     </Form>
-  )
+  );
 }

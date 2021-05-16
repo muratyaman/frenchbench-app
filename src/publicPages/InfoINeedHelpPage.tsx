@@ -1,10 +1,14 @@
-import React from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbCallToAccount, FbCardHelpNeeded, FbCardIdea } from '../content';
 import { FbGridCardContainer } from '../components';
 import { FbCurrentUserNotRequired } from '../users/FbCurrentUserNotRequired';
+import { AppPageProps } from '../types';
 
-export function InfoINeedHelpPage({ i18n }) {
+export type InfoINeedHelpPageProps = AppPageProps;
+
+export const InfoINeedHelpPage: FC<InfoINeedHelpPageProps> = (props: PropsWithChildren<InfoINeedHelpPageProps>) => {
+  const { i18n } = props;
   const layoutProps = { title: 'I Need Help' };
   return (
     <PublicLayout {...layoutProps}>

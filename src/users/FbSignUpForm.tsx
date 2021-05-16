@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Checkbox, Form, Icon, Message, Segment } from 'semantic-ui-react';
 import { FbLink } from '../components';
 import { makeArticleLink } from '../makeRoutes';

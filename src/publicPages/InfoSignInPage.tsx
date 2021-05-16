@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import { FC, PropsWithChildren, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import { PublicLayout } from '../layouts/PublicLayout';
 import { FbLink } from '../components';
-import { FbSignInForm } from '../users/FbSignInForm';
 import { FbGreatYouHere } from '../content';
+import { FbSignInForm } from '../users/FbSignInForm';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
+import { AppPageProps } from '../types';
 
 const defaultPageData = {
   username: '',
@@ -15,7 +16,10 @@ const defaultPageData = {
   successMessage: null,
 };
 
-export function InfoSignInPage({ api, i18n }) {
+export type InfoSignInPageProps = AppPageProps;
+
+export const InfoSignInPage: FC<InfoSignInPageProps> = (props: PropsWithChildren<InfoSignInPageProps>) => {
+  const { api, i18n } = props;
   const history = useHistory();
   
   const currentUserState = useContext(FbCurrentUserContext);
@@ -39,10 +43,11 @@ export function InfoSignInPage({ api, i18n }) {
     try {
       const { data = null, error = null } = await api.signin({ username, password });
       if (data) { // success
+        const userRes = await api.me();
+        if (userRes.data) { // get user details and update context
+          currentUserState.setData(userRes.data);
+        }
         setPageData({ ...pageData, successMessage: 'success', loading: false });
-        
-        currentUserState.setData(data); // update context
-
         history.push('/app');
       } else {
         setPageData({ ...pageData, errorMessage: error, loading: false });

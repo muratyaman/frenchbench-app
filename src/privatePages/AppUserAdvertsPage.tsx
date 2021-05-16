@@ -1,11 +1,15 @@
-import React from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppUserMenu } from '../menus/FbAppUserMenu';
-import { FbLoadUserAdverts } from '../adverts/FbLoadUserAdverts';
+import { FbUserAdvertsLoader } from '../adverts/FbUserAdvertsLoader';
 import { useUser } from '../hooks/useUser';
+import { AppPageProps } from '../types';
 
-export function AppUserAdvertsPage({ appConfig, api, i18n }) {
+export type AppUserAdvertsPageProps = AppPageProps;
+
+export const AppUserAdvertsPage: FC<AppUserAdvertsPageProps> = (props: PropsWithChildren<AppUserAdvertsPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const { username } = useParams();
   const userState = useUser(api, username);
   const layoutProps = { appConfig, title: 'Adverts', i18n };
@@ -15,7 +19,7 @@ export function AppUserAdvertsPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppUserMenu {...userMenuProps} />
       <div className='fb-content'>
-        <FbLoadUserAdverts {...advertProps} />
+        <FbUserAdvertsLoader {...advertProps} />
       </div>
     </ProtectedLayout>
   );

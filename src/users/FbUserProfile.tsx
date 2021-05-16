@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid, Header, Icon } from 'semantic-ui-react'
 import { FbRandomImage } from '../components';
 

@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import { FC, PropsWithChildren, useContext } from 'react';
 import { FbGeoLocationContext } from '../geoLocation';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
-import { FbLoadMyNewPost } from '../posts/FbLoadMyNewPost';
+import { FbMyNewPostLoader } from '../posts/FbMyNewPostLoader';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
+import { AppPageProps } from '../types';
 
-export function AppMyNewPostPage({ appConfig, api, i18n }) {
+export type AppMyNewPostPageProps = AppPageProps;
+
+export const AppMyNewPostPage: FC<AppMyNewPostPageProps> = (props: PropsWithChildren<AppMyNewPostPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const currentUserState = useContext(FbCurrentUserContext);
   const { location = null } = useContext(FbGeoLocationContext);
   const layoutProps = { appConfig, title: 'My New Post', currentUserState, activeItemOfTopMenu: 'my-new-post' };
@@ -14,7 +18,7 @@ export function AppMyNewPostPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
       <div className='fb-content'>
-        <FbLoadMyNewPost {...myMenuProps} />
+        <FbMyNewPostLoader {...myMenuProps} />
       </div>
     </ProtectedLayout>
   );

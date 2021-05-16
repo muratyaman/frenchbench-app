@@ -1,11 +1,15 @@
-import { useContext } from 'react';
+import { FC, PropsWithChildren, useContext } from 'react';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
-import { FbLoadMyNewAdvert } from '../adverts/FbLoadMyNewAdvert';
+import { FbMyNewAdvertLoader } from '../adverts/FbMyNewAdvertLoader';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
 import { FbGeoLocationContext } from '../geoLocation';
+import { AppPageProps } from '../types';
 
-export function AppMyNewAdvertPage({ appConfig, api, i18n }) {
+export type AppMyNewAdvertPageProps = AppPageProps;
+
+export const AppMyNewAdvertPage: FC<AppMyNewAdvertPageProps> = (props: PropsWithChildren<AppMyNewAdvertPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const currentUserState = useContext(FbCurrentUserContext);
   const { location = null } = useContext(FbGeoLocationContext);
   const layoutProps = { appConfig, title: 'My New Advert', activeItemOfTopMenu: 'my-new-advert' };
@@ -14,7 +18,7 @@ export function AppMyNewAdvertPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
       <div className='fb-content'>
-        <FbLoadMyNewAdvert {...myMenuProps} />
+        <FbMyNewAdvertLoader {...myMenuProps} />
       </div>
     </ProtectedLayout>
   );

@@ -7,7 +7,7 @@ export interface ApiContextType {
 
 const defaultContext: ApiContextType = {
   api: new ApiClient(),
-}
+};
 
 export const FbApiContext = createContext<ApiContextType>(defaultContext);
 
@@ -19,8 +19,7 @@ export interface FbApiContextProviderProps {
 export const FbApiContextProvider: FC<FbApiContextProviderProps> = (
   props: PropsWithChildren<FbApiContextProviderProps>,
 ) => {
-  let { apiConfig, api = null } = props;
-  if (!api) api = new ApiClient(apiConfig);
+  const { apiConfig, api = new ApiClient(apiConfig) } = props;
   return (
     <FbApiContext.Provider value={{ api }}>
       {props.children}

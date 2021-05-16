@@ -1,11 +1,15 @@
-import { useContext } from 'react';
+import { FC, PropsWithChildren, useContext } from 'react';
 import { FbLink } from '../components';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
-import { FbLoadMyAdverts } from '../adverts/FbLoadMyAdverts';
+import { FbMyAdvertsLoader } from '../adverts/FbMyAdvertsLoader';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
+import { AppPageProps } from '../types';
 
-export function AppMyAdvertsPage({ appConfig, api, i18n }) {
+export type AppMyAdvertsPageProps = AppPageProps;
+
+export const AppMyAdvertsPage: FC<AppMyAdvertsPageProps> = (props: PropsWithChildren<AppMyAdvertsPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const currentUserState = useContext(FbCurrentUserContext);
   const layoutProps = { appConfig, title: 'My Adverts', activeItemOfTopMenu: 'my' };
   const myMenuProps = { activeItem: 'adverts', api, currentUserState, i18n };
@@ -17,7 +21,7 @@ export function AppMyAdvertsPage({ appConfig, api, i18n }) {
         <p>
           <FbLink to='/app/my/new-advert'><span>NEW ADVERT</span></FbLink>
         </p>
-        <FbLoadMyAdverts {...myAdvertsProps} />
+        <FbMyAdvertsLoader {...myAdvertsProps} />
       </div>
     </ProtectedLayout>
   );

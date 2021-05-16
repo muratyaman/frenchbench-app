@@ -13,7 +13,7 @@ export interface FbWebSocketContextType {
   open: () => void;
   close: () => void;
   send: (msgObj: any) => void;
-  socketStatus: String;
+  socketStatus: string;
   socketStatusFlags: () => wsUtils.FbWsStatusFlags;
 }
 
@@ -21,9 +21,9 @@ export const WS_defaultContext: FbWebSocketContextType = {
   lastError: null,
   lastMessage: null,
   messages: [],
-  open: () => {},
-  close: () => {},
-  send: (msgObj: wsUtils.FbWsMessage) => {},
+  open: () => { return; },
+  close: () => { return; },
+  send: (msgObj: wsUtils.FbWsMessage) => { return; },
   socketStatus: wsUtils.SOCKET_STATUS_LABELS[wsUtils.SOCKET_STATUS_ENUM.UNKNOWN],
   socketStatusFlags: () => wsUtils.fbStatusFlagsDefault,
 };
@@ -39,7 +39,7 @@ export class FbWebSocketContextProvider extends Component<FbWebSocketContextProv
   sesId = null;
   timerId = null;
 
-  constructor(props) {
+  constructor(props: FbWebSocketContextProviderProps) {
     super(props);
     this.ws = null;
     this.unmounting = false;

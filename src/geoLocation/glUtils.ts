@@ -135,7 +135,7 @@ export function sortItemsByDistance(items) {
     if (p1.distance > p2.distance) { return 1; }
     return 0; // p1.distance === p2.distance
   });
-};
+}
 
 export function addDistanceToItems(items, position: FbGeoLocation) {
   const pos = new GeoPos(position);
@@ -143,6 +143,6 @@ export function addDistanceToItems(items, position: FbGeoLocation) {
     const { lat, lon } = item;
     return { ...item, distance: geoDistance(pos.getLatLon(), {lat, lon}) };
   });
-};
+}
 
 export const geoLondonEye: FbSimpleCoords  = { latitude: 51.5010499, longitude: -0.1216957 };

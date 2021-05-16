@@ -1,8 +1,7 @@
-import React from 'react';
 import { FbLoadingParagraph } from '../components';
 import { FbUserProfile } from './FbUserProfile';
 
-export function FbLoadMyUserProfile({ currentUserState = null }) {
+export function FbMyUserProfileLoader({ currentUserState = null }) {
   const { data: user, loading = false, error = null } = currentUserState ?? {};
   const { username, first_name } = user ?? {};
   const greet = first_name ?? username;
@@ -18,5 +17,5 @@ export function FbLoadMyUserProfile({ currentUserState = null }) {
         </div>
       )}
     </div>
-  )
+  );
 }

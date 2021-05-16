@@ -4,7 +4,7 @@ import { Icon } from 'semantic-ui-react';
 import { FbMapCentreSvg } from './FbMapCentreSvg';
 import { FbMapPostInfo } from './FbMapPostInfo';
 import { FbMapAdvertInfo } from './FbMapAdvertInfo';
-import { IMapViewportConfig, IMapFixedSettingsConfig } from '../appConfig';
+import { IMapViewportConfig, IMapFixedSettingsConfig } from '../types';
 import { AdvertSummaryModel, PostSummaryModel } from '../utils';
 import { FbSimpleCoords } from '../geoLocation/glUtils';
 import * as c from '../constants';
@@ -191,7 +191,7 @@ export class FbMap extends Component<FbMapProps, FbMapState> {
   }
   
   render() {
-    let { viewport } = this.state;
+    const { viewport } = this.state;
     
     const {
       centre,

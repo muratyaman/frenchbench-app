@@ -11,7 +11,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css';
 
 let initialState = {};
-if (window && window.hasOwnProperty('__INITIAL_STATE__')) {
+if (window && window['__INITIAL_STATE__']) {
   initialState = window.__INITIAL_STATE__;
   delete window.__INITIAL_STATE__;
 }

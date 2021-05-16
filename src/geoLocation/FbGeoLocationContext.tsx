@@ -13,8 +13,8 @@ export interface FbGeoLocationContextType {
 export const GL_defaultContext: FbGeoLocationContextType = {
   error: null,
   location: null,
-  startWatching: () => {},
-  stopWatching: () => {},
+  startWatching: () => { return; },
+  stopWatching: () => { return; },
   supported: false,
 };
 

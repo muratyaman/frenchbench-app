@@ -1,4 +1,3 @@
-import React from 'react';
 import { FbImageLoader } from './FbImageLoader';
 import { randomImg } from '../utils/randomImg';
 

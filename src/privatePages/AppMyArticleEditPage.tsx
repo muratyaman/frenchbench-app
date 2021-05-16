@@ -1,11 +1,15 @@
-import { useContext } from 'react';
+import { FC, PropsWithChildren, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
-import { FbLoadArticleEditor } from '../articles/FbLoadArticleEditor';
+import { FbArticleEditorLoader } from '../articles/FbArticleEditorLoader';
 import { FbAppMyMenu } from '../menus/FbAppMyMenu';
 import { FbCurrentUserContext } from '../users/FbCurrentUserContext';
+import { AppPageProps } from '../types';
 
-export function AppMyArticleEditPage({ appConfig, api, i18n }) {
+export type AppMyArticleEditPageProps = AppPageProps;
+
+export const AppMyArticleEditPage: FC<AppMyArticleEditPageProps> = (props: PropsWithChildren<AppMyArticleEditPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const currentUserState = useContext(FbCurrentUserContext);
   const { articleId = '' } = useParams();
   const layoutProps = { appConfig, title: 'Articles', i18n, activeItemOfTopMenu: 'my' };
@@ -15,7 +19,7 @@ export function AppMyArticleEditPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppMyMenu {...myMenuProps} />
       <div className='fb-content'>
-        <FbLoadArticleEditor {...myEditorProps} />
+        <FbArticleEditorLoader {...myEditorProps} />
       </div>
     </ProtectedLayout>
   );

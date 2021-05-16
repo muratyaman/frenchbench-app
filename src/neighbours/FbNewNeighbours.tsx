@@ -1,4 +1,3 @@
-import React from 'react';
 import { Feed, Header } from 'semantic-ui-react';
 import { randomImg } from '../utils/randomImg';
 

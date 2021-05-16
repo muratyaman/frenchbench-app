@@ -6,13 +6,13 @@ import { makeMyAdvertsLink } from '../makeRoutes';
 import { FbPropsWithApiAndI18n } from '../types';
 import { FbAdvertCreateForm } from './FbAdvertCreateForm';
 
-export interface FbLoadMyNewAdvertPropsBase extends FbPropsWithApiAndI18n {
+export interface FbMyNewAdvertLoaderPropsBase extends FbPropsWithApiAndI18n {
   location?: FbGeoLocation | null;
 }
 
-export type FbLoadMyNewAdvertProps = PropsWithChildren<FbLoadMyNewAdvertPropsBase>;
+export type FbMyNewAdvertLoaderProps = PropsWithChildren<FbMyNewAdvertLoaderPropsBase>;
 
-export interface FbLoadMyNewAdvertState extends Record<string, any> {
+export interface FbMyNewAdvertLoaderState extends Record<string, any> {
   // form data
   title: string;
   content: string;
@@ -33,7 +33,7 @@ export interface FbLoadMyNewAdvertState extends Record<string, any> {
   redirect: string | null;
 }
 
-const defaultState: FbLoadMyNewAdvertState = {
+const defaultState: FbMyNewAdvertLoaderState = {
   // form data
   title: '',
   content: '',
@@ -52,8 +52,8 @@ const defaultState: FbLoadMyNewAdvertState = {
   redirect: null,
 };
 
-export class FbLoadMyNewAdvert extends Component<FbLoadMyNewAdvertProps, FbLoadMyNewAdvertState> {
-  constructor(props: FbLoadMyNewAdvertProps) {
+export class FbMyNewAdvertLoader extends Component<FbMyNewAdvertLoaderProps, FbMyNewAdvertLoaderState> {
+  constructor(props: FbMyNewAdvertLoaderProps) {
     super(props);
     this.state = defaultState;
     const { location } = props;

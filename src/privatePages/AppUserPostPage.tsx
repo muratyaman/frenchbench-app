@@ -1,10 +1,15 @@
+import { FC, PropsWithChildren } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProtectedLayout } from '../layouts/ProtectedLayout';
 import { FbAppUserMenu } from '../menus/FbAppUserMenu';
-import { FbLoadUserPost } from '../posts/FbLoadUserPost';
+import { FbUserPostLoader } from '../posts/FbUserPostLoader';
 import { useUser } from '../hooks/useUser';
+import { AppPageProps } from '../types';
 
-export function AppUserPostPage({ appConfig, api, i18n }) {
+export type AppUserPostPageProps = AppPageProps;
+
+export const AppUserPostPage: FC<AppUserPostPageProps> = (props: PropsWithChildren<AppUserPostPageProps>) => {
+  const { appConfig, api, i18n } = props;
   const { username, slug } = useParams();
   const userState = useUser(api, username);
   const layoutProps = { appConfig, title: 'User Post', i18n };
@@ -14,7 +19,7 @@ export function AppUserPostPage({ appConfig, api, i18n }) {
     <ProtectedLayout {...layoutProps}>
       <FbAppUserMenu {...userMenuProps} />
       <div className='fb-content'>
-        <FbLoadUserPost {...postProps} />
+        <FbUserPostLoader {...postProps} />
       </div>
     </ProtectedLayout>
   );

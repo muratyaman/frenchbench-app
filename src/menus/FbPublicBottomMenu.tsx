@@ -1,4 +1,3 @@
-import React from 'react';
 import { Image, Menu } from 'semantic-ui-react';
 import { FbLink, FbLocaleSwitch } from '../components';
 

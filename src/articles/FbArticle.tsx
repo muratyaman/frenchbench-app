@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card } from 'semantic-ui-react';
 import { formatDistance } from 'date-fns';
 import { FbRandomImage } from '../components';

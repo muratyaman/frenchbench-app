@@ -2,7 +2,7 @@ import { FbLoadingParagraph } from '../components';
 import { FbAdvertList } from './FbAdvertList';
 import { useAdvertsOfUser } from '../hooks/useAdvertsOfUser';
 
-export function FbLoadUserAdverts({ api, i18n, username }) {
+export function FbUserAdvertsLoader({ api, i18n, username }) {
   const { data: adverts = [], loading = false, error = null } = useAdvertsOfUser(api, { username, with_assets: true });
   return (
     <div className='fb-advert-search'>

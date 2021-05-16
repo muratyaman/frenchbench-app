@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { FbHashTagLinkList } from '../components';
 import { FbPostSummary } from './FbPostSummary';
@@ -17,5 +16,5 @@ export function FbPostSummaryList({ posts = []}) {
   }
   return (
     <div>no posts found</div>
-  )
+  );
 }
