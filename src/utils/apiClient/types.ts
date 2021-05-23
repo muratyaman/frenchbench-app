@@ -119,20 +119,46 @@ export interface SignUpInput extends SignInInput {
 export type SignUpData = SignInData; // same
 
 // without 'password_hash'
-export type UserModel = WithGeoLocation<WithAuditFull<{
+export interface UserSummaryModel {
   id: string;
   username: string;
   first_name: string | null;
   last_name: string | null;
+  email_verified: number;
+  phone_mobile_verified: number;
+}
+export interface UserLinks {
+  link_website: string | null;
+  link_facebook: string | null;
+  link_instagram: string | null;
+  link_twitter: string | null;
+  link_linkedin: string | null;
+  link_youtube: string | null;
+}
+export type UserModel = WithGeoLocation<WithAuditFull<UserSummaryModel & {
   email: string | null;
-  phone: string | null;
+  phone_mobile: string | null;
   headline: string | null;
   neighbourhood: string | null;
-  email_verified: number;
-  phone_verified: number;
-}>>;
+} & UserLinks>>;
 
 export type UserRetrieveData = UserModel;
+
+export type UserContactDetails = Pick<UserModel, 'first_name' | 'last_name' | 'email' | 'phone_mobile' | 'headline' | 'neighbourhood'>;
+export type UserContactUpdateInput = Partial<UserContactDetails>;
+export type UserContactUpdateData = boolean;
+
+export type UserLinksDetails = Pick<UserModel, 'link_website' | 'link_facebook' | 'link_instagram' | 'link_twitter' | 'link_linkedin' | 'link_youtube'>;
+export type UserLinksUpdateInput = Partial<UserLinksDetails>;
+export type UserLinksUpdateData = boolean;
+
+export type TFieldUpdateInput<T> = { field: keyof T; value: string; };
+
+export type UserFieldUpdateInput = TFieldUpdateInput<UserContactDetails & UserLinksDetails>;
+export type UserFieldUpdateData = boolean;
+
+//export type TFieldInput<T> = { field: keyof T; };
+//export type UserFieldInput = TFieldInput<UserContactDetails & UserLinksDetails>;
 
 export interface UserSearchInput {
   lat1?: number;

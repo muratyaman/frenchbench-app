@@ -12,11 +12,11 @@ export const USER_ME = gql`
       first_name
       last_name
       email
-      phone
+      email_verified
+      phone_mobile
+      phone_mobile_verified
       headline
       neighbourhood
-      email_verified
-      phone_verified
     }
   }
 `;
@@ -53,14 +53,14 @@ export class ApiClient {
     id: string | null = null,
   ): Promise<t.ApiResponse<TData, TMeta>> {
     const reqId = newUuid();
-    console.log('api request', reqId, action, input, id);
+    console.log('api request', action, input, id, 'REQ ID: ', reqId);
     try {
       const headers = { 'x-fb-request-id': reqId };
       const res = await this._api.post<t.ApiResponse<TData, TMeta>>('', { action, input, id }, { headers }); // to avoid 308 perm. redirect from '/api/' to '/api'
-      console.log('api response', reqId, res.data);
+      console.log('api response', res.data, 'REQ ID: ', reqId);
       return res.data;
     } catch (err) {
-      console.log('api response', reqId, { error: err.message });
+      console.log('api response', { error: err.message }, 'REQ ID: ', reqId);
       return { error: err.message };
     }
   }
@@ -92,16 +92,17 @@ export class ApiClient {
   // AUTH =====================================================================
   async signup(input: t.SignUpInput) { return this._action<t.SignUpData>('user.signup', input); }
   async signin(input: t.SignInInput) { return this._action<t.SignInData>('user.signin', input); }
-  async signout() {
+  async signout(): Promise<boolean> {
     // call api, clear cookie, go to home page
     try {
-      const ignore  = await this._action<t.SignOutData>('user.signout'); // token 'x' ==> cookie invalid now
+      await this._action<t.SignOutData>('user.signout'); // token 'x' ==> cookie invalid now
       if (this.options.browser) {
-        const removed = await this.options.browser.cookies.remove({ name: 'fbsecret' });// TODO: use env setting
+        await this.options.browser.cookies.remove({ name: 'fbsecret' });// TODO: use env setting
       }
     } catch (err) {
       console.error('signout error', err);
     }
+    return true;
   }
 
   // USERS ====================================================================
@@ -116,20 +117,28 @@ export class ApiClient {
   async user_retrieve_by_username(username: string) {
     return this._action<t.UserRetrieveData>('user.user_retrieve_by_username', { username });
   }
-  async usercontact_update_self(input) {
-    return this._action('user.usercontact_update_self', input);
+  async usercontact_update_self(input: t.UserContactUpdateInput) {
+    return this._action<t.UserContactUpdateData>('user.usercontact_update_self', input);
+  }
+  async userlinks_update_self(input: t.UserLinksUpdateInput) {
+    return this._action<t.UserLinksUpdateData>('user.userlinks_update_self', input);
   }
   async usergeo_update_self(input) {
     return this._action('user.usergeo_update_self', input);
   }
+  async userfield_update_self(input: t.UserFieldUpdateInput) {
+    return this._action<t.UserFieldUpdateData>('user.userfield_update_self', input);
+  }
+
+  // makeFieldUpdater(input: t.UserFieldInput) {
+  //   return async (value: string) => {
+  //     return this.userfield_update_self({ field: input.field, value });
+  //   }
+  // }
 
   // POSTS ====================================================================
   async post_retrieve_by_username_and_slug(input) {
     return this._action<t.PostRetrieveData, t.PostSearchMeta>('post.post_retrieve_by_username_and_slug', input);
-  }
-  // pass { user_id } or { username }
-  async post_search_by_user(input) {
-    return this._action<t.PostSearchData, t.PostSearchMeta>('post.post_search_by_user', input);
   }
   async post_search(input: t.PostSearchInput = {}) {
     return this._action<t.PostSearchData, t.PostSearchMeta>('post.post_search', input);

@@ -208,3 +208,16 @@ div.map-advert-info div.fb-advert-list-item .ui.card {
   border-radius: 0%;
   box-shadow: none;
 }
+
+div.fb-user-profile-info-row {
+  text-align: left;
+}
+div.fb-user-profile-info-row span.fb-user-profile-info-view {
+  min-width: 170px;
+  display: inline-block;
+  text-align: left;
+}
+div.fb-profile a         { color: purple; }
+div.fb-profile a:active  { color: purple; }
+div.fb-profile a:visited { color: purple; }
+div.fb-profile a:hover   { color: blue; }

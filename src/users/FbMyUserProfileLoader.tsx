@@ -1,8 +1,8 @@
 import { FbLoadingParagraph } from '../components';
 import { FbUserProfile } from './FbUserProfile';
 
-export function FbMyUserProfileLoader({ currentUserState = null }) {
-  const { data: user, loading = false, error = null } = currentUserState ?? {};
+export function FbMyUserProfileLoader({ api, currentUserState = null }) {
+  const { data: user, loading = false, error = null, reload } = currentUserState ?? {};
   const { username, first_name } = user ?? {};
   const greet = first_name ?? username;
   return (
@@ -13,7 +13,7 @@ export function FbMyUserProfileLoader({ currentUserState = null }) {
       { user && (
         <div>
           <p>Hi {greet}! This is your profile page.</p>
-          <FbUserProfile user={user} />
+          <FbUserProfile user={user} api={api} editable={true} afterEdit={() => reload()} />
         </div>
       )}
     </div>

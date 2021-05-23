@@ -8,7 +8,7 @@ export type ErrorPageProps = AppPageProps & { message: string; }
 export const ErrorPage: FC<ErrorPageProps> = (props: PropsWithChildren<ErrorPageProps>) => {
   const { i18n, message } = props;
   return (
-    <PublicLayout title={i18n._('common_error')} code='error'>
+    <PublicLayout title={i18n._('common_error')}>
       <FbGridCardContainer>
         {message}
       </FbGridCardContainer>

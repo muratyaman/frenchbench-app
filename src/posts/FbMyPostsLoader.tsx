@@ -5,7 +5,8 @@ import { usePostsOfUser } from '../hooks/usePostsOfUser';
 export function FbMyPostsLoader({ api, currentUserState = null }) {
   const { data: user = null } = currentUserState ?? {};
   const { id: user_id = null } = user ?? {};
-  const { data: posts = [], loading = false, error = null } = usePostsOfUser(api, { user_id, with_assets: true });
+  const with_assets = true;
+  const { data: posts = [], loading = false, error = null } = usePostsOfUser(api, user_id, with_assets);
   return (
     <div className='fb-post-search'>
       { loading && <FbLoadingParagraph /> }
