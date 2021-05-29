@@ -140,11 +140,12 @@ export type UserModel = WithGeoLocation<WithAuditFull<UserSummaryModel & {
   phone_mobile: string | null;
   headline: string | null;
   neighbourhood: string | null;
+  is_volunteer: number;
 } & UserLinks>>;
 
 export type UserRetrieveData = UserModel;
 
-export type UserContactDetails = Pick<UserModel, 'first_name' | 'last_name' | 'email' | 'phone_mobile' | 'headline' | 'neighbourhood'>;
+export type UserContactDetails = Pick<UserModel, 'first_name' | 'last_name' | 'email' | 'phone_mobile' | 'headline' | 'neighbourhood' | 'is_volunteer'>;
 export type UserContactUpdateInput = Partial<UserContactDetails>;
 export type UserContactUpdateData = boolean;
 

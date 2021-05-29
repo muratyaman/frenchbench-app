@@ -1,5 +1,6 @@
 export * from './FbAccordion';
 export * from './FbClientSideContainer';
+export * from './FbEditable';
 export * from './FbFooter';
 export * from './FbGridCardContainer';
 export * from './FbHashTagLinkList';

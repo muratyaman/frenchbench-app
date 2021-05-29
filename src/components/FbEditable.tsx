@@ -1,11 +1,20 @@
-import { FC, PropsWithChildren, useState } from 'react';
+import { FC, PropsWithChildren, ReactElement, useState } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
+
+export interface FbEditableRenderEditEventArgs {
+  error: boolean;
+  isEditing: boolean;
+  isUpdating: boolean;
+  value: string;
+  setValue(value: string): void;
+}
 
 export interface FbEditableProps {
   initialValue?: string;
   placeHolder?: string;
   onSubmit(value: string): Promise<boolean>;
   position?: 'left' | 'right';
+  renderEdit?: (args: FbEditableRenderEditEventArgs) => ReactElement<any, any> | null;
 }
 
 const STAGE_VIEWING  = 'viewing';
@@ -15,7 +24,7 @@ const STAGE_UPDATING = 'updating';
 const defaultStage = STAGE_VIEWING;
 
 export const FbEditable: FC<FbEditableProps> = (props: PropsWithChildren<FbEditableProps>) => {
-  const { initialValue = '', placeHolder = '', position = 'left' } = props;
+  const { initialValue = '', placeHolder = '', position = 'left', renderEdit = null } = props;
   const [error, setError] = useState(false);
   const [stage, setStage] = useState(defaultStage);
   const [value, setValue] = useState(initialValue ?? '');
@@ -23,6 +32,7 @@ export const FbEditable: FC<FbEditableProps> = (props: PropsWithChildren<FbEdita
   const isEditing  = stage === STAGE_EDITING;
   const isUpdating = stage === STAGE_UPDATING;
   const onChange = (ev, data) => {
+    console.log('onChange', data);
     setValue(data.value);
   };
   const onSubmit = async () => {
@@ -51,7 +61,9 @@ export const FbEditable: FC<FbEditableProps> = (props: PropsWithChildren<FbEdita
   // isEditing or isUpdating
   return (
     <span className='fb-editable'>
-      <Input placeholder={placeHolder} size='mini' error={error} disabled={!isEditing} loading={isUpdating} value={value} onChange={onChange} />
+      {renderEdit ? renderEdit({ error, isEditing, isUpdating, value, setValue }) : (
+        <Input placeholder={placeHolder} size='mini' error={error} disabled={!isEditing} loading={isUpdating} value={value} onChange={onChange} />
+      )}
       <Icon name='save' disabled={!isEditing} onClick={onSubmit} />
       <Icon name='cancel' disabled={!isEditing} onClick={onCancel} />
     </span>
